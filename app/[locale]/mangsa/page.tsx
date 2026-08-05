@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { getDictionary, isLocale, LOCALES, type Locale } from '@/lib/i18n'
+import { PageHeader } from '@/components/chrome/PageHeader'
 import { mangsaSource, mangsaTable, windowLabel } from '@/lib/mangsa'
 import { MangsaView } from './MangsaView'
 
@@ -14,8 +15,7 @@ export default function MangsaPage({ params }: { params: { locale: string } }) {
 
   return (
     <article>
-      <h1 className="font-prose text-3xl">{t.mangsa.title}</h1>
-      <p className="mt-3 max-w-prose text-ink/80">{t.mangsa.intro}</p>
+      <PageHeader title={t.mangsa.title} intro={t.mangsa.intro} />
 
       <div className="mt-8">
         <MangsaView t={t} />

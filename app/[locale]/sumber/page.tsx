@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { getDictionary, isLocale, LOCALES, type Locale, type Dictionary } from '@/lib/i18n'
+import { PageHeader } from '@/components/chrome/PageHeader'
 import { ANCHORS, KURUPS, MANGSA, NEPTU, type Source } from '@/lib/data'
 import { DAL_IRREGULARITY_NOTE } from '@/lib/lunar'
 
@@ -38,11 +39,10 @@ export default function SumberPage({ params }: { params: { locale: string } }) {
 
   return (
     <article>
-      <h1 className="font-prose text-3xl">{t.sumber.title}</h1>
-      <p className="mt-3 max-w-prose text-ink/80">{t.sumber.intro}</p>
+      <PageHeader title={t.sumber.title} intro={t.sumber.intro} />
 
       <section className="mt-10">
-        <h2 className="font-prose text-2xl">{t.sumber.anchors}</h2>
+        <h2 className="font-prose text-section">{t.sumber.anchors}</h2>
         <div className="mt-4 space-y-6">
           {anchors.map((anchor) => (
             <Entry
@@ -60,7 +60,7 @@ export default function SumberPage({ params }: { params: { locale: string } }) {
       </section>
 
       <section className="mt-12 border-t hairline pt-8">
-        <h2 className="font-prose text-2xl">{t.sumber.kurups}</h2>
+        <h2 className="font-prose text-section">{t.sumber.kurups}</h2>
         <div className="mt-4 space-y-6">
           {KURUPS.map((kurup) => (
             <Entry
@@ -78,7 +78,7 @@ export default function SumberPage({ params }: { params: { locale: string } }) {
       </section>
 
       <section className="mt-12 border-t hairline pt-8">
-        <h2 className="font-prose text-2xl">{t.sumber.tables}</h2>
+        <h2 className="font-prose text-section">{t.sumber.tables}</h2>
         <div className="mt-4 space-y-6">
           <Entry
             id={NEPTU.id}
@@ -102,7 +102,7 @@ export default function SumberPage({ params }: { params: { locale: string } }) {
       </section>
 
       <section className="mt-12 border-t hairline pt-8">
-        <h2 className="font-prose text-2xl">{t.sumber.gaps}</h2>
+        <h2 className="font-prose text-section">{t.sumber.gaps}</h2>
         <p className="mt-2 max-w-prose text-ink/80">{t.sumber.gapsIntro}</p>
         <div className="mt-5 space-y-5">
           {gaps.map((gap) => (

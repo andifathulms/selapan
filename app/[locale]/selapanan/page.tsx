@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { getDictionary, isLocale, LOCALES, type Locale } from '@/lib/i18n'
+import { PageHeader } from '@/components/chrome/PageHeader'
 import { SelapananView } from './SelapananView'
 
 export function generateStaticParams() {
@@ -12,8 +13,7 @@ export default function SelapananPage({ params }: { params: { locale: string } }
 
   return (
     <article>
-      <h1 className="font-prose text-3xl">{t.selapanan.title}</h1>
-      <p className="mt-3 max-w-prose text-ink/80">{t.selapanan.intro}</p>
+      <PageHeader title={t.selapanan.title} intro={t.selapanan.intro} />
       <div className="mt-8">
         <SelapananView t={t} />
       </div>

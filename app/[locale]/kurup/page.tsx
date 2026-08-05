@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { getDictionary, isLocale, LOCALES, type Locale } from '@/lib/i18n'
+import { PageHeader } from '@/components/chrome/PageHeader'
 import { KURUPS } from '@/lib/data'
 import { DivergenceView } from './DivergenceView'
 
@@ -13,15 +14,14 @@ export default function KurupPage({ params }: { params: { locale: string } }) {
 
   return (
     <article>
-      <h1 className="font-prose text-3xl">{t.kurup.title}</h1>
-      <p className="mt-3 max-w-prose text-ink/80">{t.kurup.intro}</p>
+      <PageHeader title={t.kurup.title} intro={t.kurup.intro} />
 
       <div className="mt-8">
         <DivergenceView t={t} />
       </div>
 
       <section className="mt-14 border-t hairline pt-8">
-        <h2 className="font-prose text-2xl">{t.kurup.table}</h2>
+        <h2 className="font-prose text-section">{t.kurup.table}</h2>
         <div className="mt-4 overflow-x-auto">
           <table className="almanac-table min-w-[42rem]">
             <thead>

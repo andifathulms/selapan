@@ -132,7 +132,7 @@ function ReverseConversion({
 
   return (
     <section className="mt-14 border-t hairline pt-8">
-      <h2 className="font-prose text-2xl">{t.ubah.reverse}</h2>
+      <h2 className="font-prose text-section">{t.ubah.reverse}</h2>
       <p className="mt-2 max-w-prose text-ink/75">{t.ubah.reverseIntro}</p>
 
       <div className="mt-4 flex flex-wrap items-end gap-3">

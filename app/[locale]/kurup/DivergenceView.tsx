@@ -81,7 +81,7 @@ function ReckoningPanel({
   return (
     <section className="border hairline p-5">
       <header className="flex items-baseline justify-between gap-3 border-b hairline pb-3">
-        <h2 className="font-prose text-xl">{title}</h2>
+        <h2 className="font-prose text-section">{title}</h2>
         <span className="font-ui text-xs uppercase tracking-widest text-ink/50">{subtitle}</span>
       </header>
 

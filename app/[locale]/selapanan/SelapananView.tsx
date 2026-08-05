@@ -40,7 +40,7 @@ export function SelapananView({ t }: { t: Dictionary }) {
 
       <div className="mt-8 grid gap-10 md:grid-cols-2">
         <section>
-          <h2 className="font-prose text-xl">{t.selapanan.upcoming}</h2>
+          <h2 className="font-prose text-section">{t.selapanan.upcoming}</h2>
           <table className="almanac-table mt-3">
             <thead>
               <tr>
@@ -66,7 +66,7 @@ export function SelapananView({ t }: { t: Dictionary }) {
         </section>
 
         <section>
-          <h2 className="font-prose text-xl">{t.selapanan.slametan}</h2>
+          <h2 className="font-prose text-section">{t.selapanan.slametan}</h2>
           <p className="mt-1 text-sm text-ink/70">{t.selapanan.slametanIntro}</p>
           <table className="almanac-table mt-3">
             <thead>

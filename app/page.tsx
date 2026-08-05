@@ -13,7 +13,7 @@ export default function RootPage() {
     <>
       <meta httpEquiv="refresh" content={`0; url=./${DEFAULT_LOCALE}/`} />
       <main className="mx-auto max-w-lg px-6 py-24">
-        <h1 className="font-prose text-3xl">Selapan</h1>
+        <h1 className="font-prose text-title">Selapan</h1>
         <p className="mt-3 text-ink/70">Kalender Jawa, dengan hitungannya diperlihatkan.</p>
         <ul className="mt-8 space-y-2">
           {LOCALES.map((locale) => (
