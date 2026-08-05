@@ -1,0 +1,17 @@
+{
+  "id": "anchor.wuku.pawukon",
+  "subsystem": "wuku",
+  "gregorian": "-4712-04-18",
+  "jdn": 146,
+  "correspondence": "JDN 146 adalah hari pertama wuku Sinta, hari ke-0 dari siklus pawukon 210 hari. Indeks hari dalam siklus adalah (JDN - 146) mod 210; nomor wuku adalah hasil bagi indeks itu dengan 7.",
+  "source": {
+    "title": "Calendrical Calculations",
+    "author": "Edward M. Reingold dan Nachum Dershowitz",
+    "year": 2018,
+    "publisher": "Cambridge University Press",
+    "locator": "bab kalender Bali Pawukon: epoch pawukon ditetapkan pada JD 146, dan posisi dalam siklus 210 hari dihitung sebagai selisih modulo dari epoch itu"
+  },
+  "status": "unverified",
+  "verifiedOn": "2026-08-06",
+  "notes": "Ditandai belum terverifikasi dengan sengaja. Konsistensi internalnya baik — JDN 146 mod 7 = 6, yaitu Ahad, sesuai aturan bahwa setiap wuku selalu mulai hari Ahad (Redite), dan aturan itu berlaku untuk seluruh 30 wuku sebagai konsekuensinya. Namun epoch ini berasal dari satu sumber saja dan belum diadu dengan data kalender Bali cetak maupun kalender Jawa cetak sebagaimana disyaratkan aturan pengujian proyek. Sampai itu dilakukan, nilai wuku dirender abu-abu dan diberi keterangan. Fase yang meleset satu wuku tidak akan tertangkap oleh uji invarian periode mana pun — hanya sumber independen yang bisa menangkapnya."
+}

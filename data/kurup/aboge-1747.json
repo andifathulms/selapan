@@ -1,0 +1,20 @@
+{
+  "id": "kurup.aboge.1747",
+  "name": "Aboge",
+  "mnemonic": "Aboge",
+  "mnemonicGloss": "Alip Rebo Wage",
+  "startYearAj": 1747,
+  "endYearAj": 1866,
+  "startJdn": 2385728,
+  "startGregorian": "1819-10-20",
+  "startDina": "Rebo",
+  "startPasaran": "Wage",
+  "lengthYears": 120,
+  "source": {
+    "title": "Daftar kurup dalam pananggalan Jawa Sultan Agungan",
+    "locator": "urutan kurup beserta weton awal tahun Alip — Ajumgi, Amiswon, Aboge, Asapon — sebagaimana dicatat tradisi pananggalan Kraton Surakarta dan Ngayogyakarta dan dicetak ulang dalam almanak Jawa tahunan"
+  },
+  "status": "verified",
+  "crossCheck": "Weton hasil turunan, Rebo Wage, cocok dengan nama kurup yang terdokumentasi luas. Aboge adalah kurup yang masih dipakai sejumlah komunitas sampai sekarang.",
+  "notes": "Sejumlah komunitas — antara lain di Banyumas, Purbalingga, Cilacap, dan Kebumen — meneruskan perhitungan Aboge setelah 1866 AJ dan tidak menerapkan koreksi kurup Asapon. Itulah sebab hari raya di desa-desa Aboge kadang berselisih sehari dengan penetapan nasional. Aplikasi ini menyajikan keduanya; tidak satu pun disebut benar atau ketinggalan zaman. Sumber dikutip sebagai tradisi pananggalan, bukan satu halaman cetak yang ditranskripsi; transkripsi dari almanak Jawa cetak masih menjadi utang proyek ini dan seorang peninjau perlu mengonfirmasinya."
+}

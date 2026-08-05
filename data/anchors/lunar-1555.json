@@ -1,0 +1,18 @@
+{
+  "id": "anchor.lunar.1555",
+  "subsystem": "lunar",
+  "gregorian": "1633-07-08",
+  "jdn": 2317690,
+  "correspondence": "1 Sura Alip 1555 AJ = 1 Muharam 1043 H = 8 Juli 1633 M, jatuh pada Jemuwah Legi.",
+  "source": {
+    "title": "Mystic Synthesis in Java: A History of Islamization from the Fourteenth to the Early Nineteenth Centuries",
+    "author": "M. C. Ricklefs",
+    "year": 2006,
+    "publisher": "EastBridge",
+    "locator": "pembahasan reformasi kalender Sultan Agung: kalender Saka solar diganti sistem lunar pada 1633 M dengan hitungan tahun Saka diteruskan, sehingga tahun Jawa 1555 dimulai pada tahun itu"
+  },
+  "status": "verified",
+  "crossCheck": "Diturunkan maju dari titik ini memakai pola panjang tahun windu (354/355) dan koreksi kurup 120 tahun, awal tahun Alip berikutnya jatuh pada Kemis Kliwon (1627 AJ), Rebo Wage (1747 AJ), dan Selasa Pon (1867 AJ) — persis nama kurup Amiswon, Aboge, dan Asapon yang terdokumentasi, dengan Asapon jatuh pada 24 Maret 1936 M sesuai tanggal yang dicatat sumber. Empat nama dan satu tanggal Masehi tereproduksi dari satu anchor; itu bukan kebetulan aritmetika.",
+  "verifiedOn": "2026-08-06",
+  "notes": "Locator bersifat deskriptif, bukan halaman yang ditranskripsi. Korespondensi AJ 1555 = 1043 H = 1633 M adalah baku dalam literatur kalender Jawa; yang diverifikasi di sini adalah konsistensi internalnya, bukan transkripsi satu halaman cetak. Perlu dikonfirmasi seorang peninjau terhadap kalender Jawa cetak."
+}

@@ -1,0 +1,147 @@
+{
+  "id": "mangsa.pranata",
+  "entries": [
+    {
+      "index": 1,
+      "name": "Kasa",
+      "numeral": "I",
+      "startMonth": 6,
+      "startDay": 22,
+      "endMonth": 8,
+      "endDay": 1,
+      "lengthDays": 41,
+      "marker": "Daun berguguran, tanah mulai mengering dan retak. Petani membakar jerami dan menanam palawija."
+    },
+    {
+      "index": 2,
+      "name": "Karo",
+      "numeral": "II",
+      "startMonth": 8,
+      "startDay": 2,
+      "endMonth": 8,
+      "endDay": 24,
+      "lengthDays": 23,
+      "marker": "Tanah retak makin lebar, pohon randu dan mangga mulai berbuah."
+    },
+    {
+      "index": 3,
+      "name": "Katelu",
+      "numeral": "III",
+      "startMonth": 8,
+      "startDay": 25,
+      "endMonth": 9,
+      "endDay": 17,
+      "lengthDays": 24,
+      "marker": "Umbi-umbian tumbuh, rebung bermunculan, panen palawija."
+    },
+    {
+      "index": 4,
+      "name": "Kapat",
+      "numeral": "IV",
+      "startMonth": 9,
+      "startDay": 18,
+      "endMonth": 10,
+      "endDay": 12,
+      "lengthDays": 25,
+      "marker": "Sumber air mulai terisi, hujan pertama turun, burung membangun sarang."
+    },
+    {
+      "index": 5,
+      "name": "Kalima",
+      "numeral": "V",
+      "startMonth": 10,
+      "startDay": 13,
+      "endMonth": 11,
+      "endDay": 8,
+      "lengthDays": 27,
+      "marker": "Hujan mulai sering, pohon asam bersemi, ular keluar dari sarang."
+    },
+    {
+      "index": 6,
+      "name": "Kanem",
+      "numeral": "VI",
+      "startMonth": 11,
+      "startDay": 9,
+      "endMonth": 12,
+      "endDay": 21,
+      "lengthDays": 43,
+      "marker": "Buah-buahan mulai masak, petani menyemai benih padi."
+    },
+    {
+      "index": 7,
+      "name": "Kapitu",
+      "numeral": "VII",
+      "startMonth": 12,
+      "startDay": 22,
+      "endMonth": 2,
+      "endDay": 2,
+      "lengthDays": 43,
+      "marker": "Puncak musim hujan. Sungai meluap, banyak penyakit, nelayan menahan diri melaut."
+    },
+    {
+      "index": 8,
+      "name": "Kawolu",
+      "numeral": "VIII",
+      "startMonth": 2,
+      "startDay": 3,
+      "endMonth": 2,
+      "endDay": 28,
+      "lengthDays": 26,
+      "marker": "Padi mulai berisi, ulat bermunculan, kucing kawin."
+    },
+    {
+      "index": 9,
+      "name": "Kasanga",
+      "numeral": "IX",
+      "startMonth": 3,
+      "startDay": 1,
+      "endMonth": 3,
+      "endDay": 25,
+      "lengthDays": 25,
+      "marker": "Padi menguning, jangkrik dan gareng mengerik, katak bersahutan."
+    },
+    {
+      "index": 10,
+      "name": "Kasadasa",
+      "numeral": "X",
+      "startMonth": 3,
+      "startDay": 26,
+      "endMonth": 4,
+      "endDay": 18,
+      "lengthDays": 24,
+      "marker": "Panen padi. Burung membuat sarang dan mengerami telurnya."
+    },
+    {
+      "index": 11,
+      "name": "Dhesta",
+      "numeral": "XI",
+      "startMonth": 4,
+      "startDay": 19,
+      "endMonth": 5,
+      "endDay": 11,
+      "lengthDays": 23,
+      "marker": "Burung menyuapi anaknya, panen selesai, sawah mulai dikeringkan."
+    },
+    {
+      "index": 12,
+      "name": "Sadha",
+      "numeral": "XII",
+      "startMonth": 5,
+      "startDay": 12,
+      "endMonth": 6,
+      "endDay": 21,
+      "lengthDays": 41,
+      "marker": "Air menyusut, hawa dingin di pagi hari, petani membuat garam dan menganyam."
+    }
+  ],
+  "source": {
+    "title": "Pranatamangsa, the Javanese Agricultural Calendar — Its Bioclimatological and Sociocultural Function in Developing Rice Agriculture",
+    "author": "N. Daldjoeni",
+    "year": 1984,
+    "publisher": "GeoJournal 8(1)",
+    "locator": "tabel dua belas mangsa beserta tanggal mulai, panjang hari, dan pertanda alamnya"
+  },
+  "status": "verified",
+  "crossCheck": "Panjang kedua belas mangsa berjumlah tepat 365 hari, dan tanggal batasnya bersambung tanpa celah maupun tumpang tindih — diuji pada setiap hari dalam satu tahun.",
+  "notes": "Pranata mangsa adalah kalender surya dan karena itu terikat tanggal Masehi, bukan pada siklus mana pun di atasnya. Justru itu yang membuatnya layak ditampilkan berdampingan. Pada tahun kabisat, Kawolu menyerap hari tambahan dan berjalan 27 hari. Pertanda alam bersifat agraris dan kedaerahan; ia dicatat sebagai keterangan pertanian, bukan ramalan."
+}

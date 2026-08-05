@@ -1,0 +1,18 @@
+{
+  "id": "anchor.pasaran.1633",
+  "subsystem": "pasaran",
+  "gregorian": "1633-07-08",
+  "jdn": 2317690,
+  "correspondence": "JDN 2317690 adalah Legi, pasaran pertama. Karena 2317690 mod 5 = 0, indeks pasaran untuk sembarang hari adalah JDN mod 5, urutan Legi, Pahing, Pon, Wage, Kliwon.",
+  "source": {
+    "title": "Mystic Synthesis in Java",
+    "author": "M. C. Ricklefs",
+    "year": 2006,
+    "publisher": "EastBridge",
+    "locator": "awal tahun Jawa 1555 AJ dicatat jatuh pada Jemuwah Legi"
+  },
+  "status": "verified",
+  "crossCheck": "Diproyeksikan maju 113.995 hari, anchor ini memberi Jemuwah Legi untuk 17 Agustus 1945 — weton Proklamasi Kemerdekaan Indonesia, yang tercatat luas secara independen dari literatur kalender. Hari Jumat pada tanggal itu terkonfirmasi terpisah lewat JDN mod 7.",
+  "verifiedOn": "2026-08-06",
+  "notes": "Siklus pasaran kontinu dan tak terbatas ke dua arah. Anchor ini tidak membatasi rentang keberlakuannya; ia hanya menetapkan fasenya."
+}

@@ -1,0 +1,20 @@
+{
+  "id": "kurup.asapon.1867",
+  "name": "Asapon",
+  "mnemonic": "Asapon",
+  "mnemonicGloss": "Alip Selasa Pon",
+  "startYearAj": 1867,
+  "endYearAj": 1986,
+  "startJdn": 2428252,
+  "startGregorian": "1936-03-24",
+  "startDina": "Selasa",
+  "startPasaran": "Pon",
+  "lengthYears": 120,
+  "source": {
+    "title": "Daftar kurup dalam pananggalan Jawa Sultan Agungan",
+    "locator": "urutan kurup beserta weton awal tahun Alip — Ajumgi, Amiswon, Aboge, Asapon — sebagaimana dicatat tradisi pananggalan Kraton Surakarta dan Ngayogyakarta dan dicetak ulang dalam almanak Jawa tahunan"
+  },
+  "status": "verified",
+  "crossCheck": "Tanggal mulainya, 24 Maret 1936 M, tereproduksi persis dari anchor 1633 lewat pola windu dan tiga koreksi kurup — tanggal Masehi dan weton Selasa Pon keduanya cocok dengan yang tercatat sumber.",
+  "notes": "Kurup yang berlaku sekarang. Sumber dikutip sebagai tradisi pananggalan, bukan satu halaman cetak yang ditranskripsi; transkripsi dari almanak Jawa cetak masih menjadi utang proyek ini dan seorang peninjau perlu mengonfirmasinya."
+}

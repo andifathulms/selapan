@@ -1,0 +1,20 @@
+{
+  "id": "kurup.ajumgi.1555",
+  "name": "Ajumgi",
+  "mnemonic": "Ajumgi",
+  "mnemonicGloss": "Alip Jemuwah Legi",
+  "startYearAj": 1555,
+  "endYearAj": 1626,
+  "startJdn": 2317690,
+  "startGregorian": "1633-07-08",
+  "startDina": "Jemuwah",
+  "startPasaran": "Legi",
+  "lengthYears": 72,
+  "source": {
+    "title": "Daftar kurup dalam pananggalan Jawa Sultan Agungan",
+    "locator": "urutan kurup beserta weton awal tahun Alip — Ajumgi, Amiswon, Aboge, Asapon — sebagaimana dicatat tradisi pananggalan Kraton Surakarta dan Ngayogyakarta dan dicetak ulang dalam almanak Jawa tahunan"
+  },
+  "status": "verified",
+  "crossCheck": "Titik mulanya identik dengan anchor.lunar.1555, yang terverifikasi terpisah. Panjang 72 tahun terkonfirmasi secara tidak langsung: hanya dengan panjang itu rantai kurup berikutnya mendarat tepat pada Kemis Kliwon, Rebo Wage, dan Selasa Pon — yakni nama Amiswon, Aboge, dan Asapon yang terdokumentasi.",
+  "notes": "Kurup pertama berjalan 72 tahun (9 windu), bukan 120 seperti kurup sesudahnya. Sebab historis pemendekan itu tidak dicatat di sini dan sengaja tidak dikarang; yang bisa ditegaskan hanyalah konsekuensi aritmetikanya. Sumber dikutip sebagai tradisi pananggalan, bukan satu halaman cetak yang ditranskripsi; transkripsi dari almanak Jawa cetak masih menjadi utang proyek ini dan seorang peninjau perlu mengonfirmasinya."
+}

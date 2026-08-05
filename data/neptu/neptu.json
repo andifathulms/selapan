@@ -1,0 +1,27 @@
+{
+  "id": "neptu.traditional",
+  "dina": {
+    "Ahad": 5,
+    "Senen": 4,
+    "Selasa": 3,
+    "Rebo": 7,
+    "Kemis": 8,
+    "Jemuwah": 6,
+    "Setu": 9
+  },
+  "pasaran": {
+    "Legi": 5,
+    "Pahing": 9,
+    "Pon": 7,
+    "Wage": 4,
+    "Kliwon": 8
+  },
+  "source": {
+    "title": "Kitab Primbon Betaljemur Adammakna",
+    "publisher": "Soemodidjojo Mahadewa",
+    "locator": "tabel neptu dina pitu dan pasaran lima"
+  },
+  "status": "verified",
+  "crossCheck": "Nilai-nilai ini seragam di seluruh primbon cetak dan pustaka pananggalan Jawa; tidak termasuk hal yang diperselisihkan antar-daerah, berbeda dengan tafsir yang dibangun di atasnya.",
+  "notes": "Angkanya tradisional, penjumlahannya aritmetika. Jumlah neptu ditampilkan sebagai nilai terhitung. Apa pun yang diturunkan dari jumlah itu — watak, kecocokan, hari baik — adalah tafsir, bukan hitungan, dan tidak termasuk lingkup rilis ini."
+}

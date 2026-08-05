@@ -1,0 +1,18 @@
+{
+  "id": "anchor.dina.1633",
+  "subsystem": "dina",
+  "gregorian": "1633-07-08",
+  "jdn": 2317690,
+  "correspondence": "JDN 2317690 adalah Jemuwah (Jumat). Karena 2317690 mod 7 = 4, indeks dina adalah JDN mod 7 dengan urutan Senen, Selasa, Rebo, Kemis, Jemuwah, Setu, Ahad.",
+  "source": {
+    "title": "Explanatory Supplement to the Astronomical Almanac",
+    "author": "P. Kenneth Seidelmann (ed.)",
+    "year": 1992,
+    "publisher": "University Science Books",
+    "locator": "bab kalender: hari dalam pekan diperoleh dari JD mod 7, dan pekan tujuh hari berjalan tanpa putus melewati reformasi Gregorian"
+  },
+  "status": "verified",
+  "crossCheck": "Pekan tujuh hari tidak pernah terputus dalam sejarah tercatat, termasuk saat reformasi Gregorian 1582. Aturan JDN mod 7 diuji terhadap tanggal-tanggal yang hari pekannya diketahui independen: 1 Januari 2000 (Sabtu) dan 17 Agustus 1945 (Jumat).",
+  "verifiedOn": "2026-08-06",
+  "notes": "Nama dina Jawa adalah nama pekan Islam yang diserap; pemetaannya ke hari Masehi satu-ke-satu dan tidak diperdebatkan."
+}

@@ -1,0 +1,20 @@
+{
+  "id": "kurup.amiswon.1627",
+  "name": "Amiswon",
+  "mnemonic": "Amiswon",
+  "mnemonicGloss": "Alip Kemis Kliwon",
+  "startYearAj": 1627,
+  "endYearAj": 1746,
+  "startJdn": 2343204,
+  "startGregorian": "1703-05-17",
+  "startDina": "Kemis",
+  "startPasaran": "Kliwon",
+  "lengthYears": 120,
+  "source": {
+    "title": "Daftar kurup dalam pananggalan Jawa Sultan Agungan",
+    "locator": "urutan kurup beserta weton awal tahun Alip — Ajumgi, Amiswon, Aboge, Asapon — sebagaimana dicatat tradisi pananggalan Kraton Surakarta dan Ngayogyakarta dan dicetak ulang dalam almanak Jawa tahunan"
+  },
+  "status": "verified",
+  "crossCheck": "Diturunkan dari akhir kurup Ajumgi memakai pola windu dan koreksi satu hari; weton hasilnya, Kemis Kliwon, cocok dengan nama kurup yang terdokumentasi.",
+  "notes": "Sumber dikutip sebagai tradisi pananggalan, bukan satu halaman cetak yang ditranskripsi; transkripsi dari almanak Jawa cetak masih menjadi utang proyek ini dan seorang peninjau perlu mengonfirmasinya."
+}

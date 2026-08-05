@@ -1,0 +1,19 @@
+{
+  "id": "kurup.anenhing.1987",
+  "name": "Anenhing",
+  "mnemonic": "Anenhing",
+  "mnemonicGloss": "Alip Senen Pahing",
+  "startYearAj": 1987,
+  "endYearAj": 2106,
+  "startJdn": 2470776,
+  "startGregorian": "2052-08-26",
+  "startDina": "Senen",
+  "startPasaran": "Pahing",
+  "lengthYears": 120,
+  "source": {
+    "title": "Daftar kurup dalam pananggalan Jawa Sultan Agungan",
+    "locator": "urutan kurup beserta weton awal tahun Alip — Ajumgi, Amiswon, Aboge, Asapon — sebagaimana dicatat tradisi pananggalan Kraton Surakarta dan Ngayogyakarta dan dicetak ulang dalam almanak Jawa tahunan"
+  },
+  "status": "unverified",
+  "notes": "Proyeksi, bukan catatan. Kurup ini belum mulai dan transisinya belum pernah dijalani siapa pun. Nilainya diperoleh dengan menerapkan aturan 120 tahun melewati transisi terdokumentasi yang terakhir, dan itu persis jenis ekstrapolasi yang diperingatkan proyek ini. Dirender abu-abu; jangan diandalkan. Sumber dikutip sebagai tradisi pananggalan, bukan satu halaman cetak yang ditranskripsi; transkripsi dari almanak Jawa cetak masih menjadi utang proyek ini dan seorang peninjau perlu mengonfirmasinya."
+}
