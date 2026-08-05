@@ -93,6 +93,9 @@ export type Dictionary = {
   readonly ubah: {
     readonly title: string
     readonly intro: string
+    readonly groupDay: string
+    readonly groupYear: string
+    readonly groupReference: string
     readonly wheelsCaption: string
     readonly reverse: string
     readonly reverseIntro: string
@@ -248,6 +251,9 @@ const id: Dictionary = {
     title: 'Ubah tanggal',
     intro:
       'Masukkan tanggal Masehi, dapatkan perhitungan Jawa selengkapnya. Setiap nilai bisa dibuka untuk melihat asal-usulnya.',
+    groupDay: 'Hari dan siklusnya',
+    groupYear: 'Tahun Jawa',
+    groupReference: 'Rujukan',
     wheelsCaption:
       'Tiga cincin berputar bersama. Mereka kembali sejajar setiap 35 hari — itulah selapan — dan sejajar lagi setelah 210 hari.',
     reverse: 'Dari tanggal Jawa',
@@ -414,6 +420,9 @@ const en: Dictionary = {
     title: 'Convert a date',
     intro:
       'Give a Gregorian date, get the full Javanese reckoning. Every value opens to show where it came from.',
+    groupDay: 'The day and its cycles',
+    groupYear: 'The Javanese year',
+    groupReference: 'Reference',
     wheelsCaption:
       'Three rings turning together. They realign every 35 days — that is the selapan — and again after 210.',
     reverse: 'From a Javanese date',

@@ -21,7 +21,9 @@ export function DerivationDetail({
   const unverified = derivation.status === 'unverified'
 
   return (
-    <div className="mt-3 border-l-2 border-ochre/50 pl-4 text-sm">
+    // Reads as a drawer pulled open on the row above it: one shade of paper
+    // deeper, with the ochre rule down the side that marks working-out.
+    <div className="panel-inset mt-1 border-l-2 border-l-ochre/60 p-4 text-sm">
       {derivation.kind === 'modulo' ? (
         <>
           <p className="font-mono text-[0.95em] text-indigo">

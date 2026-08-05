@@ -29,33 +29,54 @@ export function TraceValue({
   const [open, setOpen] = useState(false)
   const unverified = derivation?.status === 'unverified'
 
-  return (
-    <div className="border-b hairline py-3">
-      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-        <span className="rule-label">{label}</span>
-        <span
-          className={[
-            unverified ? 'unverified-value' : 'computed',
-            emphasis ? 'text-2xl' : 'text-lg',
-          ].join(' ')}
-        >
-          {value}
-        </span>
-      </div>
+  const body = (
+    <>
+      <span className="rule-label">{label}</span>
+      <span
+        className={[
+          unverified ? 'unverified-value' : 'computed',
+          emphasis ? 'text-2xl' : 'text-lg',
+        ].join(' ')}
+      >
+        {value}
+      </span>
+    </>
+  )
 
-      {derivation ? (
-        <>
-          <button
-            type="button"
-            onClick={() => setOpen((o) => !o)}
-            aria-expanded={open}
-            className="mt-1 font-ui text-xs text-ink/50 underline underline-offset-4 hover:text-indigo"
+  if (!derivation) {
+    return (
+      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b hairline py-3.5">
+        {body}
+      </div>
+    )
+  }
+
+  // The whole row opens the working, not a small link beneath it. Every row
+  // that has a derivation should be worth pressing, and on a phone a 12px
+  // underlined phrase is not a target.
+  return (
+    <div className="border-b hairline">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        className="group flex w-full flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-3.5 text-left"
+      >
+        {body}
+        <span className="flex w-full items-center gap-1.5 font-ui text-xs text-ink/45 transition-colors group-hover:text-indigo">
+          <span
+            aria-hidden
+            className={[
+              'inline-block transition-transform',
+              open ? 'rotate-90' : '',
+            ].join(' ')}
           >
-            {open ? t.common.hideWorking : t.common.showWorking}
-          </button>
-          {open ? <DerivationDetail derivation={derivation} t={t} /> : null}
-        </>
-      ) : null}
+            ›
+          </span>
+          {open ? t.common.hideWorking : t.common.showWorking}
+        </span>
+      </button>
+      {open ? <div className="pb-4">{<DerivationDetail derivation={derivation} t={t} />}</div> : null}
     </div>
   )
 }

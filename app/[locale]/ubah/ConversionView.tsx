@@ -36,76 +36,94 @@ export function ConversionView({ t }: { t: Dictionary }) {
         onHour={setHour}
       />
 
-      <div className="mt-8 grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,420px)]">
-        <section>
-          {/* The weton is the pair, so it has no derivation of its own —
-              the dina and pasaran rows below carry the two that make it. */}
-          <TraceValue label={t.labels.weton} value={trace.weton.name} t={t} emphasis />
-          <TraceValue
-            label={t.labels.dina}
-            value={trace.dina.name}
-            derivation={trace.dina.derivation}
-            t={t}
-          />
-          <TraceValue
-            label={t.labels.pasaran}
-            value={trace.pasaran.name}
-            derivation={trace.pasaran.derivation}
-            t={t}
-          />
-          <TraceValue
-            label={t.labels.neptu}
-            value={`${trace.weton.neptu.dina} + ${trace.weton.neptu.pasaran} = ${trace.weton.neptu.total}`}
-            t={t}
-          />
-          <TraceValue
-            label={t.labels.wuku}
-            value={`${trace.wuku.name} · ${trace.dayInWuku}/7`}
-            derivation={trace.wuku.derivation}
-            t={t}
-          />
+      {/* The answer, before the apparatus that produced it. The weton is the
+          pair, so it has no derivation of its own — the dina and pasaran rows
+          below carry the two that make it. */}
+      <section className="mt-8 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 border-b hairline pb-6">
+        <div>
+          <span className="rule-label">{t.labels.weton}</span>
+          <p className="computed mt-1 text-figure">{trace.weton.name}</p>
+        </div>
+        <p className="font-mono text-sm text-ink/55">
+          {formatGregorian(trace.gregorian)} · {t.labels.neptu} {trace.weton.neptu.total}
+        </p>
+      </section>
 
-          {trace.lunar.type === 'ok' ? (
-            <>
-              <TraceValue
-                label={t.labels.lunar}
-                value={`${trace.lunar.value.day} ${trace.lunar.value.monthName} ${trace.lunar.value.yearAj}`}
-                derivation={trace.lunar.value.derivation}
-                t={t}
-                emphasis
-              />
-              <TraceValue
-                label={t.labels.windu}
-                value={trace.lunar.value.windu}
-                t={t}
-              />
-              <TraceValue
-                label={t.labels.kurup}
-                value={`${trace.lunar.value.kurupName} · ${trace.lunar.value.kurupMnemonic}`}
-                t={t}
-              />
-            </>
-          ) : (
-            <RefusalNotice
-              label={t.labels.lunar}
-              reason={trace.lunar.refusal.reason}
-              validFrom={trace.lunar.refusal.validFrom}
-              validTo={trace.lunar.refusal.validTo}
+      <div className="mt-8 grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,400px)] md:gap-12">
+        <div className="order-2 space-y-8 md:order-1">
+          <section>
+            <h2 className="rule-label border-b hairline pb-2">{t.ubah.groupDay}</h2>
+            <TraceValue
+              label={t.labels.dina}
+              value={trace.dina.name}
+              derivation={trace.dina.derivation}
               t={t}
             />
-          )}
+            <TraceValue
+              label={t.labels.pasaran}
+              value={trace.pasaran.name}
+              derivation={trace.pasaran.derivation}
+              t={t}
+            />
+            <TraceValue
+              label={t.labels.neptu}
+              value={`${trace.weton.neptu.dina} + ${trace.weton.neptu.pasaran} = ${trace.weton.neptu.total}`}
+              t={t}
+            />
+            <TraceValue
+              label={t.labels.wuku}
+              value={`${trace.wuku.name} · ${trace.dayInWuku}/7`}
+              derivation={trace.wuku.derivation}
+              t={t}
+            />
+          </section>
 
-          <TraceValue label={t.labels.jdn} value={String(trace.jdn)} t={t} />
-          <TraceValue
-            label={t.labels.gregorian}
-            value={formatGregorian(trace.gregorian)}
-            t={t}
-          />
-        </section>
+          {/* The lunar year is a separate subsystem with its own validity
+              range, and grouping it separately is what makes a refusal here
+              read as one subsystem declining rather than the page failing. */}
+          <section>
+            <h2 className="rule-label border-b hairline pb-2">{t.ubah.groupYear}</h2>
+            {trace.lunar.type === 'ok' ? (
+              <>
+                <TraceValue
+                  label={t.labels.lunar}
+                  value={`${trace.lunar.value.day} ${trace.lunar.value.monthName} ${trace.lunar.value.yearAj}`}
+                  derivation={trace.lunar.value.derivation}
+                  t={t}
+                  emphasis
+                />
+                <TraceValue label={t.labels.windu} value={trace.lunar.value.windu} t={t} />
+                <TraceValue
+                  label={t.labels.kurup}
+                  value={`${trace.lunar.value.kurupName} · ${trace.lunar.value.kurupMnemonic}`}
+                  t={t}
+                />
+              </>
+            ) : (
+              <RefusalNotice
+                label={t.labels.lunar}
+                reason={trace.lunar.refusal.reason}
+                validFrom={trace.lunar.refusal.validFrom}
+                validTo={trace.lunar.refusal.validTo}
+                t={t}
+              />
+            )}
+          </section>
 
-        <section>
+          <section>
+            <h2 className="rule-label border-b hairline pb-2">{t.ubah.groupReference}</h2>
+            <TraceValue label={t.labels.gregorian} value={formatGregorian(trace.gregorian)} t={t} />
+            <TraceValue label={t.labels.jdn} value={String(trace.jdn)} t={t} />
+          </section>
+        </div>
+
+        {/* The wheels lead on a phone: they carry the idea, and the rows are
+            the detail underneath it. On a wide screen both are in view. */}
+        <section className="order-1 md:order-2 md:sticky md:top-6">
           {hydrated ? <CycleWheels trace={trace} /> : <div className="aspect-square" />}
-          <p className="mt-4 text-sm text-ink/60">{t.ubah.wheelsCaption}</p>
+          <p className="mt-4 max-w-measure text-sm leading-relaxed text-ink/60">
+            {t.ubah.wheelsCaption}
+          </p>
         </section>
       </div>
 
@@ -131,12 +149,12 @@ function ReverseConversion({
   const result = jdnFromLunar(year, month, day, reckoning)
 
   return (
-    <section className="mt-14 border-t hairline pt-8">
+    <section className="panel mt-14 p-6 sm:p-7">
       <h2 className="font-prose text-section">{t.ubah.reverse}</h2>
-      <p className="mt-2 max-w-prose text-ink/75">{t.ubah.reverseIntro}</p>
+      <p className="mt-2 max-w-measure text-ink/75">{t.ubah.reverseIntro}</p>
 
-      <div className="mt-4 flex flex-wrap items-end gap-3">
-        <label className="flex flex-col gap-1">
+      <div className="mt-5 flex flex-wrap items-end gap-3">
+        <label className="flex flex-col gap-1.5">
           <span className="rule-label">{t.ubah.year}</span>
           <input
             type="number"
@@ -144,15 +162,15 @@ function ReverseConversion({
             max={MAX_YEAR_AJ}
             value={year}
             onChange={(e) => setYear(Number(e.target.value))}
-            className="w-28 border hairline bg-transparent px-3 py-1.5 font-mono tabular-nums"
+            className="field w-28"
           />
         </label>
-        <label className="flex flex-col gap-1">
+        <label className="flex flex-col gap-1.5">
           <span className="rule-label">{t.ubah.month}</span>
           <select
             value={month}
             onChange={(e) => setMonth(Number(e.target.value))}
-            className="border hairline bg-transparent px-3 py-1.5 font-ui"
+            className="field font-ui"
           >
             {SASI.map((name, i) => (
               <option key={name} value={i + 1}>
@@ -161,7 +179,7 @@ function ReverseConversion({
             ))}
           </select>
         </label>
-        <label className="flex flex-col gap-1">
+        <label className="flex flex-col gap-1.5">
           <span className="rule-label">{t.ubah.day}</span>
           <input
             type="number"
@@ -169,7 +187,7 @@ function ReverseConversion({
             max={30}
             value={day}
             onChange={(e) => setDay(Number(e.target.value))}
-            className="w-24 border hairline bg-transparent px-3 py-1.5 font-mono tabular-nums"
+            className="field w-24"
           />
         </label>
       </div>
