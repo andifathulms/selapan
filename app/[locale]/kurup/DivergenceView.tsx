@@ -42,19 +42,24 @@ export function DivergenceView({ t }: { t: Dictionary }) {
         showOptions={false}
       />
 
-      <p
+      {/* Whether the two reckonings part on this date is the one thing this
+          page exists to say, so it is stated at the size of a finding rather
+          than as a caption over the panels. */}
+      <div
         className={[
-          'mt-6 border-l-2 pl-4 font-ui text-sm',
-          diverges ? 'border-ochre text-ink' : 'hairline border-l text-ink/60',
+          'mt-6 border-l-[3px] py-3 pl-5',
+          diverges ? 'border-l-ochre bg-paper-deep/35' : 'border-l-ink/20',
         ].join(' ')}
       >
-        {diverges ? t.kurup.divergenceHere : t.kurup.agreeHere}
-        <span className="ml-2 font-mono text-ink/60">
+        <p className={diverges ? 'font-prose text-section' : 'text-ink/70'}>
+          {diverges ? t.kurup.divergenceHere : t.kurup.agreeHere}
+        </p>
+        <p className="mt-1 font-mono text-sm text-ink/55">
           {formatGregorian(asapon.gregorian)} · {asapon.weton.name}
-        </span>
-      </p>
+        </p>
+      </div>
 
-      <div className="mt-6 grid gap-8 md:grid-cols-2">
+      <div className="mt-6 grid gap-6 md:grid-cols-2">
         <ReckoningPanel title="Asapon" subtitle="Alip Selasa Pon" trace={asapon} t={t} />
         <ReckoningPanel title="Aboge" subtitle="Alip Rebo Wage" trace={aboge} t={t} />
       </div>
@@ -79,7 +84,7 @@ function ReckoningPanel({
   t: Dictionary
 }) {
   return (
-    <section className="border hairline p-5">
+    <section className="panel p-5">
       <header className="flex items-baseline justify-between gap-3 border-b hairline pb-3">
         <h2 className="font-prose text-section">{title}</h2>
         <span className="font-ui text-xs uppercase tracking-widest text-ink/50">{subtitle}</span>
@@ -89,7 +94,7 @@ function ReckoningPanel({
         <>
           <p
             className={[
-              'mt-4 text-2xl',
+              'mt-4 text-figure',
               trace.lunar.value.derivation.status === 'unverified'
                 ? 'unverified-value'
                 : 'computed',

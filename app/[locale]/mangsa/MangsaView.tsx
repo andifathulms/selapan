@@ -23,7 +23,7 @@ export function MangsaView({ t }: { t: Dictionary }) {
         showOptions={false}
       />
 
-      <section className="mt-8 border hairline p-6">
+      <section className="panel mt-8 p-6">
         <span className="rule-label">{t.mangsa.current}</span>
         {result.type === 'ok' ? (
           <>
@@ -34,9 +34,10 @@ export function MangsaView({ t }: { t: Dictionary }) {
                 {result.value.dayWithin}/{result.value.entry.lengthDays}
               </span>
             </p>
-            <p className="mt-4 max-w-prose text-ink/80">
-              <span className="rule-label">{t.mangsa.marker}</span> {result.value.entry.marker}
-            </p>
+            <div className="mt-5 max-w-measure">
+              <span className="rule-label block">{t.mangsa.marker}</span>
+              <p className="mt-1 text-ink/80">{result.value.entry.marker}</p>
+            </div>
           </>
         ) : (
           <>

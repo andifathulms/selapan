@@ -38,7 +38,7 @@ export function SelapananView({ t }: { t: Dictionary }) {
         <span className="font-mono text-sm text-ink/55">{formatGregorian(trace.gregorian)}</span>
       </p>
 
-      <div className="mt-8 grid gap-10 md:grid-cols-2">
+      <div className="mt-8 grid gap-10 lg:grid-cols-2">
         <section>
           <h2 className="font-prose text-section">{t.selapanan.upcoming}</h2>
           <table className="almanac-table mt-3">
@@ -54,7 +54,7 @@ export function SelapananView({ t }: { t: Dictionary }) {
               {upcoming.map((date) => (
                 <tr key={date.ordinal}>
                   <td className="font-mono text-ink/50">{date.ordinal}</td>
-                  <td className="font-mono text-indigo">
+                  <td className="whitespace-nowrap font-mono text-indigo">
                     {formatGregorian(jdnToGregorian(date.jdn))}
                   </td>
                   <td className="font-ui">{traceFor(date.jdn).weton.name}</td>
@@ -85,7 +85,12 @@ export function SelapananView({ t }: { t: Dictionary }) {
                       {entry.rule}
                     </span>
                   </td>
-                  <td className={entry.result.type === 'ok' ? 'font-mono text-indigo' : 'font-mono text-unverified'}>
+                  <td
+                    className={[
+                      'whitespace-nowrap font-mono',
+                      entry.result.type === 'ok' ? 'text-indigo' : 'text-unverified',
+                    ].join(' ')}
+                  >
                     {entry.result.type === 'ok'
                       ? formatGregorian(jdnToGregorian(entry.result.value))
                       : t.common.refused}

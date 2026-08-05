@@ -30,9 +30,12 @@ const sometype = Sometype_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Selapan — kalender Jawa',
+  // What a reader sees in a search result or a shared link is often the only
+  // description they get, so it says what the thing does before it says what
+  // is interesting about how it does it.
+  title: 'Selapan — kalender Jawa dan weton',
   description:
-    'Kalender Jawa dan mesin weton: empat siklus, aritmetika yang diperlihatkan, kurup yang benar sepanjang sejarah.',
+    'Cari weton, tanggal Jawa, wuku, dan mangsa untuk tanggal mana pun — lengkap dengan hitungannya, sumbernya, dan perbedaan Aboge dan Asapon.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
