@@ -4,6 +4,7 @@
   "gregorian": "-4712-04-18",
   "jdn": 146,
   "correspondence": "JDN 146 adalah hari pertama wuku Sinta, hari ke-0 dari siklus pawukon 210 hari. Indeks hari dalam siklus adalah (JDN - 146) mod 210; nomor wuku adalah hasil bagi indeks itu dengan 7.",
+  "anchorValue": "Sinta",
   "source": {
     "title": "Calendrical Calculations",
     "author": "Edward M. Reingold dan Nachum Dershowitz",

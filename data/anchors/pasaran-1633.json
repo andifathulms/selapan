@@ -4,6 +4,7 @@
   "gregorian": "1633-07-08",
   "jdn": 2317690,
   "correspondence": "JDN 2317690 adalah Legi, pasaran pertama. Karena 2317690 mod 5 = 0, indeks pasaran untuk sembarang hari adalah JDN mod 5, urutan Legi, Pahing, Pon, Wage, Kliwon.",
+  "anchorValue": "Legi",
   "source": {
     "title": "Mystic Synthesis in Java",
     "author": "M. C. Ricklefs",

@@ -46,6 +46,15 @@ export const anchorSchema = z
     gregorian: z.string().regex(ISO_DAY),
     jdn: z.number().int(),
     correspondence: z.string().min(1),
+    /**
+     * The name of the cycle position falling on `jdn` — "Legi", "Jemuwah",
+     * "Sinta". This is what fixes the phase. Without it the engine would be
+     * silently assuming that the anchor day happens to be the first name in
+     * the list, which for the dina anchor is false: 8 July 1633 is Jemuwah,
+     * the fifth. Required for the three modulo cycles; the lunar anchor is a
+     * running count and has no cycle position.
+     */
+    anchorValue: z.string().min(1).optional(),
     source: sourceSchema,
     status: verificationStatus,
     crossCheck: z.string().min(1).optional(),
@@ -53,6 +62,10 @@ export const anchorSchema = z
     notes: z.string().min(1).optional(),
   })
   .strict()
+  .refine((a) => a.subsystem === 'lunar' || typeof a.anchorValue === 'string', {
+    message: 'a cycle anchor must name the cycle position that falls on it',
+    path: ['anchorValue'],
+  })
   .refine((a) => a.status !== 'verified' || typeof a.crossCheck === 'string', {
     message: 'a verified anchor must name the independent check that verified it',
     path: ['crossCheck'],

@@ -4,6 +4,7 @@
   "gregorian": "1633-07-08",
   "jdn": 2317690,
   "correspondence": "JDN 2317690 adalah Jemuwah (Jumat). Karena 2317690 mod 7 = 4, indeks dina adalah JDN mod 7 dengan urutan Senen, Selasa, Rebo, Kemis, Jemuwah, Setu, Ahad.",
+  "anchorValue": "Jemuwah",
   "source": {
     "title": "Explanatory Supplement to the Astronomical Almanac",
     "author": "P. Kenneth Seidelmann (ed.)",

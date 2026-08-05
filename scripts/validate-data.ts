@@ -22,6 +22,13 @@ import {
   primbonEntrySchema,
 } from '../lib/data/schema'
 import { gregorianToJdn, parseGregorian } from '../lib/jdn'
+import { DINA, PASARAN, WUKU } from '../lib/cycles/names'
+
+const CYCLE_NAMES: Partial<Record<string, ReadonlyArray<string>>> = {
+  pasaran: PASARAN,
+  dina: DINA,
+  wuku: WUKU,
+}
 
 const DATA = join(process.cwd(), 'data')
 
@@ -86,6 +93,16 @@ for (const { file, value } of anchors) {
       `jdn tidak cocok dengan gregorian: tercatat ${anchor.jdn}, seharusnya ${computed}`,
     )
   }
+  // The anchor's stated cycle position fixes the phase of the whole cycle.
+  // A typo here would shift every value the engine produces, silently.
+  const vocabulary = CYCLE_NAMES[anchor.subsystem]
+  if (vocabulary && anchor.anchorValue && !vocabulary.includes(anchor.anchorValue)) {
+    fail(
+      file,
+      `anchorValue "${anchor.anchorValue}" bukan salah satu nama ${anchor.subsystem}`,
+    )
+  }
+
   if (anchor.status === 'unverified') {
     notes.push(`${anchor.id} — belum terverifikasi silang: ${anchor.notes ?? 'tanpa keterangan'}`)
   }
