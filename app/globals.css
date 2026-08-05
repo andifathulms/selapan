@@ -21,8 +21,27 @@
   body {
     font-family: theme('fontFamily.prose');
     font-size: 17px;
-    line-height: 1.6;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
+    /* Print-like texture: two very faint washes, no image, no request. */
+    background-image:
+      radial-gradient(
+        ellipse 80rem 40rem at 50% -10rem,
+        color-mix(in srgb, theme('colors.paper-raised') 70%, transparent),
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 60rem 40rem at 100% 100%,
+        color-mix(in srgb, theme('colors.paper-deep') 45%, transparent),
+        transparent 65%
+      );
+    background-attachment: fixed;
+  }
+
+  @media (min-width: 640px) {
+    body {
+      font-size: 18px;
+    }
   }
 
   /* Tables are the content, so tabular figures throughout. */
@@ -105,6 +124,85 @@
     letter-spacing: 0.09em;
     text-transform: uppercase;
     color: color-mix(in srgb, theme('colors.ink') 60%, transparent);
+  }
+
+  /*
+   * A panel is a card of stock laid on the page: one hairline, one shade
+   * lighter, no shadow. Depth on an almanac page comes from rules and
+   * impression, not from things floating.
+   */
+  .panel {
+    background-color: color-mix(in srgb, theme('colors.paper-raised') 62%, transparent);
+    border: 1px solid color-mix(in srgb, theme('colors.ink') 18%, transparent);
+  }
+
+  .panel-inset {
+    background-color: color-mix(in srgb, theme('colors.paper-deep') 45%, transparent);
+    border: 1px solid color-mix(in srgb, theme('colors.ink') 12%, transparent);
+  }
+
+  /* Controls. Karla, hairline box, indigo on contact — the same indigo the
+     computed values wear, because pressing these is what computes them. */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    font-family: theme('fontFamily.ui');
+    font-size: 0.875rem;
+    line-height: 1;
+    padding: 0.6rem 0.85rem;
+    border: 1px solid color-mix(in srgb, theme('colors.ink') 22%, transparent);
+    background-color: color-mix(in srgb, theme('colors.paper-raised') 55%, transparent);
+    transition:
+      color 140ms ease,
+      border-color 140ms ease,
+      background-color 140ms ease;
+    /* Comfortable on a thumb without looking oversized on a desktop table. */
+    min-height: 2.5rem;
+  }
+
+  .btn:hover {
+    border-color: theme('colors.indigo');
+    color: theme('colors.indigo');
+  }
+
+  .btn-solid {
+    border-color: theme('colors.indigo');
+    background-color: theme('colors.indigo');
+    color: theme('colors.paper');
+  }
+
+  .btn-solid:hover {
+    background-color: theme('colors.indigo-deep');
+    border-color: theme('colors.indigo-deep');
+    color: theme('colors.paper');
+  }
+
+  .field {
+    font-family: theme('fontFamily.mono');
+    font-variant-numeric: tabular-nums;
+    padding: 0.55rem 0.7rem;
+    min-height: 2.5rem;
+    background-color: color-mix(in srgb, theme('colors.paper-raised') 55%, transparent);
+    border: 1px solid color-mix(in srgb, theme('colors.ink') 22%, transparent);
+  }
+
+  .field:hover {
+    border-color: color-mix(in srgb, theme('colors.ink') 38%, transparent);
+  }
+
+  .lede {
+    font-size: 1.125rem;
+    line-height: 1.55;
+    color: color-mix(in srgb, theme('colors.ink') 82%, transparent);
+  }
+
+  /* A term glossed where it first appears, so a reader who has never met the
+     word is not left behind by the sentence carrying it. */
+  .term {
+    font-style: italic;
+    border-bottom: 1px dotted color-mix(in srgb, theme('colors.ink') 40%, transparent);
   }
 }
 
