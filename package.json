@@ -5,7 +5,7 @@
   "description": "Kalender Jawa dan mesin weton — empat siklus, aritmetika yang terlihat, kurup yang benar.",
   "scripts": {
     "dev": "next dev",
-    "build": "pnpm data:validate && next build",
+    "build": "pnpm data:validate && next build && touch out/.nojekyll",
     "preview": "npx serve out -l 3000",
     "test": "vitest",
     "test:run": "vitest run",
