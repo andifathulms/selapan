@@ -8,15 +8,11 @@ import type { Locale } from './locales'
  * ever phrased as a statement about the reader — this release computes
  * dates and does not interpret them (PRD §4).
  */
+/** The six destinations. Named once, so nav labels and blurbs cannot drift. */
+export type NavKey = 'ubah' | 'kalender' | 'kurup' | 'mangsa' | 'selapanan' | 'sumber'
+
 export type Dictionary = {
-  readonly nav: {
-    readonly ubah: string
-    readonly kalender: string
-    readonly kurup: string
-    readonly mangsa: string
-    readonly selapanan: string
-    readonly sumber: string
-  }
+  readonly nav: Record<NavKey, string>
   readonly site: {
     readonly title: string
     readonly tagline: string
@@ -74,10 +70,26 @@ export type Dictionary = {
   }
   readonly home: {
     readonly lede: string
+    readonly todayLabel: string
+    readonly todayHint: string
+    readonly openTrace: string
+    readonly whatTitle: string
+    readonly whatBody: ReadonlyArray<string>
+    readonly cyclesTitle: string
+    readonly cyclesIntro: string
+    readonly cycleHead: {
+      readonly cycle: string
+      readonly length: string
+      readonly elements: string
+    }
+    readonly browseTitle: string
+    readonly whatItDoesTitle: string
     readonly whatItDoes: ReadonlyArray<string>
+    readonly separationTitle: string
     readonly separation: string
     readonly start: string
   }
+  readonly navBlurb: Record<NavKey, string>
   readonly ubah: {
     readonly title: string
     readonly intro: string
@@ -197,16 +209,40 @@ const id: Dictionary = {
     mangsa: 'Mangsa',
   },
   home: {
-    lede: 'Weton tampak seperti tabel yang tinggal dilihat. Sebenarnya ia empat siklus yang berjalan bersamaan, ditambah sistem koreksi sejarah di atasnya.',
+    lede: 'Masukkan sebuah tanggal — hari lahir, hari ini, tanggal mana pun — dan lihat weton, tanggal Jawa, wuku, serta mangsa-nya, lengkap dengan cara menghitungnya.',
+    todayLabel: 'Hari ini',
+    todayHint: 'Dihitung di peramban Anda, dari tanggal di perangkat ini.',
+    openTrace: 'Buka hitungan hari ini',
+    whatTitle: 'Apa itu weton?',
+    whatBody: [
+      'Weton adalah pasangan dua hari: nama hari dalam pekan tujuh hari (Ahad sampai Setu) dan nama hari pasaran dalam pekan lima hari (Legi, Pahing, Pon, Wage, Kliwon). Digabungkan, hasilnya seperti “Jemuwah Kliwon”.',
+      'Karena lima dan tujuh baru bertemu kembali setelah 35 hari, pasangan yang sama berulang tiap 35 hari sekali. Putaran 35 hari itulah yang disebut selapan — dan dari situ nama aplikasi ini diambil.',
+      'Di atas keduanya masih berjalan dua siklus lain: wuku yang berulang tiap 210 hari, dan tahun Jawa lunar yang dimulai Sultan Agung pada 1633 M. Empat siklus, berjalan bersamaan, masing-masing dengan panjangnya sendiri.',
+    ],
+    cyclesTitle: 'Empat siklus yang berjalan bersamaan',
+    cyclesIntro:
+      'Setiap tanggal berada di posisi tertentu pada keempatnya sekaligus. Itulah sebabnya perhitungan Jawa tidak bisa disederhanakan menjadi satu tabel.',
+    cycleHead: { cycle: 'Siklus', length: 'Panjang', elements: 'Isinya' },
+    browseTitle: 'Yang bisa dibuka di sini',
+    whatItDoesTitle: 'Bedanya dengan situs weton lain',
     whatItDoes: [
       'Menghitung pasaran, dina, weton, neptu, dan wuku untuk tanggal mana pun, tanpa batas ke belakang maupun ke depan.',
       'Menghitung tanggal Jawa lunar sejak 1633 M, lengkap dengan windu, tahun, dan kurup yang berlaku — dan menolak menghitung sebelum tahun itu, bukan menebak.',
       'Menyandingkan Aboge dan Asapon di tempat keduanya berselisih, beserta sebab mekanismenya.',
       'Memperlihatkan derivasi setiap angka: titik acuan, selisih hari, modulus, hasil, dan kutipan sumbernya.',
     ],
+    separationTitle: 'Yang dihitung dan yang diwariskan',
     separation:
       'Yang dihitung dan yang ditafsirkan dipisah tegas, di kode maupun di warna. Nila untuk nilai terhitung; merah rubrik disediakan untuk bahan primbon dan tidak dipakai untuk hal lain. Lapisan tafsir belum dirilis: ia menunggu peninjau yang paham praktik pananggalan Jawa.',
-    start: 'Mulai dari sebuah tanggal',
+    start: 'Hitung sebuah tanggal',
+  },
+  navBlurb: {
+    ubah: 'Satu tanggal, perhitungan Jawa selengkapnya: weton, neptu, wuku, tanggal lunar, dan asal-usul tiap angkanya.',
+    kalender: 'Sebulan penuh dalam susunan kalender dinding — tanggal Masehi besar, pasaran dan tanggal Jawa di bawahnya.',
+    selapanan: 'Tanggal selapanan berikutnya dari sebuah weton, dan hitungan hari slametan. Tanggal saja, tanpa tafsir.',
+    mangsa: 'Kalender musim untuk pertanian: dua belas mangsa dengan pertandanya. Surya, jadi lepas dari semua siklus lain.',
+    kurup: 'Mengapa hitungan Aboge dan Asapon bisa berbeda sehari, dan bagaimana selisih itu muncul.',
+    sumber: 'Setiap titik acuan dan tabel yang dipakai, sumbernya, dan daftar terbuka apa yang belum terverifikasi.',
   },
   ubah: {
     title: 'Ubah tanggal',
@@ -339,16 +375,40 @@ const en: Dictionary = {
     mangsa: 'Mangsa',
   },
   home: {
-    lede: 'Weton looks like a lookup. It is four cycles running simultaneously, with a historical correction system layered on top.',
+    lede: 'Give it a date — a birthday, today, any date at all — and see its weton, Javanese date, wuku, and mangsa, along with the arithmetic that produced them.',
+    todayLabel: 'Today',
+    todayHint: 'Computed in your browser, from the date on this device.',
+    openTrace: 'Open the working for today',
+    whatTitle: 'What is a weton?',
+    whatBody: [
+      'A weton is a pair of day names: the day of the seven-day week (Ahad through Setu) and the day of the five-day pasaran week (Legi, Pahing, Pon, Wage, Kliwon). Together they give something like “Jemuwah Kliwon”.',
+      'Because five and seven only meet again after 35 days, the same pair recurs every 35 days. That 35-day turn is the selapan — and it is where this site gets its name.',
+      'Two further cycles run above those: the wuku, which repeats every 210 days, and the Javanese lunar year that Sultan Agung began in 1633 CE. Four cycles, running at once, each with its own length.',
+    ],
+    cyclesTitle: 'Four cycles, running at once',
+    cyclesIntro:
+      'Every date sits at a position on all four simultaneously. That is why the Javanese reckoning cannot be collapsed into a single table.',
+    cycleHead: { cycle: 'Cycle', length: 'Length', elements: 'Elements' },
+    browseTitle: 'What you can open here',
+    whatItDoesTitle: 'How this differs from other weton sites',
     whatItDoes: [
       'Computes pasaran, dina, weton, neptu, and wuku for any date, unbounded in both directions.',
       'Computes the Javanese lunar date from 1633 CE, with its windu, year, and the kurup that applies — and refuses to compute before that, rather than guessing.',
       'Puts Aboge and Asapon side by side where they diverge, with the mechanism that separates them.',
       'Shows the derivation of every figure: anchor, day offset, modulus, result, and the citation behind it.',
     ],
+    separationTitle: 'What is computed, and what is inherited',
     separation:
       'Computation and interpretation are kept apart, in the code and in the palette. Indigo is for computed values; rubric red is reserved for primbon material and used for nothing else. The interpretive layer is not released: it is waiting on a reviewer familiar with Javanese calendrical practice.',
-    start: 'Start from a date',
+    start: 'Convert a date',
+  },
+  navBlurb: {
+    ubah: 'One date, the full Javanese reckoning: weton, neptu, wuku, lunar date, and where every figure came from.',
+    kalender: 'A whole month in the wall-calendar layout — the Gregorian day large, pasaran and Javanese date beneath.',
+    selapanan: 'The coming selapanan dates from a weton, and slametan reckoning. Dates only, with nothing read into them.',
+    mangsa: 'The agricultural season calendar: twelve mangsa with their markers. Solar, so independent of everything else.',
+    kurup: 'Why the Aboge and Asapon reckonings can differ by a day, and how that difference arises.',
+    sumber: 'Every anchor and table the app uses, its source, and an open list of what is still unverified.',
   },
   ubah: {
     title: 'Convert a date',
