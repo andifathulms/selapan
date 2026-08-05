@@ -150,4 +150,23 @@ The site states plainly that it is a personal project, not an authority, that tr
 
 ## Current state
 
-M0 — not yet scaffolded. Next: static export deploying to Pages, JDN conversion with test vectors, and the anchor schema plus validator. **No cycle work before the anchors are cited and validated.**
+M0–M5 built. M6 not started and gated on a reviewer.
+
+- **M0** Static export, JDN conversion with test vectors, anchor schema and build-time validator.
+- **M1** Pasaran, dina, weton, neptu, wuku from cited anchors. Period invariants over 36,524 consecutive days.
+- **M2** Windu, month lengths, kurup lookup by date, Aboge/Asapon, per-subsystem ranges and structured refusals.
+- **M3** Cycle wheels, conversion with expandable trace, month grid. Bilingual (`id`, `en`).
+- **M4** Aboge/Asapon side by side with derivations, kurup table, sources page.
+- **M5** Pranata mangsa, selapanan dates, slametan reckoning.
+
+~126 tests. `pnpm data:validate`, `pnpm typecheck`, `pnpm lint`, `pnpm test:run`, and `pnpm build` all pass.
+
+**Known gaps, all surfaced in the UI and on `/sumber/` rather than hidden:**
+
+1. `anchor.wuku.pawukon` rests on a single source and is unverified. A phase error of one wuku would not be caught by any period invariant — only an independent source can catch it. Wuku values render grey until then. **This is the highest-value next task:** cross-check against published Balinese pawukon data.
+2. `kurup.anenhing.1987` is a projection past the last documented transition, not a record.
+3. The Dal year's irregular month lengths are not implemented. Year boundaries are unaffected; days within a Dal year may be off. Dal years are marked unverified.
+4. Kurup Ajumgi's 72-year span is inferred from what makes the later transitions land, not transcribed from a source.
+5. Sources are cited as calendrical tradition, not yet as a transcribed page of a printed almanac.
+
+**Before M6:** the reviewer named in PRD §4 must be recruited and credited with consent. The primbon schema and validator checks already exist and already run — citation required, attribution must begin "Menurut", second-person phrasing and ranking rejected at build time — so the layer cannot be added carelessly. It should still not be added without the reviewer.
