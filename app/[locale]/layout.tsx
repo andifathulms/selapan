@@ -4,6 +4,7 @@ import { LOCALES, LOCALE_LABEL, getDictionary, isLocale, type Locale } from '@/l
 import { navItems } from '@/lib/nav'
 import { SiteNav } from '@/components/chrome/SiteNav'
 import { PaletteLegend } from '@/components/chrome/PaletteLegend'
+import { MakerSignature } from '@/components/chrome/MakerSignature'
 
 export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }))
@@ -69,16 +70,25 @@ export default function LocaleLayout({
             {t.site.disclaimer}
           </p>
 
-          <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 font-ui text-sm">
-            <Link href={`/${locale}/sumber/`} className="text-indigo underline underline-offset-4">
-              {t.nav.sumber}
-            </Link>
-            <a
-              href="https://github.com/andifathulms/selapan"
-              className="text-ink/60 underline underline-offset-4 hover:text-indigo"
-            >
-              {t.site.sourceCode}
-            </a>
+          {/* The project's own attribution and the maker's mark share this
+              bar but stay apart: the first is what the site owes its sources,
+              the second is a personal credit, and merging them would read as
+              one claim. No rule between them — the footer has its one seam
+              above the disclaimer. */}
+          <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between sm:gap-10">
+            <div className="flex flex-wrap gap-x-6 gap-y-2 font-ui text-sm">
+              <Link href={`/${locale}/sumber/`} className="text-indigo underline underline-offset-4">
+                {t.nav.sumber}
+              </Link>
+              <a
+                href="https://github.com/andifathulms/selapan"
+                className="text-ink/60 underline underline-offset-4 hover:text-indigo"
+              >
+                {t.site.sourceCode}
+              </a>
+            </div>
+
+            <MakerSignature />
           </div>
         </div>
       </footer>
