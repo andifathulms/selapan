@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * The material world is a printed primbon: letterpress on aged paper, dense
+ * tables, hairline rules, and rubrication — red ink beside black (PRD §9).
+ *
+ * The two-colour tradition carries the ethical distinction, so the colour
+ * rules below are load-bearing, not decorative. Indigo marks computed values.
+ * Rubric red is reserved for primbon material and appears nowhere else in
+ * this release, because that layer has not shipped.
+ */
+
+@layer base {
+  html {
+    background-color: theme('colors.paper');
+    color: theme('colors.ink');
+  }
+
+  body {
+    font-family: theme('fontFamily.prose');
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Tables are the content, so tabular figures throughout. */
+  table,
+  .numeric {
+    font-variant-numeric: tabular-nums;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-weight: 600;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  button,
+  input,
+  select,
+  label {
+    font-family: theme('fontFamily.ui');
+  }
+
+  ::selection {
+    background-color: theme('colors.ochre');
+    color: theme('colors.paper');
+  }
+
+  :focus-visible {
+    outline: 2px solid theme('colors.indigo');
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* A computed, verifiable value. Never used for traditional material. */
+  .computed {
+    color: theme('colors.indigo');
+    font-family: theme('fontFamily.mono');
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Out of range, or resting on an anchor not yet cross-checked. */
+  .unverified-value {
+    color: theme('colors.unverified');
+    font-family: theme('fontFamily.mono');
+  }
+
+  .hairline {
+    border-color: color-mix(in srgb, theme('colors.ink') 22%, transparent);
+  }
+
+  .almanac-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .almanac-table th {
+    text-align: left;
+    font-family: theme('fontFamily.ui');
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, theme('colors.ink') 62%, transparent);
+    font-weight: 600;
+    padding: 0.4rem 0.6rem 0.4rem 0;
+    border-bottom: 1px solid color-mix(in srgb, theme('colors.ink') 40%, transparent);
+  }
+
+  .almanac-table td {
+    padding: 0.42rem 0.6rem 0.42rem 0;
+    border-bottom: 1px solid color-mix(in srgb, theme('colors.ink') 14%, transparent);
+    vertical-align: top;
+  }
+
+  .rule-label {
+    font-family: theme('fontFamily.ui');
+    font-size: 0.7rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, theme('colors.ink') 60%, transparent);
+  }
+}
+
+/*
+ * One orchestrated moment: stepping a day turns all three cycle rings by one
+ * position. Nothing else on the site moves (PRD §9).
+ */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

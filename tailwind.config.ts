@@ -16,9 +16,9 @@ const config: Config = {
         unverified: '#8C8578',
       },
       fontFamily: {
-        prose: ['Petrona', 'Georgia', 'serif'],
-        mono: ['"Sometype Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
-        ui: ['Karla', 'system-ui', 'sans-serif'],
+        prose: ['var(--font-prose)', 'Petrona', 'Georgia', 'serif'],
+        mono: ['var(--font-mono)', '"Sometype Mono"', 'ui-monospace', 'monospace'],
+        ui: ['var(--font-ui)', 'Karla', 'system-ui', 'sans-serif'],
       },
       fontVariantNumeric: {
         tabular: 'tabular-nums',
