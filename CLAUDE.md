@@ -127,6 +127,9 @@ tests/
 - Anchor ids stable and readable: `anchor.pasaran.1633`, `anchor.wuku.pawukon`, `kurup.asapon.1936`. They appear in traces and citations.
 - Comments cite the source for any rule they implement — the anchor, the kurup transition, the month-length pattern.
 - Tailwind utilities inline; semantic tokens in `tailwind.config.ts` — `paper`, `ink`, `indigo`, `rubric`, `ochre`, `unverified`. Never raw hex in components.
+- Headings use the shared steps `text-display`, `text-title`, `text-section`, and `text-figure` (the single value a reader came for). They scale with the viewport; do not reach for a raw `text-2xl`.
+- Surfaces and controls come from the component layer in `globals.css` — `.panel`, `.panel-inset`, `.btn`, `.btn-solid`, `.field`, `.lede`. New controls use `.btn`/`.field` so touch targets stay consistent; `paper-raised` and `paper-deep` are tints of the same stock, not new hues.
+- Page titles go through `components/chrome/PageHeader`, and destinations through `lib/nav.ts`, so the header and the home cards cannot drift.
 
 ## Testing rules
 
