@@ -52,4 +52,12 @@ export function kurupById(id: string): KurupDefinition | undefined {
   return KURUPS.find((k) => k.id === id)
 }
 
-export type { Anchor, KurupDefinition, MangsaTable, NeptuTable, Source } from './schema'
+export type {
+  Anchor,
+  KurupDefinition,
+  Mangsa,
+  MangsaTable,
+  NeptuTable,
+  PrimbonEntry,
+  Source,
+} from './schema'
