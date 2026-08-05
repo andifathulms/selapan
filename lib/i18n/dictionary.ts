@@ -20,11 +20,17 @@ export type Dictionary = {
   readonly site: {
     readonly title: string
     readonly tagline: string
+    readonly wordmarkNote: string
     readonly description: string
     readonly disclaimer: string
+    readonly sourceCode: string
     readonly computed: string
+    readonly computedNote: string
     readonly tradition: string
+    readonly traditionNote: string
     readonly unverified: string
+    readonly unverifiedNote: string
+    readonly legend: string
   }
   readonly common: {
     readonly date: string
@@ -49,6 +55,7 @@ export type Dictionary = {
     readonly notAvailable: string
     readonly copyLink: string
     readonly copied: string
+    readonly skipToContent: string
   }
   readonly labels: {
     readonly dina: string
@@ -135,13 +142,19 @@ const id: Dictionary = {
   site: {
     title: 'Selapan',
     tagline: 'Kalender Jawa, dengan hitungannya diperlihatkan.',
+    wordmarkNote: 'Kalender Jawa · weton',
     description:
       'Empat siklus yang berjalan bersamaan, aritmetika yang bisa diperiksa dengan tangan, kurup yang benar sepanjang sejarah, dan batas tegas antara yang dihitung dan yang diwariskan.',
     disclaimer:
       'Proyek pribadi, bukan otoritas. Tradisi pananggalan berbeda antar-daerah, dan aplikasi ini tidak dimaksudkan membantah perhitungan yang dipakai keluarga atau komunitas mana pun.',
+    sourceCode: 'Kode sumber',
     computed: 'Nilai terhitung',
+    computedNote: 'Aritmetika. Bisa dibuka dan diperiksa ulang dengan tangan.',
     tradition: 'Bahan tradisi',
+    traditionNote: 'Warna ini disediakan untuk primbon dan belum dipakai — lapisan itu belum dirilis.',
     unverified: 'Belum terverifikasi',
+    unverifiedNote: 'Bersandar pada satu sumber, atau di luar rentang yang berlaku.',
+    legend: 'Arti warna',
   },
   common: {
     date: 'Tanggal',
@@ -166,6 +179,7 @@ const id: Dictionary = {
     notAvailable: 'tidak tersedia',
     copyLink: 'Salin tautan',
     copied: 'Tersalin',
+    skipToContent: 'Langsung ke isi',
   },
   labels: {
     dina: 'Dina',
@@ -270,13 +284,19 @@ const en: Dictionary = {
   site: {
     title: 'Selapan',
     tagline: 'The Javanese calendar, with the arithmetic shown.',
+    wordmarkNote: 'Javanese calendar · weton',
     description:
       'Four cycles running at once, arithmetic you can redo by hand, the kurup handled correctly across history, and a hard line between what is computed and what is inherited.',
     disclaimer:
       'A personal project, not an authority. Calendrical practice varies by region, and this is not meant to contradict the reckoning any family or community uses.',
+    sourceCode: 'Source code',
     computed: 'Computed value',
+    computedNote: 'Arithmetic. Opens up, and can be redone by hand.',
     tradition: 'Traditional material',
+    traditionNote: 'Reserved for primbon and unused so far — that layer has not been released.',
     unverified: 'Unverified',
+    unverifiedNote: 'Resting on a single source, or outside the range that applies.',
+    legend: 'What the colours mean',
   },
   common: {
     date: 'Date',
@@ -301,6 +321,7 @@ const en: Dictionary = {
     notAvailable: 'not available',
     copyLink: 'Copy link',
     copied: 'Copied',
+    skipToContent: 'Skip to content',
   },
   labels: {
     dina: 'Dina',
