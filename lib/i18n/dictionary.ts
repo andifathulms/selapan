@@ -33,6 +33,8 @@ export type Dictionary = {
     readonly today: string
     readonly previousDay: string
     readonly nextDay: string
+    readonly previousMonth: string
+    readonly nextMonth: string
     readonly showWorking: string
     readonly hideWorking: string
     readonly anchor: string
@@ -52,6 +54,7 @@ export type Dictionary = {
     readonly copyLink: string
     readonly copied: string
     readonly skipToContent: string
+    readonly options: string
   }
   readonly labels: {
     readonly dina: string
@@ -176,6 +179,8 @@ const id: Dictionary = {
     today: 'Hari ini',
     previousDay: 'Sehari sebelumnya',
     nextDay: 'Sehari sesudahnya',
+    previousMonth: 'Bulan sebelumnya',
+    nextMonth: 'Bulan sesudahnya',
     showWorking: 'Lihat hitungannya',
     hideWorking: 'Tutup hitungan',
     anchor: 'Titik acuan',
@@ -195,6 +200,7 @@ const id: Dictionary = {
     copyLink: 'Salin tautan',
     copied: 'Tersalin',
     skipToContent: 'Langsung ke isi',
+    options: 'Pilihan',
   },
   labels: {
     dina: 'Dina',
@@ -345,6 +351,8 @@ const en: Dictionary = {
     today: 'Today',
     previousDay: 'Previous day',
     nextDay: 'Next day',
+    previousMonth: 'Previous month',
+    nextMonth: 'Next month',
     showWorking: 'Show the working',
     hideWorking: 'Hide the working',
     anchor: 'Anchor',
@@ -364,6 +372,7 @@ const en: Dictionary = {
     copyLink: 'Copy link',
     copied: 'Copied',
     skipToContent: 'Skip to content',
+    options: 'Options',
   },
   labels: {
     dina: 'Dina',

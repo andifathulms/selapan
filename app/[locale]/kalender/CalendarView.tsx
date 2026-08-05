@@ -49,22 +49,26 @@ export function CalendarView({ t }: { t: Dictionary }) {
         onDayBoundary={setDayBoundary}
       />
 
-      <div className="mt-8 flex flex-wrap items-baseline justify-between gap-4">
-        <h2 className="font-prose text-2xl">
+      <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
+        <h2 className="font-prose text-section">
           {MONTHS_ID[month - 1]} <span className="font-mono tabular-nums">{year}</span>
         </h2>
-        <div className="flex gap-1">
+        <div className="flex gap-1.5">
           <button
             type="button"
             onClick={() => stepMonth(-1)}
-            className="border hairline px-3 py-1 font-mono text-sm hover:border-indigo hover:text-indigo"
+            aria-label={t.common.previousMonth}
+            title={t.common.previousMonth}
+            className="btn w-11 font-mono"
           >
             ←
           </button>
           <button
             type="button"
             onClick={() => stepMonth(1)}
-            className="border hairline px-3 py-1 font-mono text-sm hover:border-indigo hover:text-indigo"
+            aria-label={t.common.nextMonth}
+            title={t.common.nextMonth}
+            className="btn w-11 font-mono"
           >
             →
           </button>
@@ -83,7 +87,7 @@ export function CalendarView({ t }: { t: Dictionary }) {
 
       <p className="mt-4 text-sm text-ink/60">{t.kalender.legend}</p>
 
-      <dl className="mt-6 grid max-w-md grid-cols-[auto_1fr] gap-x-6 gap-y-1 border-t hairline pt-4 text-sm">
+      <dl className="panel mt-6 grid max-w-md grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 p-5 text-sm">
         <dt className="rule-label pt-[0.2em]">{t.labels.weton}</dt>
         <dd className="computed">{trace.weton.name}</dd>
         <dt className="rule-label pt-[0.2em]">{t.labels.lunar}</dt>

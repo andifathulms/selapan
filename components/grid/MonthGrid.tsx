@@ -46,9 +46,12 @@ export function MonthGrid({
             <th
               key={index}
               scope="col"
-              className="border-b hairline pb-2 text-left font-ui text-[0.68rem] uppercase tracking-widest text-ink/55"
+              className="border-b hairline pb-2 pl-1.5 text-left font-ui text-[0.62rem] uppercase tracking-wide text-ink/55 sm:text-[0.68rem] sm:tracking-widest"
             >
-              {DINA[index]}
+              {/* Seven full dina names do not fit across a 360px screen, and
+                  they collide rather than truncate. Abbreviated there. */}
+              <span className="sm:hidden">{DINA[index].slice(0, 3)}</span>
+              <span className="hidden sm:inline">{DINA[index]}</span>
             </th>
           ))}
         </tr>
@@ -70,10 +73,14 @@ export function MonthGrid({
                   <button
                     type="button"
                     onClick={onSelect ? () => onSelect(day) : undefined}
+                    aria-current={isToday ? 'date' : undefined}
                     className={[
-                      'h-full w-full px-1 pb-3 pt-2 text-left transition-colors',
-                      onSelect ? 'hover:bg-paper-deep' : 'cursor-default',
-                      isToday ? 'bg-paper-deep' : '',
+                      // Tall enough to be a comfortable target on a phone, and
+                      // tall enough that four small lines under the numeral do
+                      // not crowd it.
+                      'block h-full min-h-[4.75rem] w-full border-l-2 px-1.5 pb-3 pt-2 text-left transition-colors sm:min-h-[5.5rem]',
+                      onSelect ? 'hover:bg-paper-raised/80' : 'cursor-default',
+                      isToday ? 'border-l-indigo bg-paper-deep/70' : 'border-l-transparent',
                     ].join(' ')}
                   >
                     <span
@@ -93,7 +100,7 @@ export function MonthGrid({
                         : '—'}
                     </span>
                     {wukuStarts ? (
-                      <span className="mt-0.5 block font-ui text-[0.6rem] uppercase leading-tight tracking-wide text-unverified">
+                      <span className="mt-0.5 block truncate font-ui text-[0.6rem] uppercase leading-tight tracking-wide text-unverified">
                         {trace.wuku.name}
                       </span>
                     ) : null}

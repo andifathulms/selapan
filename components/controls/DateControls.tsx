@@ -1,10 +1,20 @@
 'use client'
 
+import { useState } from 'react'
 import { formatGregorian, parseGregorian, type GregorianDate } from '@/lib/jdn'
 import type { DayBoundary, KurupReckoning, TraceOptions } from '@/lib/trace'
 import { SUNSET_HOUR } from '@/lib/trace'
 import type { Dictionary } from '@/lib/i18n'
 
+/**
+ * The one control every page shares: which date is being reckoned.
+ *
+ * It sits in a panel rather than between two rules so that it reads as the
+ * instrument and the page below it as the reading. The options — reckoning
+ * and day boundary — are behind a disclosure, because they are real choices
+ * that most readers should never have to make, and a row of four controls at
+ * the top of every page taxes everyone for the sake of a few.
+ */
 export function DateControls({
   date,
   options,
@@ -28,10 +38,18 @@ export function DateControls({
   onHour?: (value: number) => void
   showOptions?: boolean
 }) {
+  const canConfigure = showOptions && onReckoning !== undefined && onDayBoundary !== undefined
+  // Non-default options are surfaced rather than hidden: a reader who follows
+  // a shared link reckoned by Aboge must see that this is what they are
+  // looking at.
+  const [optionsOpen, setOptionsOpen] = useState(
+    options.reckoning !== 'chronological' || options.dayBoundary !== 'midnight',
+  )
+
   return (
-    <div className="border-y hairline py-4">
-      <div className="flex flex-wrap items-end gap-3">
-        <label className="flex flex-col gap-1">
+    <div className="panel p-4 sm:p-5">
+      <div className="flex flex-wrap items-end gap-x-3 gap-y-4">
+        <label className="flex flex-col gap-1.5">
           <span className="rule-label">{t.common.date}</span>
           <input
             type="date"
@@ -40,30 +58,54 @@ export function DateControls({
               const parsed = parseGregorian(e.target.value)
               if (parsed) onDate(parsed)
             }}
-            className="border hairline bg-transparent px-3 py-1.5 font-mono text-base tabular-nums"
+            className="field text-base"
           />
         </label>
 
-        <div className="flex gap-1">
-          <StepButton label={t.common.previousDay} onClick={() => onStep(-1)}>
+        <div className="flex gap-1.5">
+          <button
+            type="button"
+            onClick={() => onStep(-1)}
+            aria-label={t.common.previousDay}
+            title={t.common.previousDay}
+            className="btn w-11 font-mono"
+          >
             −1
-          </StepButton>
-          <StepButton label={t.common.nextDay} onClick={() => onStep(1)}>
+          </button>
+          <button
+            type="button"
+            onClick={() => onStep(1)}
+            aria-label={t.common.nextDay}
+            title={t.common.nextDay}
+            className="btn w-11 font-mono"
+          >
             +1
-          </StepButton>
+          </button>
+          <button type="button" onClick={onToday} className="btn">
+            {t.common.today}
+          </button>
         </div>
 
-        <button
-          type="button"
-          onClick={onToday}
-          className="border hairline px-3 py-1.5 font-ui text-sm hover:border-indigo hover:text-indigo"
-        >
-          {t.common.today}
-        </button>
+        <div className="ml-auto flex flex-wrap gap-1.5">
+          <CopyLinkButton t={t} />
+          {canConfigure ? (
+            <button
+              type="button"
+              onClick={() => setOptionsOpen((o) => !o)}
+              aria-expanded={optionsOpen}
+              className="btn"
+            >
+              <span aria-hidden className={optionsOpen ? 'rotate-90 transition-transform' : 'transition-transform'}>
+                ›
+              </span>
+              {t.common.options}
+            </button>
+          ) : null}
+        </div>
       </div>
 
-      {showOptions && onReckoning && onDayBoundary ? (
-        <div className="mt-4 flex flex-wrap items-end gap-6">
+      {canConfigure && optionsOpen ? (
+        <div className="mt-5 flex flex-wrap items-end gap-x-8 gap-y-4 border-t hairline pt-4">
           <Choice
             label={t.common.reckoning}
             value={options.reckoning}
@@ -83,7 +125,7 @@ export function DateControls({
             onChange={(v) => onDayBoundary(v as DayBoundary)}
           />
           {options.dayBoundary === 'sunset' && onHour ? (
-            <label className="flex flex-col gap-1">
+            <label className="flex flex-col gap-1.5">
               <span className="rule-label">{t.common.hour}</span>
               <input
                 type="number"
@@ -91,7 +133,7 @@ export function DateControls({
                 max={23}
                 value={options.hour ?? 0}
                 onChange={(e) => onHour(Number(e.target.value))}
-                className="w-20 border hairline bg-transparent px-3 py-1.5 font-mono tabular-nums"
+                className="field w-20"
               />
             </label>
           ) : null}
@@ -101,24 +143,26 @@ export function DateControls({
   )
 }
 
-function StepButton({
-  children,
-  label,
-  onClick,
-}: {
-  children: React.ReactNode
-  label: string
-  onClick: () => void
-}) {
+/**
+ * There are no accounts and no server, so the URL hash is how a reckoning
+ * travels between people (PRD §5). That only helps if the reader can tell
+ * the link carries their state — hence a button rather than a note about it.
+ */
+function CopyLinkButton({ t }: { t: Dictionary }) {
+  const [copied, setCopied] = useState(false)
+
   return (
     <button
       type="button"
-      onClick={onClick}
-      aria-label={label}
-      title={label}
-      className="border hairline px-3 py-1.5 font-mono text-sm hover:border-indigo hover:text-indigo"
+      onClick={() => {
+        void navigator.clipboard?.writeText(window.location.href).then(() => {
+          setCopied(true)
+          window.setTimeout(() => setCopied(false), 2000)
+        })
+      }}
+      className="btn"
     >
-      {children}
+      {copied ? t.common.copied : t.common.copyLink}
     </button>
   )
 }
@@ -135,7 +179,7 @@ function Choice({
   onChange: (value: string) => void
 }) {
   return (
-    <fieldset className="flex flex-col gap-1">
+    <fieldset className="flex flex-col gap-1.5">
       <legend className="rule-label">{label}</legend>
       <div className="flex">
         {options.map((option) => (
@@ -144,12 +188,9 @@ function Choice({
             type="button"
             onClick={() => onChange(option.value)}
             aria-pressed={value === option.value}
-            className={[
-              'border px-3 py-1.5 font-ui text-sm -ml-px first:ml-0',
-              value === option.value
-                ? 'border-indigo bg-indigo text-paper'
-                : 'hairline hover:border-indigo hover:text-indigo',
-            ].join(' ')}
+            className={['btn -ml-px first:ml-0', value === option.value ? 'btn-solid' : ''].join(
+              ' ',
+            )}
           >
             {option.label}
           </button>

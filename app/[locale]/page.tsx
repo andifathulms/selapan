@@ -32,19 +32,29 @@ export default function HomePage({ params }: { params: { locale: string } }) {
 
   return (
     <div className="space-y-16 sm:space-y-20">
-      <section className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:items-start lg:gap-12">
-        <div>
+      {/*
+        On a narrow screen the card comes second — straight after the lede
+        that promised it — rather than after two more paragraphs of prose.
+        On a wide one it sits alongside, where it is visible from the start.
+      */}
+      <section className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,25rem)] lg:items-start lg:gap-12">
+        <div className="lg:col-start-1 lg:row-start-1">
           <h1 className="font-prose text-display">{t.site.tagline}</h1>
           <p className="lede mt-5 max-w-measure">{t.home.lede}</p>
-          <p className="mt-4 max-w-measure text-ink/70">{t.site.description}</p>
-          <p className="mt-7">
+        </div>
+
+        <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
+          <TodayCard t={t} locale={locale} />
+        </div>
+
+        <div className="lg:col-start-1 lg:row-start-2">
+          <p className="max-w-measure text-ink/70">{t.site.description}</p>
+          <p className="mt-6">
             <Link href={`/${locale}/ubah/`} className="btn btn-solid px-6 text-base">
               {t.home.start} →
             </Link>
           </p>
         </div>
-
-        <TodayCard t={t} locale={locale} />
       </section>
 
       <section>
