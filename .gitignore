@@ -5,3 +5,7 @@ out/
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+
+# Brand working files. Only what the site ships is committed, under
+# app/ (icon, apple-icon, opengraph-image) and public/icons/.
+exports/

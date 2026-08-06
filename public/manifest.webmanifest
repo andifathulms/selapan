@@ -1,0 +1,16 @@
+{
+  "name": "Selapan — kalender Jawa dan weton",
+  "short_name": "Selapan",
+  "description": "Cari weton, tanggal Jawa, wuku, dan mangsa untuk tanggal mana pun — lengkap dengan hitungannya dan sumbernya.",
+  "lang": "id",
+  "start_url": "/selapan/id/ubah/",
+  "scope": "/selapan/",
+  "display": "standalone",
+  "background_color": "#F1EBDC",
+  "theme_color": "#2B2620",
+  "icons": [
+    { "src": "/selapan/icons/selapan-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/selapan/icons/selapan-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/selapan/icons/selapan-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

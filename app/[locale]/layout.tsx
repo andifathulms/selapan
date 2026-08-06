@@ -5,6 +5,7 @@ import { navItems } from '@/lib/nav'
 import { SiteNav } from '@/components/chrome/SiteNav'
 import { PaletteLegend } from '@/components/chrome/PaletteLegend'
 import { MakerSignature } from '@/components/chrome/MakerSignature'
+import { SelapanMark } from '@/components/chrome/SelapanMark'
 
 export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }))
@@ -34,12 +35,17 @@ export default function LocaleLayout({
       <header className="border-b hairline bg-paper/85 backdrop-blur-sm">
         <div className="mx-auto max-w-5xl px-6">
           <div className="flex items-center gap-4 pt-5">
-            <Link href={`/${locale}/`} className="group">
-              <span className="block font-prose text-xl font-semibold leading-none tracking-tight group-hover:text-indigo">
-                Selapan
-              </span>
-              <span className="mt-1 hidden font-ui text-[0.7rem] uppercase tracking-[0.16em] text-ink/45 sm:block">
-                {t.site.wordmarkNote}
+            <Link href={`/${locale}/`} className="group flex items-center gap-2.5">
+              {/* Sized to the wordmark block beside it — the two lines of it
+                  on a wide screen, the single line on a narrow one. */}
+              <SelapanMark size={34} />
+              <span>
+                <span className="block font-prose text-xl font-semibold leading-none tracking-tight group-hover:text-indigo">
+                  Selapan
+                </span>
+                <span className="mt-1 hidden font-ui text-[0.7rem] uppercase tracking-[0.16em] text-ink/45 sm:block">
+                  {t.site.wordmarkNote}
+                </span>
               </span>
             </Link>
             <Link
