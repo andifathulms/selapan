@@ -85,8 +85,16 @@ export function dinaOf(jdn: Jdn): CycleValue {
  * The wuku — one of thirty named weeks in the 210-day pawukon cycle.
  *
  * The wuku changes only on Ahad, which follows from the epoch rather than
- * being imposed on it: JDN 146 is itself an Ahad. See the anchor's notes on
- * why this value is marked unverified.
+ * being imposed on it: JDN 146 is itself an Ahad.
+ *
+ * The phase is cross-checked against published Balinese pawukon data — see
+ * the anchor's `crossCheck` and `tests/cycles/pawukon-crosscheck.test.ts`.
+ * That check is the only thing that could have caught a phase error here: the
+ * 210-day period holds exactly whether or not the cycle is rotated by a wuku.
+ *
+ * Names are the Javanese ones. Balinese tradition names the same thirty weeks
+ * differently — Uye against Wuye, Merakih against Marakeh — so the cross-check
+ * asserts positions rather than spellings.
  */
 export function wukuOf(jdn: Jdn): CycleValue {
   const anchor = ANCHORS.wuku

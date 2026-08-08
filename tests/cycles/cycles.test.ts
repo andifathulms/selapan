@@ -13,6 +13,7 @@ import {
   wetonOf,
   wukuOf,
 } from '@/lib/cycles'
+import { ANCHORS } from '@/lib/data'
 
 /**
  * Cycle invariants over long ranges.
@@ -196,10 +197,16 @@ describe('derivations', () => {
     expect(derivation.source.locator).toBeTruthy()
   })
 
-  it('propagates the unverified status of the pawukon epoch', () => {
-    // The wuku anchor is deliberately unverified; the UI renders it grey on
-    // the strength of this flag, so it must survive into the derivation.
-    expect(wukuOf(CENTURY_START).derivation.status).toBe('unverified')
-    expect(pasaranOf(CENTURY_START).derivation.status).toBe('verified')
+  it('propagates each anchor’s verification status into its derivation', () => {
+    // The UI renders a value grey on the strength of this flag, so it must
+    // survive from the anchor data into the derivation rather than being
+    // decided in a component. Asserted against the anchors themselves: the
+    // guarantee is that the two agree, not that any particular anchor holds a
+    // particular status. `anchor.wuku.pawukon` was unverified until it was
+    // cross-checked against Balinese pawukon data, and hardcoding that here
+    // meant this test failed for the good reason rather than a real one.
+    expect(wukuOf(CENTURY_START).derivation.status).toBe(ANCHORS.wuku.status)
+    expect(pasaranOf(CENTURY_START).derivation.status).toBe(ANCHORS.pasaran.status)
+    expect(dinaOf(CENTURY_START).derivation.status).toBe(ANCHORS.dina.status)
   })
 })

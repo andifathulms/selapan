@@ -10,9 +10,10 @@
     "author": "Edward M. Reingold dan Nachum Dershowitz",
     "year": 2018,
     "publisher": "Cambridge University Press",
-    "locator": "bab kalender Bali Pawukon: epoch pawukon ditetapkan pada JD 146, dan posisi dalam siklus 210 hari dihitung sebagai selisih modulo dari epoch itu"
+    "locator": "bab 12, The Balinese Pawukon Calendar, hlm. 185–194: epoch pawukon ditetapkan pada JD 146, dan posisi dalam siklus 210 hari dihitung sebagai selisih modulo dari epoch itu"
   },
-  "status": "unverified",
-  "verifiedOn": "2026-08-06",
-  "notes": "Ditandai belum terverifikasi dengan sengaja. Konsistensi internalnya baik — JDN 146 mod 7 = 6, yaitu Ahad, sesuai aturan bahwa setiap wuku selalu mulai hari Ahad (Redite), dan aturan itu berlaku untuk seluruh 30 wuku sebagai konsekuensinya. Namun epoch ini berasal dari satu sumber saja dan belum diadu dengan data kalender Bali cetak maupun kalender Jawa cetak sebagaimana disyaratkan aturan pengujian proyek. Sampai itu dilakukan, nilai wuku dirender abu-abu dan diberi keterangan. Fase yang meleset satu wuku tidak akan tertangkap oleh uji invarian periode mana pun — hanya sumber independen yang bisa menangkapnya."
+  "status": "verified",
+  "crossCheck": "Babad Bali (Yayasan Bali Galang), pewarigaan Januari 2010, https://www.babadbali.com/pewarigaan/kalebali.php — tabel bulanan itu mencantumkan enam wuku sebaris demi sebaris dengan enam pekannya, dan seluruh 31 hari cocok: 1–2 Uye, 3–9 Menail, 10–16 Prangbakat, 17–23 Bala, 24–30 Ugu, 31 Wayang. Diperkuat dua kalender Bali lain untuk 8 Agustus 2026, https://kalenderbali.org/ dan https://kalenderbali.info/, keduanya menyebut Saniscara Paing Marakeh. Jarak enam belas tahun antara kedua pemeriksaan itulah yang membuatnya bernilai: fase yang meleset satu wuku harus ditanggung bersama oleh ketiganya untuk lolos dari keduanya. Diuji di tests/cycles/pawukon-crosscheck.test.ts.",
+  "verifiedOn": "2026-08-08",
+  "notes": "Fase siklus ini sekarang sudah diadu dengan sumber Bali yang tidak diturunkan dari Reingold & Dershowitz, sehingga kesepakatan keduanya berupa bukti, bukan pengulangan. Konsistensi internalnya juga baik — JDN 146 mod 7 = 6, yaitu Ahad, sesuai aturan bahwa setiap wuku selalu mulai hari Ahad (Redite), dan sebagai konsekuensinya aturan itu berlaku untuk seluruh 30 wuku. Dua catatan yang tetap perlu diketahui pembaca. Pertama, nama berbeda sedangkan posisi tidak: tradisi Bali dan Jawa memberi nama berlainan untuk pekan yang sama — Uye/Wuye, Menail/Manahil, Merakih/Marakeh, Ugu/Wugu — sehingga pengujian menegaskan indeks, bukan ejaan, dan mesin ini tetap memakai nama Jawa. Kedua, ketiga sumber pembanding adalah kalender terbitan web, bukan kalender cetak; memeriksa satu kalender Bali atau Jawa cetak masih akan menambah bobot, terutama untuk tanggal sebelum tahun 2000."
 }
