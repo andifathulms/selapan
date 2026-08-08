@@ -100,7 +100,14 @@ export function MonthGrid({
                         : '—'}
                     </span>
                     {wukuStarts ? (
-                      <span className="mt-0.5 block truncate font-ui text-[0.6rem] uppercase leading-tight tracking-wide text-unverified">
+                      <span
+                        className={[
+                          'mt-0.5 block truncate font-ui text-[0.6rem] uppercase leading-tight tracking-wide',
+                          trace.wuku.derivation.status === 'unverified'
+                            ? 'text-unverified'
+                            : 'text-indigo/70',
+                        ].join(' ')}
+                      >
                         {trace.wuku.name}
                       </span>
                     ) : null}

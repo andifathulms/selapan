@@ -97,7 +97,9 @@ export function CalendarView({ t }: { t: Dictionary }) {
             : t.common.refused}
         </dd>
         <dt className="rule-label pt-[0.2em]">{t.labels.wuku}</dt>
-        <dd className="unverified-value">{trace.wuku.name}</dd>
+        <dd className={trace.wuku.derivation.status === 'unverified' ? 'unverified-value' : 'computed'}>
+          {trace.wuku.name}
+        </dd>
         <dt className="rule-label pt-[0.2em]">{t.labels.jdn}</dt>
         <dd className="computed">{gregorianToJdn(state.date)}</dd>
       </dl>
