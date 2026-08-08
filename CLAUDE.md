@@ -162,14 +162,16 @@ M0–M5 built. M6 not started and gated on a reviewer.
 - **M4** Aboge/Asapon side by side with derivations, kurup table, sources page.
 - **M5** Pranata mangsa, selapanan dates, slametan reckoning.
 
-~126 tests. `pnpm data:validate`, `pnpm typecheck`, `pnpm lint`, `pnpm test:run`, and `pnpm build` all pass.
+~143 tests. `pnpm data:validate`, `pnpm typecheck`, `pnpm lint`, `pnpm test:run`, and `pnpm build` all pass.
+
+**`anchor.wuku.pawukon` is now cross-checked and `verified`.** It was the project's largest open risk: the anchor came from Dershowitz & Reingold alone, and a phase error of one wuku is invisible to every period invariant. It is now asserted against Babad Bali's published pewarigaan for January 2010 — all 31 days, read row-for-row off the printed grid — and against two Balinese calendars for 8 August 2026, sixteen years apart. See `tests/cycles/pawukon-crosscheck.test.ts`. Note that Balinese and Javanese tradition name the same thirty weeks differently (Uye/Wuye, Merakih/Marakeh); the cross-check asserts positions, and the engine keeps the Javanese names.
 
 **Known gaps, all surfaced in the UI and on `/sumber/` rather than hidden:**
 
-1. `anchor.wuku.pawukon` rests on a single source and is unverified. A phase error of one wuku would not be caught by any period invariant — only an independent source can catch it. Wuku values render grey until then. **This is the highest-value next task:** cross-check against published Balinese pawukon data.
-2. `kurup.anenhing.1987` is a projection past the last documented transition, not a record.
-3. The Dal year's irregular month lengths are not implemented. Year boundaries are unaffected; days within a Dal year may be off. Dal years are marked unverified.
-4. Kurup Ajumgi's 72-year span is inferred from what makes the later transitions land, not transcribed from a source.
-5. Sources are cited as calendrical tradition, not yet as a transcribed page of a printed almanac.
+1. `kurup.anenhing.1987` is a projection past the last documented transition, not a record.
+2. The Dal year's irregular month lengths are not implemented. Year boundaries are unaffected; days within a Dal year may be off. Dal years are marked unverified.
+3. Kurup Ajumgi's 72-year span is inferred from what makes the later transitions land, not transcribed from a source.
+4. Sources are cited as calendrical tradition, not yet as a transcribed page of a printed almanac. The identified remedy is *Kitab Primbon Betaljemur Adammakna* (Tjakraningrat, Soemodidjojo Mahadewa), whose 260-page scan is on Wikimedia Commons and whose 337 numbered *bab* give a stable locator — see `data/primbon/TRANSCRIPTION.md`.
+5. The wuku cross-check rests on web-published Balinese calendars rather than a printed one. A printed Balinese or Javanese calendar would still add weight, particularly for dates before 2000.
 
 **Before M6:** the reviewer named in PRD §4 must be recruited and credited with consent. The primbon schema and validator checks already exist and already run — citation required, attribution must begin "Menurut", second-person phrasing and ranking rejected at build time — so the layer cannot be added carelessly. It should still not be added without the reviewer.
