@@ -134,6 +134,7 @@ export function CycleWheels({ trace }: { trace: CalendarTrace }) {
             labelled={false}
             emphasiseCurrent
             muted={lunarUnverified}
+            markStart
           />
         ) : null}
 
@@ -204,6 +205,7 @@ function EqualRing({
   labelled,
   emphasiseCurrent = false,
   muted = false,
+  markStart = false,
 }: {
   radius: number
   names: ReadonlyArray<string>
@@ -212,6 +214,13 @@ function EqualRing({
   labelled: boolean
   emphasiseCurrent?: boolean
   muted?: boolean
+  /** Mark segment 0 (month start) with a small dot outside the ring, fixed
+      in the ring's own rotating frame rather than at the current position.
+      Today always sits under the ray by construction, so it cannot show a
+      divergence on its own — where two reckonings' month starts land
+      relative to the same fixed ray is what does (DESIGN-REWORK §3.3, the
+      two lunar rings on /kurup/). */
+  markStart?: boolean
 }) {
   const step = 360 / names.length
   const colour = muted ? 'text-unverified' : 'text-indigo'
@@ -230,6 +239,10 @@ function EqualRing({
             d={segmentBand(radius - 6, radius + 6, currentIndex * step, (currentIndex + 1) * step)}
             className={muted ? 'fill-unverified/30' : 'fill-indigo/15'}
           />
+        ) : null}
+
+        {markStart ? (
+          <circle cx={0} cy={-(radius + 6)} r={2.2} className={muted ? 'fill-unverified' : 'fill-indigo'} />
         ) : null}
 
         {names.map((name, i) => {

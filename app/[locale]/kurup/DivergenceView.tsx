@@ -6,6 +6,7 @@ import type { Dictionary } from '@/lib/i18n'
 import { DateControls } from '@/components/controls/DateControls'
 import { useDateState } from '@/components/controls/useDateState'
 import { DerivationDetail } from '@/components/trace/Derivation'
+import { CycleWheels } from '@/components/wheels/CycleWheels'
 
 /**
  * Aboge and Asapon side by side (PRD §6.3).
@@ -16,7 +17,7 @@ import { DerivationDetail } from '@/components/trace/Derivation'
  * (CLAUDE.md invariant 6).
  */
 export function DivergenceView({ t }: { t: Dictionary }) {
-  const { state, jdn, setDate, stepDays, goToday } = useDateState()
+  const { state, hydrated, jdn, setDate, stepDays, goToday } = useDateState()
 
   const asapon = traceFor(jdn, { ...state.options, reckoning: 'chronological' })
   const aboge = traceFor(jdn, { ...state.options, reckoning: 'aboge' })
@@ -44,25 +45,21 @@ export function DivergenceView({ t }: { t: Dictionary }) {
       />
 
       {/* Whether the two reckonings part on this date is the one thing this
-          page exists to say, so it is stated at the size of a finding rather
-          than as a caption over the panels. */}
-      <div
-        className={[
-          'mt-6 border-l-[3px] py-3 pl-5',
-          diverges ? 'border-l-ochre bg-paper-deep/35' : 'border-l-ink/20',
-        ].join(' ')}
-      >
-        <p className={diverges ? 'font-prose text-section' : 'text-ink/70'}>
-          {diverges ? t.kurup.divergenceHere : t.kurup.agreeHere}
-        </p>
-        <p className="mt-1 font-mono text-sm text-ink/55">
+          page exists to say — but it is shown, not coloured: the two wheels
+          below share every ring except the lunar one, and where the two
+          diverge that ring's month-start mark visibly parts between them
+          (DESIGN-REWORK §3.3). This line states it in words for a reader
+          using a screen reader, or skimming past the wheels. */}
+      <p className="mt-6 text-ink/70">
+        {diverges ? t.kurup.divergenceHere : t.kurup.agreeHere}
+        <span className="ml-3 font-mono text-sm text-ink/55">
           {formatGregorian(asapon.gregorian)} · {asapon.weton.name}
-        </p>
-      </div>
+        </span>
+      </p>
 
       <div className="mt-6 grid gap-6 md:grid-cols-2">
-        <ReckoningPanel title="Asapon" subtitle="Alip Selasa Pon" trace={asapon} t={t} />
-        <ReckoningPanel title="Aboge" subtitle="Alip Rebo Wage" trace={aboge} t={t} />
+        <ReckoningPanel title="Asapon" subtitle="Alip Selasa Pon" trace={asapon} t={t} hydrated={hydrated} />
+        <ReckoningPanel title="Aboge" subtitle="Alip Rebo Wage" trace={aboge} t={t} hydrated={hydrated} />
       </div>
 
       <section className="mt-10 border-t hairline pt-6">
@@ -78,11 +75,13 @@ function ReckoningPanel({
   subtitle,
   trace,
   t,
+  hydrated,
 }: {
   title: string
   subtitle: string
   trace: CalendarTrace
   t: Dictionary
+  hydrated: boolean
 }) {
   return (
     <section className="panel p-5">
@@ -90,6 +89,15 @@ function ReckoningPanel({
         <h2 className="font-prose text-section">{title}</h2>
         <span className="font-ui text-xs uppercase tracking-widest text-ink/50">{subtitle}</span>
       </header>
+
+      {/* Pasaran, dina, wuku and mangsa are identical between the two
+          panels — reckoning only changes the lunar ring. The dot just
+          outside that ring marks where its month starts; comparing the
+          two wheels' dots against the same fixed ray is the divergence,
+          not a caption about it. */}
+      <div className="mt-4">
+        {hydrated ? <CycleWheels trace={trace} /> : <div className="mx-auto aspect-square w-full max-w-[420px]" />}
+      </div>
 
       {trace.lunar.type === 'ok' ? (
         <>
