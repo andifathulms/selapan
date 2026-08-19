@@ -1,39 +1,34 @@
-'use client'
-
-import { formatGregorian, jdnToGregorian } from '@/lib/jdn'
-import { traceFor } from '@/lib/trace'
+import { formatGregorian, jdnToGregorian, type Jdn } from '@/lib/jdn'
+import { traceFor, type CalendarTrace, type KurupReckoning } from '@/lib/trace'
 import { selapananDates, slametanDates } from '@/lib/selapanan'
 import type { Dictionary } from '@/lib/i18n'
-import { DateControls } from '@/components/controls/DateControls'
-import { useDateState } from '@/components/controls/useDateState'
 
 /**
- * Selapanan from a weton, and slametan reckoning from a day of death.
+ * Selapanan from a weton, and slametan reckoning from a day of death — a
+ * sweep of /ubah/'s instrument along the 35-day cycle, not a page of its own
+ * (DESIGN-REWORK §4). The date and its trace come from the caller.
  *
  * Presented plainly. The slametan table serves people during bereavement, so
  * it shows the date, the rule that produced it, and nothing else — no
  * category, no quality, no advice (CLAUDE.md invariant 13).
  */
-export function SelapananView({ t }: { t: Dictionary }) {
-  const { state, jdn, setDate, stepDays, goToday } = useDateState()
-  const trace = traceFor(jdn, state.options)
+export function SelapananView({
+  t,
+  jdn,
+  reckoning,
+  trace,
+}: {
+  t: Dictionary
+  jdn: Jdn
+  reckoning: KurupReckoning
+  trace: CalendarTrace
+}) {
   const upcoming = selapananDates(jdn, 12)
-  const slametan = slametanDates(jdn, state.options.reckoning)
+  const slametan = slametanDates(jdn, reckoning)
 
   return (
     <div>
-      <DateControls
-        date={state.date}
-        options={state.options}
-        t={t}
-        announce={`${trace.weton.name} · ${formatGregorian(trace.gregorian)}`}
-        onDate={setDate}
-        onStep={stepDays}
-        onToday={goToday}
-        showOptions={false}
-      />
-
-      <p className="mt-6 flex flex-wrap items-baseline gap-3">
+      <p className="flex flex-wrap items-baseline gap-3">
         <span className="rule-label">{t.selapanan.from}</span>
         <span className="computed text-2xl">{trace.weton.name}</span>
         <span className="font-mono text-sm text-ink/55">{formatGregorian(trace.gregorian)}</span>

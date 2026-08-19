@@ -11,13 +11,15 @@ export type NavItem = {
  * One list of destinations, used by the header and by the home page cards,
  * so the two can never drift apart. Order is the order a reader meets them:
  * a single date first, then the month around it, then the harder material.
+ *
+ * Selapanan and mangsa are not listed — they are sweeps of the /ubah/
+ * instrument, not separate destinations (DESIGN-REWORK §4). Their old paths
+ * still exist, as redirect stubs into /ubah/.
  */
 export function navItems(locale: Locale, t: Dictionary): ReadonlyArray<NavItem> {
   return [
     { key: 'ubah', href: `/${locale}/ubah/`, label: t.nav.ubah },
     { key: 'kalender', href: `/${locale}/kalender/`, label: t.nav.kalender },
-    { key: 'selapanan', href: `/${locale}/selapanan/`, label: t.nav.selapanan },
-    { key: 'mangsa', href: `/${locale}/mangsa/`, label: t.nav.mangsa },
     { key: 'kurup', href: `/${locale}/kurup/`, label: t.nav.kurup },
     { key: 'sumber', href: `/${locale}/sumber/`, label: t.nav.sumber },
   ]

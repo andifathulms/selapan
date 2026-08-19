@@ -1,59 +1,37 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getDictionary, isLocale, LOCALES, type Locale } from '@/lib/i18n'
-import { PageHeader } from '@/components/chrome/PageHeader'
-import { mangsaSource, mangsaTable, windowLabel } from '@/lib/mangsa'
-import { MangsaView } from './MangsaView'
+import { isLocale, LOCALES, type Locale } from '@/lib/i18n'
+import { RouteRedirect } from '@/components/chrome/RouteRedirect'
 
 export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }))
 }
 
+// Same source as app/layout.tsx and next.config.js (PRD §12).
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '/selapan'
+
+export function generateMetadata({ params }: { params: { locale: string } }): Metadata {
+  if (!isLocale(params.locale)) return {}
+  return {
+    robots: { index: false, follow: true },
+    alternates: { canonical: `${basePath}/${params.locale}/ubah/` },
+  }
+}
+
+/**
+ * Mangsa is a sweep of /ubah/, not a page of its own (DESIGN-REWORK §4).
+ * This route stays only to carry anyone who bookmarked or linked it to the
+ * new location, on the mangsa sweep, with the date they had preserved.
+ */
 export default function MangsaPage({ params }: { params: { locale: string } }) {
   if (!isLocale(params.locale)) notFound()
-  const t = getDictionary(params.locale as Locale)
-  const source = mangsaSource()
+  const locale = params.locale as Locale
+  const target = `/${locale}/ubah/`
 
   return (
-    <article>
-      <PageHeader title={t.mangsa.title} intro={t.mangsa.intro} />
-
-      <div className="mt-8">
-        <MangsaView t={t} />
-      </div>
-
-      <section className="mt-12 border-t hairline pt-8">
-        <div className="overflow-x-auto">
-          <table className="almanac-table min-w-[40rem]">
-            <thead>
-              <tr>
-                <th>Mangsa</th>
-                <th>№</th>
-                <th>Tanggal</th>
-                <th>Lama</th>
-                <th>Pertanda</th>
-              </tr>
-            </thead>
-            <tbody>
-              {mangsaTable().map((entry) => (
-                <tr key={entry.name}>
-                  <td className="font-prose">{entry.name}</td>
-                  <td className="font-mono text-ink/50">{entry.numeral}</td>
-                  <td className="font-mono text-indigo">{windowLabel(entry)}</td>
-                  <td className="font-mono">{entry.lengthDays}</td>
-                  <td className="text-ink/75">{entry.marker}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <p className="mt-4 max-w-prose text-sm text-ink/60">
-          <span className="rule-label">{t.common.source}</span>{' '}
-          <cite className="not-italic">{source.title}</cite>
-          {source.author ? ` — ${source.author}` : ''}
-          {source.year ? ` (${source.year})` : ''}. {source.locator}.
-        </p>
-      </section>
-    </article>
+    <>
+      <meta httpEquiv="refresh" content={`0; url=${basePath}${target}?sweep=mangsa`} />
+      <RouteRedirect to={target} sweep="mangsa" />
+    </>
   )
 }

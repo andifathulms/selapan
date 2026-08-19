@@ -1,24 +1,47 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { formatGregorian, jdnToGregorian } from '@/lib/jdn'
 import { SASI } from '@/lib/cycles'
 import { ERA_YEAR_AJ, MAX_YEAR_AJ, jdnFromLunar } from '@/lib/lunar'
+import { mangsaSource, mangsaTable, windowLabel } from '@/lib/mangsa'
 import { traceFor } from '@/lib/trace'
 import type { Dictionary } from '@/lib/i18n'
 import { CycleWheels } from '@/components/wheels/CycleWheels'
 import { DateControls } from '@/components/controls/DateControls'
 import { useDateState } from '@/components/controls/useDateState'
 import { RefusalNotice, TraceValue } from '@/components/trace/TraceValue'
+import { MangsaView } from '@/app/[locale]/mangsa/MangsaView'
+import { SelapananView } from '@/app/[locale]/selapanan/SelapananView'
+
+type Sweep = 'date' | 'selapanan' | 'mangsa'
+
+function isSweep(value: string | null): value is Sweep {
+  return value === 'date' || value === 'selapanan' || value === 'mangsa'
+}
 
 /**
  * Gregorian in, the full Javanese reckoning out, every value expandable
  * (PRD §6.2). Nothing is computed in this component — it renders a trace the
  * engine produced (CLAUDE.md invariant 16).
+ *
+ * One instrument, swept along three axes (DESIGN-REWORK §4): fix the date
+ * (every cycle now), sweep the 35-day cycle forward (selapanan), sweep the
+ * solar year (mangsa). The wheel stays in view throughout — only the detail
+ * beside it changes — because it is the one thing all three sweeps share.
  */
 export function ConversionView({ t }: { t: Dictionary }) {
   const { state, hydrated, jdn, setDate, stepDays, goToday, setReckoning, setDayBoundary, setHour } =
     useDateState()
+  const [sweep, setSweep] = useState<Sweep>('date')
+
+  // /mangsa/ and /selapanan/ retired into sweeps of this page; their redirect
+  // stubs land here with ?sweep= so a bookmarked or shared link still opens
+  // on the right one.
+  useEffect(() => {
+    const fromQuery = new URLSearchParams(window.location.search).get('sweep')
+    if (isSweep(fromQuery)) setSweep(fromQuery)
+  }, [])
 
   const trace = traceFor(jdn, state.options)
 
@@ -50,76 +73,23 @@ export function ConversionView({ t }: { t: Dictionary }) {
         </p>
       </section>
 
+      <SweepTabs sweep={sweep} onChange={setSweep} t={t} />
+
       <div className="mt-8 grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,400px)] md:gap-12">
         <div className="order-2 space-y-8 md:order-1">
-          <section>
-            <h2 className="rule-label border-b hairline pb-2">{t.ubah.groupDay}</h2>
-            <TraceValue
-              label={t.labels.dina}
-              value={trace.dina.name}
-              derivation={trace.dina.derivation}
-              t={t}
-            />
-            <TraceValue
-              label={t.labels.pasaran}
-              value={trace.pasaran.name}
-              derivation={trace.pasaran.derivation}
-              t={t}
-            />
-            <TraceValue
-              label={t.labels.neptu}
-              value={`${trace.weton.neptu.dina} + ${trace.weton.neptu.pasaran} = ${trace.weton.neptu.total}`}
-              t={t}
-            />
-            <TraceValue
-              label={t.labels.wuku}
-              value={`${trace.wuku.name} · ${trace.dayInWuku}/7`}
-              derivation={trace.wuku.derivation}
-              t={t}
-            />
-          </section>
-
-          {/* The lunar year is a separate subsystem with its own validity
-              range, and grouping it separately is what makes a refusal here
-              read as one subsystem declining rather than the page failing. */}
-          <section>
-            <h2 className="rule-label border-b hairline pb-2">{t.ubah.groupYear}</h2>
-            {trace.lunar.type === 'ok' ? (
-              <>
-                <TraceValue
-                  label={t.labels.lunar}
-                  value={`${trace.lunar.value.day} ${trace.lunar.value.monthName} ${trace.lunar.value.yearAj}`}
-                  derivation={trace.lunar.value.derivation}
-                  t={t}
-                  emphasis
-                />
-                <TraceValue label={t.labels.windu} value={trace.lunar.value.windu} t={t} />
-                <TraceValue
-                  label={t.labels.kurup}
-                  value={`${trace.lunar.value.kurupName} · ${trace.lunar.value.kurupMnemonic}`}
-                  t={t}
-                />
-              </>
-            ) : (
-              <RefusalNotice
-                label={t.labels.lunar}
-                reason={trace.lunar.refusal.reason}
-                validFrom={trace.lunar.refusal.validFrom}
-                validTo={trace.lunar.refusal.validTo}
-                t={t}
-              />
-            )}
-          </section>
-
-          <section>
-            <h2 className="rule-label border-b hairline pb-2">{t.ubah.groupReference}</h2>
-            <TraceValue label={t.labels.gregorian} value={formatGregorian(trace.gregorian)} t={t} />
-            <TraceValue label={t.labels.jdn} value={String(trace.jdn)} t={t} />
-          </section>
+          {sweep === 'date' ? (
+            <DateSweep trace={trace} t={t} />
+          ) : sweep === 'selapanan' ? (
+            <SelapananView t={t} jdn={jdn} reckoning={state.options.reckoning} trace={trace} />
+          ) : (
+            <MangsaSweep date={state.date} trace={trace} t={t} />
+          )}
         </div>
 
         {/* The wheels lead on a phone: they carry the idea, and the rows are
-            the detail underneath it. On a wide screen both are in view. */}
+            the detail underneath it. On a wide screen both are in view. They
+            stay put across every sweep — it is the one instrument, read
+            three ways, not three instruments. */}
         <section className="order-1 md:order-2 md:sticky md:top-6">
           {hydrated ? <CycleWheels trace={trace} /> : <div className="aspect-square" />}
           <p className="mt-4 max-w-measure text-sm leading-relaxed text-ink/60">
@@ -128,7 +98,164 @@ export function ConversionView({ t }: { t: Dictionary }) {
         </section>
       </div>
 
-      <ReverseConversion t={t} reckoning={state.options.reckoning} onResult={setDate} />
+      {sweep === 'date' ? (
+        <ReverseConversion t={t} reckoning={state.options.reckoning} onResult={setDate} />
+      ) : null}
+    </div>
+  )
+}
+
+function SweepTabs({
+  sweep,
+  onChange,
+  t,
+}: {
+  sweep: Sweep
+  onChange: (sweep: Sweep) => void
+  t: Dictionary
+}) {
+  const options: ReadonlyArray<{ value: Sweep; label: string }> = [
+    { value: 'date', label: t.ubah.sweepDate },
+    { value: 'selapanan', label: t.ubah.sweepSelapanan },
+    { value: 'mangsa', label: t.ubah.sweepMangsa },
+  ]
+
+  return (
+    <div className="mt-8 flex">
+      {options.map((option) => (
+        <button
+          key={option.value}
+          type="button"
+          onClick={() => onChange(option.value)}
+          aria-pressed={sweep === option.value}
+          className={['btn -ml-px first:ml-0', sweep === option.value ? 'btn-solid' : ''].join(' ')}
+        >
+          {option.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+function DateSweep({ trace, t }: { trace: ReturnType<typeof traceFor>; t: Dictionary }) {
+  return (
+    <>
+      <section>
+        <h2 className="rule-label border-b hairline pb-2">{t.ubah.groupDay}</h2>
+        <TraceValue
+          label={t.labels.dina}
+          value={trace.dina.name}
+          derivation={trace.dina.derivation}
+          t={t}
+        />
+        <TraceValue
+          label={t.labels.pasaran}
+          value={trace.pasaran.name}
+          derivation={trace.pasaran.derivation}
+          t={t}
+        />
+        <TraceValue
+          label={t.labels.neptu}
+          value={`${trace.weton.neptu.dina} + ${trace.weton.neptu.pasaran} = ${trace.weton.neptu.total}`}
+          t={t}
+        />
+        <TraceValue
+          label={t.labels.wuku}
+          value={`${trace.wuku.name} · ${trace.dayInWuku}/7`}
+          derivation={trace.wuku.derivation}
+          t={t}
+        />
+      </section>
+
+      {/* The lunar year is a separate subsystem with its own validity
+          range, and grouping it separately is what makes a refusal here
+          read as one subsystem declining rather than the page failing. */}
+      <section>
+        <h2 className="rule-label border-b hairline pb-2">{t.ubah.groupYear}</h2>
+        {trace.lunar.type === 'ok' ? (
+          <>
+            <TraceValue
+              label={t.labels.lunar}
+              value={`${trace.lunar.value.day} ${trace.lunar.value.monthName} ${trace.lunar.value.yearAj}`}
+              derivation={trace.lunar.value.derivation}
+              t={t}
+              emphasis
+            />
+            <TraceValue label={t.labels.windu} value={trace.lunar.value.windu} t={t} />
+            <TraceValue
+              label={t.labels.kurup}
+              value={`${trace.lunar.value.kurupName} · ${trace.lunar.value.kurupMnemonic}`}
+              t={t}
+            />
+          </>
+        ) : (
+          <RefusalNotice
+            label={t.labels.lunar}
+            reason={trace.lunar.refusal.reason}
+            validFrom={trace.lunar.refusal.validFrom}
+            validTo={trace.lunar.refusal.validTo}
+            t={t}
+          />
+        )}
+      </section>
+
+      <section>
+        <h2 className="rule-label border-b hairline pb-2">{t.ubah.groupReference}</h2>
+        <TraceValue label={t.labels.gregorian} value={formatGregorian(trace.gregorian)} t={t} />
+        <TraceValue label={t.labels.jdn} value={String(trace.jdn)} t={t} />
+      </section>
+    </>
+  )
+}
+
+/** The mangsa panel, plus the full year table that /mangsa/ carried on its
+    own page — folded in here rather than dropped, since a sweep through the
+    solar year is exactly where "the twelve mangsa around this one" belongs. */
+function MangsaSweep({
+  date,
+  trace,
+  t,
+}: {
+  date: ReturnType<typeof traceFor>['gregorian']
+  trace: ReturnType<typeof traceFor>
+  t: Dictionary
+}) {
+  const source = mangsaSource()
+
+  return (
+    <div>
+      <MangsaView t={t} date={date} trace={trace} />
+
+      <div className="mt-8 overflow-x-auto">
+        <table className="almanac-table min-w-[34rem]">
+          <thead>
+            <tr>
+              <th>Mangsa</th>
+              <th>№</th>
+              <th>Tanggal</th>
+              <th>Lama</th>
+              <th>Pertanda</th>
+            </tr>
+          </thead>
+          <tbody>
+            {mangsaTable().map((entry) => (
+              <tr key={entry.name}>
+                <td className="font-prose">{entry.name}</td>
+                <td className="font-mono text-ink/50">{entry.numeral}</td>
+                <td className="font-mono text-indigo">{windowLabel(entry)}</td>
+                <td className="font-mono">{entry.lengthDays}</td>
+                <td className="text-ink/75">{entry.marker}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p className="mt-4 max-w-prose text-sm text-ink/60">
+        <span className="rule-label">{t.common.source}</span> <cite className="not-italic">{source.title}</cite>
+        {source.author ? ` — ${source.author}` : ''}
+        {source.year ? ` (${source.year})` : ''}. {source.locator}.
+      </p>
     </div>
   )
 }
