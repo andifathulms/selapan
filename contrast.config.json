@@ -1,0 +1,179 @@
+{
+  "generatedBy": "scripts/validate-contrast.ts",
+  "standard": "WCAG 2.x, normal text",
+  "minContrast": 4.5,
+  "pairs": [
+    {
+      "foreground": "ink",
+      "foregroundHex": "#201C16",
+      "background": "paper",
+      "backgroundHex": "#EFE8D8",
+      "ratio": 13.88,
+      "minRequired": 4.5,
+      "passesAA": true,
+      "gate": true,
+      "usedIn": [
+        "app/globals.css — html base text colour"
+      ]
+    },
+    {
+      "foreground": "ink",
+      "foregroundHex": "#201C16",
+      "background": "paper-raised",
+      "backgroundHex": "#F5F1E6",
+      "ratio": 15.02,
+      "minRequired": 4.5,
+      "passesAA": true,
+      "gate": true,
+      "usedIn": [
+        "components/grid/MonthGrid.tsx — day cells on bg-paper-raised/80"
+      ]
+    },
+    {
+      "foreground": "ink",
+      "foregroundHex": "#201C16",
+      "background": "paper-deep",
+      "backgroundHex": "#E4DAC5",
+      "ratio": 12.21,
+      "minRequired": 4.5,
+      "passesAA": true,
+      "gate": true,
+      "usedIn": [
+        "components/grid/MonthGrid.tsx — today's cell on bg-paper-deep/70"
+      ]
+    },
+    {
+      "foreground": "indigo",
+      "foregroundHex": "#2B4470",
+      "background": "paper",
+      "backgroundHex": "#EFE8D8",
+      "ratio": 7.95,
+      "minRequired": 4.5,
+      "passesAA": true,
+      "gate": true,
+      "usedIn": [
+        "components/trace/TraceValue.tsx",
+        "components/home/TodayCard.tsx",
+        "app/[locale]/page.tsx"
+      ]
+    },
+    {
+      "foreground": "indigo",
+      "foregroundHex": "#2B4470",
+      "background": "paper-raised",
+      "backgroundHex": "#F5F1E6",
+      "ratio": 8.6,
+      "minRequired": 4.5,
+      "passesAA": true,
+      "gate": true,
+      "usedIn": [
+        ".panel — app/globals.css, carrying computed values throughout"
+      ]
+    },
+    {
+      "foreground": "indigo",
+      "foregroundHex": "#2B4470",
+      "background": "paper-deep",
+      "backgroundHex": "#E4DAC5",
+      "ratio": 6.99,
+      "minRequired": 4.5,
+      "passesAA": true,
+      "gate": true,
+      "usedIn": [
+        ".panel-inset — app/globals.css, carrying computed values throughout"
+      ]
+    },
+    {
+      "foreground": "unverified",
+      "foregroundHex": "#5E5950",
+      "background": "paper",
+      "backgroundHex": "#EFE8D8",
+      "ratio": 5.7,
+      "minRequired": 4.5,
+      "passesAA": true,
+      "gate": true,
+      "usedIn": [
+        "components/trace/TraceValue.tsx — RefusalNotice",
+        "components/trace/Derivation.tsx",
+        "app/[locale]/sumber/page.tsx"
+      ]
+    },
+    {
+      "foreground": "unverified",
+      "foregroundHex": "#5E5950",
+      "background": "paper-raised",
+      "backgroundHex": "#F5F1E6",
+      "ratio": 6.16,
+      "minRequired": 4.5,
+      "passesAA": true,
+      "gate": true,
+      "usedIn": [
+        "components/grid/MonthGrid.tsx — unverified wuku label on bg-paper-raised/80"
+      ]
+    },
+    {
+      "foreground": "unverified",
+      "foregroundHex": "#5E5950",
+      "background": "paper-deep",
+      "backgroundHex": "#E4DAC5",
+      "ratio": 5.01,
+      "minRequired": 4.5,
+      "passesAA": true,
+      "gate": true,
+      "usedIn": [
+        "app/[locale]/kurup/DivergenceView.tsx — divergence banner on bg-paper-deep/35"
+      ]
+    },
+    {
+      "foreground": "ochre",
+      "foregroundHex": "#B08A3E",
+      "background": "paper",
+      "backgroundHex": "#EFE8D8",
+      "ratio": 2.63,
+      "minRequired": 4.5,
+      "passesAA": false,
+      "gate": false,
+      "usedIn": [
+        "components/wheels/CycleWheels.tsx — tick marks and coincidence-ray stroke (graphical, not text)"
+      ]
+    },
+    {
+      "foreground": "paper",
+      "foregroundHex": "#EFE8D8",
+      "background": "indigo",
+      "backgroundHex": "#2B4470",
+      "ratio": 7.95,
+      "minRequired": 4.5,
+      "passesAA": true,
+      "gate": true,
+      "usedIn": [
+        "app/[locale]/layout.tsx — header wordmark on bg-indigo",
+        ".btn-solid — app/globals.css"
+      ]
+    },
+    {
+      "foreground": "paper",
+      "foregroundHex": "#EFE8D8",
+      "background": "indigo-deep",
+      "backgroundHex": "#1E3157",
+      "ratio": 10.54,
+      "minRequired": 4.5,
+      "passesAA": true,
+      "gate": true,
+      "usedIn": [
+        ".btn-solid:hover — app/globals.css"
+      ]
+    },
+    {
+      "foreground": "rubric",
+      "foregroundHex": "#A83C28",
+      "background": "paper",
+      "backgroundHex": "#EFE8D8",
+      "ratio": 5.15,
+      "minRequired": 4.5,
+      "passesAA": true,
+      "gate": false,
+      "usedIn": []
+    }
+  ]
+}
