@@ -28,6 +28,7 @@ export function ConversionView({ t }: { t: Dictionary }) {
         date={state.date}
         options={state.options}
         t={t}
+        announce={`${trace.weton.name} · ${formatGregorian(trace.gregorian)}`}
         onDate={setDate}
         onStep={stepDays}
         onToday={goToday}

@@ -19,6 +19,7 @@ export function DateControls({
   date,
   options,
   t,
+  announce,
   onDate,
   onStep,
   onToday,
@@ -30,6 +31,12 @@ export function DateControls({
   date: GregorianDate
   options: TraceOptions
   t: Dictionary
+  /** The resulting weton and date, already formatted by the caller — this
+      component renders a trace it did not produce (CLAUDE.md invariant 16).
+      Announced politely on change so the ± buttons are not silent for a
+      screen-reader user, who otherwise has no signal that the whole trace
+      below just changed underneath them. */
+  announce: string
   onDate: (date: GregorianDate) => void
   onStep: (delta: number) => void
   onToday: () => void
@@ -48,6 +55,10 @@ export function DateControls({
 
   return (
     <div className="panel p-4 sm:p-5">
+      <div role="status" aria-live="polite" className="sr-only">
+        {announce}
+      </div>
+
       <div className="flex flex-wrap items-end gap-x-3 gap-y-4">
         <label className="flex flex-col gap-1.5">
           <span className="rule-label">{t.common.date}</span>

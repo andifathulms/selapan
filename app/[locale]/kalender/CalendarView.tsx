@@ -1,6 +1,6 @@
 'use client'
 
-import { gregorianToJdn } from '@/lib/jdn'
+import { formatGregorian, gregorianToJdn } from '@/lib/jdn'
 import { traceFor } from '@/lib/trace'
 import type { Dictionary } from '@/lib/i18n'
 import { MonthGrid } from '@/components/grid/MonthGrid'
@@ -42,6 +42,7 @@ export function CalendarView({ t }: { t: Dictionary }) {
         date={state.date}
         options={state.options}
         t={t}
+        announce={`${trace.weton.name} · ${formatGregorian(trace.gregorian)}`}
         onDate={setDate}
         onStep={stepDays}
         onToday={goToday}

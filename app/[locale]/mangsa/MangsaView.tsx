@@ -1,5 +1,6 @@
 'use client'
 
+import { formatGregorian } from '@/lib/jdn'
 import { mangsaFor } from '@/lib/mangsa'
 import { traceFor } from '@/lib/trace'
 import type { Dictionary } from '@/lib/i18n'
@@ -17,6 +18,7 @@ export function MangsaView({ t }: { t: Dictionary }) {
         date={state.date}
         options={state.options}
         t={t}
+        announce={`${trace.weton.name} · ${formatGregorian(trace.gregorian)}`}
         onDate={setDate}
         onStep={stepDays}
         onToday={goToday}

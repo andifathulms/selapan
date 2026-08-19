@@ -36,6 +36,7 @@ export function DivergenceView({ t }: { t: Dictionary }) {
         date={state.date}
         options={state.options}
         t={t}
+        announce={`${asapon.weton.name} · ${formatGregorian(asapon.gregorian)}`}
         onDate={setDate}
         onStep={stepDays}
         onToday={goToday}
