@@ -261,7 +261,7 @@ const id: Dictionary = {
     groupYear: 'Tahun Jawa',
     groupReference: 'Rujukan',
     wheelsCaption:
-      'Tiga cincin berputar bersama. Mereka kembali sejajar setiap 35 hari — itulah selapan — dan sejajar lagi setelah 210 hari.',
+      'Lima cincin berputar bersama: pasaran, dina, wuku, mangsa, dan bulan lunar (bila tersedia). Cincin pasaran dan dina kembali sejajar setiap 35 hari — itulah selapan — dan sejajar lagi dengan wuku setelah 210 hari.',
     reverse: 'Dari tanggal Jawa',
     reverseIntro: 'Masukkan tanggal Jawa lunar, dapatkan tanggal Masehinya.',
     year: 'Tahun (AJ)',
@@ -433,7 +433,7 @@ const en: Dictionary = {
     groupYear: 'The Javanese year',
     groupReference: 'Reference',
     wheelsCaption:
-      'Three rings turning together. They realign every 35 days — that is the selapan — and again after 210.',
+      'Five rings turning together: pasaran, dina, wuku, mangsa, and the lunar month (where available). Pasaran and dina realign every 35 days — that is the selapan — and again with wuku after 210.',
     reverse: 'From a Javanese date',
     reverseIntro: 'Give a Javanese lunar date, get the Gregorian one.',
     year: 'Year (AJ)',
