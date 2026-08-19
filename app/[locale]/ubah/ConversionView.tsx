@@ -7,7 +7,7 @@ import { ERA_YEAR_AJ, MAX_YEAR_AJ, jdnFromLunar } from '@/lib/lunar'
 import { mangsaSource, mangsaTable, windowLabel } from '@/lib/mangsa'
 import { traceFor } from '@/lib/trace'
 import type { Dictionary } from '@/lib/i18n'
-import { CycleWheels } from '@/components/wheels/CycleWheels'
+import { CycleWheels, type HighlightRing } from '@/components/wheels/CycleWheels'
 import { DateControls } from '@/components/controls/DateControls'
 import { useDateState } from '@/components/controls/useDateState'
 import { RefusalNotice, TraceValue } from '@/components/trace/TraceValue'
@@ -34,6 +34,7 @@ export function ConversionView({ t }: { t: Dictionary }) {
   const { state, hydrated, jdn, setDate, stepDays, goToday, setReckoning, setDayBoundary, setHour } =
     useDateState()
   const [sweep, setSweep] = useState<Sweep>('date')
+  const [highlightRing, setHighlightRing] = useState<HighlightRing | null>(null)
 
   // /mangsa/ and /selapanan/ retired into sweeps of this page; their redirect
   // stubs land here with ?sweep= so a bookmarked or shared link still opens
@@ -73,12 +74,19 @@ export function ConversionView({ t }: { t: Dictionary }) {
         </p>
       </section>
 
-      <SweepTabs sweep={sweep} onChange={setSweep} t={t} />
+      <SweepTabs
+        sweep={sweep}
+        onChange={(next) => {
+          setSweep(next)
+          if (next !== 'date') setHighlightRing(null)
+        }}
+        t={t}
+      />
 
       <div className="mt-8 grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,400px)] md:gap-12">
         <div className="order-2 space-y-8 md:order-1">
           {sweep === 'date' ? (
-            <DateSweep trace={trace} t={t} />
+            <DateSweep trace={trace} t={t} onHighlightChange={setHighlightRing} />
           ) : sweep === 'selapanan' ? (
             <SelapananView t={t} jdn={jdn} reckoning={state.options.reckoning} trace={trace} />
           ) : (
@@ -91,7 +99,11 @@ export function ConversionView({ t }: { t: Dictionary }) {
             stay put across every sweep — it is the one instrument, read
             three ways, not three instruments. */}
         <section className="order-1 md:order-2 md:sticky md:top-6">
-          {hydrated ? <CycleWheels trace={trace} /> : <div className="aspect-square" />}
+          {hydrated ? (
+            <CycleWheels trace={trace} highlightRing={highlightRing} />
+          ) : (
+            <div className="aspect-square" />
+          )}
           <p className="mt-4 max-w-measure text-sm leading-relaxed text-ink/60">
             {t.ubah.wheelsCaption}
           </p>
@@ -137,7 +149,17 @@ function SweepTabs({
   )
 }
 
-function DateSweep({ trace, t }: { trace: ReturnType<typeof traceFor>; t: Dictionary }) {
+function DateSweep({
+  trace,
+  t,
+  onHighlightChange,
+}: {
+  trace: ReturnType<typeof traceFor>
+  t: Dictionary
+  onHighlightChange: (ring: HighlightRing | null) => void
+}) {
+  const handleRing = (key: string | null) => onHighlightChange(key as HighlightRing | null)
+
   return (
     <>
       <section>
@@ -147,12 +169,16 @@ function DateSweep({ trace, t }: { trace: ReturnType<typeof traceFor>; t: Dictio
           value={trace.dina.name}
           derivation={trace.dina.derivation}
           t={t}
+          ringKey="dina"
+          onOpenChange={handleRing}
         />
         <TraceValue
           label={t.labels.pasaran}
           value={trace.pasaran.name}
           derivation={trace.pasaran.derivation}
           t={t}
+          ringKey="pasaran"
+          onOpenChange={handleRing}
         />
         <TraceValue
           label={t.labels.neptu}
@@ -164,6 +190,8 @@ function DateSweep({ trace, t }: { trace: ReturnType<typeof traceFor>; t: Dictio
           value={`${trace.wuku.name} · ${trace.dayInWuku}/7`}
           derivation={trace.wuku.derivation}
           t={t}
+          ringKey="wuku"
+          onOpenChange={handleRing}
         />
       </section>
 
@@ -180,6 +208,8 @@ function DateSweep({ trace, t }: { trace: ReturnType<typeof traceFor>; t: Dictio
               derivation={trace.lunar.value.derivation}
               t={t}
               emphasis
+              ringKey="lunar"
+              onOpenChange={handleRing}
             />
             <TraceValue label={t.labels.windu} value={trace.lunar.value.windu} t={t} />
             <TraceValue

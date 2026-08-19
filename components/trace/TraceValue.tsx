@@ -19,15 +19,29 @@ export function TraceValue({
   derivation,
   t,
   emphasis = false,
+  ringKey,
+  onOpenChange,
 }: {
   label: string
   value: string
   derivation?: AnyDerivation
   t: Dictionary
   emphasis?: boolean
+  /** Which wheel ring this value's derivation corresponds to, if any — the
+      wheel is told when this row opens so it can point at the same ring
+      rather than leaving the reader to find it (DESIGN-REWORK §5: "a modulo
+      is a wheel"). */
+  ringKey?: string
+  onOpenChange?: (ringKey: string | null) => void
 }) {
   const [open, setOpen] = useState(false)
   const unverified = derivation?.status === 'unverified'
+
+  const toggle = () => {
+    const next = !open
+    setOpen(next)
+    if (ringKey) onOpenChange?.(next ? ringKey : null)
+  }
 
   const body = (
     <>
@@ -58,7 +72,7 @@ export function TraceValue({
     <div className="border-b hairline">
       <button
         type="button"
-        onClick={() => setOpen((o) => !o)}
+        onClick={toggle}
         aria-expanded={open}
         className="group flex w-full flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-3.5 text-left"
       >

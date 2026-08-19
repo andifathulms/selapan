@@ -31,7 +31,19 @@ import type { Mangsa } from '@/lib/data'
  * boundary (29 or 30 days), so there is no stable step to accumulate against
  * and it is recomputed directly each render.
  */
-export function CycleWheels({ trace }: { trace: CalendarTrace }) {
+export type HighlightRing = 'pasaran' | 'dina' | 'wuku' | 'lunar'
+
+export function CycleWheels({
+  trace,
+  highlightRing = null,
+}: {
+  trace: CalendarTrace
+  /** Which ring a currently-open derivation drawer belongs to, if any — a
+      modulo is a wheel, so the drawer should be able to point at its own
+      ring rather than leaving the reader to find it among five
+      (DESIGN-REWORK §5). */
+  highlightRing?: HighlightRing | null
+}) {
   const mangsa = mangsaOfJdn(trace.jdn)
   const table = [...mangsaTable()].sort((a, b) => a.index - b.index)
   const mangsaCumulative = cumulativeBefore(table)
@@ -97,6 +109,7 @@ export function CycleWheels({ trace }: { trace: CalendarTrace }) {
           rotationDeg={pasaranRotation}
           currentIndex={trace.pasaran.index}
           labelled
+          highlighted={highlightRing === 'pasaran'}
         />
         <EqualRing
           radius={92}
@@ -104,6 +117,7 @@ export function CycleWheels({ trace }: { trace: CalendarTrace }) {
           rotationDeg={dinaRotation}
           currentIndex={trace.dina.index}
           labelled
+          highlighted={highlightRing === 'dina'}
         />
         <EqualRing
           radius={130}
@@ -112,6 +126,7 @@ export function CycleWheels({ trace }: { trace: CalendarTrace }) {
           currentIndex={trace.wuku.index}
           labelled={false}
           emphasiseCurrent
+          highlighted={highlightRing === 'wuku'}
         />
 
         {mangsa.type === 'ok' ? (
@@ -135,6 +150,7 @@ export function CycleWheels({ trace }: { trace: CalendarTrace }) {
             emphasiseCurrent
             muted={lunarUnverified}
             markStart
+            highlighted={highlightRing === 'lunar'}
           />
         ) : null}
 
@@ -206,6 +222,7 @@ function EqualRing({
   emphasiseCurrent = false,
   muted = false,
   markStart = false,
+  highlighted = false,
 }: {
   radius: number
   names: ReadonlyArray<string>
@@ -221,23 +238,43 @@ function EqualRing({
       relative to the same fixed ray is what does (DESIGN-REWORK §3.3, the
       two lunar rings on /kurup/). */
   markStart?: boolean
+  /** A derivation drawer for this ring is open. Boosts the same band
+      `emphasiseCurrent` already draws (or draws one for pasaran/dina, which
+      otherwise have none) and brightens the guide circle, so the reader can
+      find the ring the numbers above belong to without reading five of
+      them. */
+  highlighted?: boolean
 }) {
   const step = 360 / names.length
   const colour = muted ? 'text-unverified' : 'text-indigo'
 
   return (
     <g>
-      <circle r={radius} fill="none" stroke="currentColor" strokeWidth={0.5} className="text-ink/20" />
+      <circle
+        r={radius}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={highlighted ? 1 : 0.5}
+        className={highlighted ? 'text-indigo/60' : 'text-ink/20'}
+      />
       <g
         style={{
           transform: `rotate(${rotationDeg}deg)`,
           transition: 'transform 420ms cubic-bezier(0.33, 0, 0.2, 1)',
         }}
       >
-        {emphasiseCurrent ? (
+        {emphasiseCurrent || highlighted ? (
           <path
             d={segmentBand(radius - 6, radius + 6, currentIndex * step, (currentIndex + 1) * step)}
-            className={muted ? 'fill-unverified/30' : 'fill-indigo/15'}
+            className={
+              highlighted
+                ? muted
+                  ? 'fill-unverified/35'
+                  : 'fill-indigo/30'
+                : muted
+                  ? 'fill-unverified/30'
+                  : 'fill-indigo/15'
+            }
           />
         ) : null}
 
