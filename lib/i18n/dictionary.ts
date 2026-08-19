@@ -125,6 +125,8 @@ export type Dictionary = {
     readonly agreeHere: string
     readonly table: string
     readonly bothValid: string
+    readonly timelineToday: string
+    readonly timelineSplit: string
   }
   readonly mangsa: {
     readonly title: string
@@ -290,6 +292,8 @@ const id: Dictionary = {
     table: 'Seluruh kurup',
     bothValid:
       'Tidak ada yang disebut benar dan yang lain ketinggalan zaman. Keduanya ditampilkan dengan mekanismenya, dan pembaca memakai yang dipakai komunitasnya.',
+    timelineToday: 'Tanggal yang dilihat',
+    timelineSplit: 'Sejak sini: Asapon menerapkan koreksi 1867 AJ, Aboge tidak — keduanya berselisih setelah titik ini.',
   },
   mangsa: {
     title: 'Pranata mangsa',
@@ -461,6 +465,8 @@ const en: Dictionary = {
     table: 'Every kurup',
     bothValid:
       'Neither is the correct one with the other left behind. Both are shown with their mechanism, and a reader uses the one their community uses.',
+    timelineToday: 'The date being viewed',
+    timelineSplit: 'From here: Asapon applies the 1867 AJ correction, Aboge does not — the two differ from this point on.',
   },
   mangsa: {
     title: 'Pranata mangsa',

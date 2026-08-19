@@ -2,6 +2,7 @@
 
 import { formatGregorian } from '@/lib/jdn'
 import { traceFor, type CalendarTrace, type TraceOptions } from '@/lib/trace'
+import { KURUPS } from '@/lib/data'
 import type { Dictionary } from '@/lib/i18n'
 import { DateControls } from '@/components/controls/DateControls'
 import { useDateState } from '@/components/controls/useDateState'
@@ -56,6 +57,8 @@ export function DivergenceView({ t }: { t: Dictionary }) {
           {formatGregorian(asapon.gregorian)} · {asapon.weton.name}
         </span>
       </p>
+
+      <KurupTimeline currentYearAj={asapon.lunar.type === 'ok' ? asapon.lunar.value.yearAj : null} t={t} />
 
       <div className="mt-6 grid gap-6 md:grid-cols-2">
         <ReckoningPanel title="Asapon" subtitle="Alip Selasa Pon" trace={asapon} t={t} hydrated={hydrated} />
@@ -126,5 +129,75 @@ function ReckoningPanel({
         </>
       )}
     </section>
+  )
+}
+
+/**
+ * Every kurup, in proportion, across four centuries — /sumber/ already lists
+ * them as a table; this is the same data read as a span of time instead
+ * (DESIGN-REWORK §5). The split mark sits at Asapon's start because that is
+ * the mechanism, transcribed rather than summarised: Asapon applied the
+ * 1867 AJ correction there, Aboge never did, so every date on or after it is
+ * where the two structurally part (CLAUDE.md invariant 5 — never hardcode
+ * the current kurup — so the split is found in KURUPS by name, not assumed).
+ */
+function KurupTimeline({ currentYearAj, t }: { currentYearAj: number | null; t: Dictionary }) {
+  const spanStart = KURUPS[0]!.startYearAj
+  const spanEnd = KURUPS[KURUPS.length - 1]!.endYearAj
+  const span = spanEnd - spanStart + 1
+  const splitYearAj = KURUPS.find((k) => k.name === 'Asapon')?.startYearAj
+
+  const pct = (year: number) => ((year - spanStart) / span) * 100
+
+  return (
+    <div className="mt-8">
+      <div className="relative h-14 w-full">
+        {KURUPS.map((kurup) => (
+          <div
+            key={kurup.id}
+            className="absolute top-0 h-9 overflow-hidden border-l hairline pl-1.5 pt-1"
+            style={{ left: `${pct(kurup.startYearAj)}%`, width: `${(kurup.lengthYears / span) * 100}%` }}
+          >
+            <span className="block truncate font-ui text-[0.62rem] uppercase tracking-wide text-ink/55">
+              {kurup.name}
+            </span>
+          </div>
+        ))}
+        <div className="absolute inset-x-0 top-9 h-px bg-ink/25" />
+
+        {splitYearAj !== undefined ? (
+          <div
+            className="absolute top-0 h-9 w-px bg-indigo/50"
+            style={{ left: `${pct(splitYearAj)}%` }}
+          />
+        ) : null}
+
+        {currentYearAj !== null ? (
+          <div
+            className="absolute top-9 flex -translate-x-1/2 flex-col items-center"
+            style={{ left: `${pct(currentYearAj)}%` }}
+          >
+            <span className="h-2 w-2 -translate-y-1/2 rounded-full bg-indigo ring-2 ring-paper" />
+          </div>
+        ) : null}
+      </div>
+
+      <dl className="mt-1 flex flex-wrap gap-x-6 gap-y-1 text-[0.68rem] text-ink/55">
+        {currentYearAj !== null ? (
+          <div className="flex items-center gap-1.5">
+            <span className="h-2 w-2 rounded-full bg-indigo" aria-hidden="true" />
+            <dt className="sr-only">{t.kurup.timelineToday}</dt>
+            <dd>{t.kurup.timelineToday}</dd>
+          </div>
+        ) : null}
+        {splitYearAj !== undefined ? (
+          <div className="flex max-w-prose items-center gap-1.5">
+            <span className="h-2 w-px shrink-0 bg-indigo/50" aria-hidden="true" />
+            <dt className="sr-only">{t.kurup.timelineSplit}</dt>
+            <dd>{t.kurup.timelineSplit}</dd>
+          </div>
+        ) : null}
+      </dl>
+    </div>
   )
 }

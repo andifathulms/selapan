@@ -2,6 +2,7 @@ import { formatGregorian, jdnToGregorian, type Jdn } from '@/lib/jdn'
 import { traceFor, type CalendarTrace, type KurupReckoning } from '@/lib/trace'
 import { selapananDates, slametanDates } from '@/lib/selapanan'
 import type { Dictionary } from '@/lib/i18n'
+import { DateAxis } from '@/components/trace/DateAxis'
 
 /**
  * Selapanan from a weton, and slametan reckoning from a day of death — a
@@ -26,6 +27,25 @@ export function SelapananView({
   const upcoming = selapananDates(jdn, 12)
   const slametan = slametanDates(jdn, reckoning)
 
+  const upcomingMax = upcoming[upcoming.length - 1]?.daysSince ?? 0
+  const upcomingPoints = upcoming.map((date) => ({
+    key: String(date.ordinal),
+    days: date.daysSince,
+    label: String(date.daysSince),
+    ok: true,
+  }))
+
+  // A refused mendhak (pre-1633) has no jdn to place, so it is left off the
+  // axis entirely rather than guessed at a position — the table beneath
+  // still says it was refused, and why (CLAUDE.md invariant 4).
+  const slametanPoints = slametan
+    .filter((entry) => entry.result.type === 'ok')
+    .map((entry) => {
+      const days = entry.result.type === 'ok' ? entry.result.value - jdn : 0
+      return { key: entry.kind, days, label: String(days), ok: true }
+    })
+  const slametanMax = Math.max(1, ...slametanPoints.map((p) => p.days))
+
   return (
     <div>
       <p className="flex flex-wrap items-baseline gap-3">
@@ -37,7 +57,8 @@ export function SelapananView({
       <div className="mt-8 grid gap-10 lg:grid-cols-2">
         <section>
           <h2 className="font-prose text-section">{t.selapanan.upcoming}</h2>
-          <table className="almanac-table mt-3">
+          <DateAxis points={upcomingPoints} max={upcomingMax} />
+          <table className="almanac-table mt-5">
             <thead>
               <tr>
                 <th>№</th>
@@ -64,7 +85,8 @@ export function SelapananView({
         <section>
           <h2 className="font-prose text-section">{t.selapanan.slametan}</h2>
           <p className="mt-1 text-sm text-ink/70">{t.selapanan.slametanIntro}</p>
-          <table className="almanac-table mt-3">
+          <DateAxis points={slametanPoints} max={slametanMax} />
+          <table className="almanac-table mt-5">
             <thead>
               <tr>
                 <th>Slametan</th>
