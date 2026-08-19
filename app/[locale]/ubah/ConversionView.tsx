@@ -328,7 +328,7 @@ function ReverseConversion({
           <select
             value={month}
             onChange={(e) => setMonth(Number(e.target.value))}
-            className="field font-ui"
+            className="field"
           >
             {SASI.map((name, i) => (
               <option key={name} value={i + 1}>
