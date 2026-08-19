@@ -4,6 +4,7 @@ import { formatGregorian, gregorianToJdn } from '@/lib/jdn'
 import { traceFor } from '@/lib/trace'
 import type { Dictionary } from '@/lib/i18n'
 import { MonthGrid } from '@/components/grid/MonthGrid'
+import { CycleWheels } from '@/components/wheels/CycleWheels'
 import { DateControls } from '@/components/controls/DateControls'
 import { useDateState } from '@/components/controls/useDateState'
 
@@ -76,7 +77,11 @@ export function CalendarView({ t }: { t: Dictionary }) {
         </div>
       </div>
 
-      <div className="mt-4">
+      {/* Selecting a cell moves the ray — the wheel renders the same trace
+          the grid does, so there is nothing to wire beyond passing it
+          (DESIGN-REWORK §3.3). Small here: the grid is the reading, not the
+          instrument. */}
+      <div className="mt-4 grid gap-8 lg:grid-cols-[minmax(0,1fr)_220px] lg:items-start">
         <MonthGrid
           year={year}
           month={month}
@@ -84,6 +89,9 @@ export function CalendarView({ t }: { t: Dictionary }) {
           today={hydrated ? jdn : undefined}
           onSelect={(day) => setDate({ year, month, day })}
         />
+        <div className="mx-auto w-full max-w-[220px] lg:sticky lg:top-6">
+          {hydrated ? <CycleWheels trace={trace} /> : <div className="aspect-square" />}
+        </div>
       </div>
 
       <p className="mt-4 text-sm text-ink/60">{t.kalender.legend}</p>

@@ -1,7 +1,7 @@
 'use client'
 
 import { daysInMonth, gregorianToJdn } from '@/lib/jdn'
-import { DINA } from '@/lib/cycles'
+import { DINA, PASARAN } from '@/lib/cycles'
 import { traceFor, type TraceOptions } from '@/lib/trace'
 
 /**
@@ -91,8 +91,11 @@ export function MonthGrid({
                     >
                       {day}
                     </span>
-                    <span className="mt-0.5 block font-ui text-[0.65rem] leading-tight text-ink/60">
-                      {trace.pasaran.name}
+                    <span className="mt-0.5 flex items-center gap-1">
+                      <PasaranMark index={trace.pasaran.index} />
+                      <span className="font-ui text-[0.65rem] leading-tight text-ink/60">
+                        {trace.pasaran.name}
+                      </span>
                     </span>
                     <span className="block font-mono text-[0.65rem] leading-tight text-indigo/80">
                       {trace.lunar.type === 'ok'
@@ -119,5 +122,25 @@ export function MonthGrid({
         ))}
       </tbody>
     </table>
+  )
+}
+
+/**
+ * The 5-cycle against the 7-cycle produces a diagonal stripe across a month
+ * grid — the visual signature of the whole system, and the reason a 35-day
+ * selapan exists. A dot's position among five marks that shifts is that
+ * signature; the pasaran name beside it is what actually says which one it
+ * is (DESIGN-REWORK §5 — never colour alone).
+ */
+function PasaranMark({ index }: { index: number }) {
+  return (
+    <span className="flex shrink-0 items-center gap-[2px]" aria-hidden="true">
+      {PASARAN.map((_, i) => (
+        <span
+          key={i}
+          className={['h-[3px] w-[3px] rounded-full', i === index ? 'bg-indigo' : 'bg-ink/20'].join(' ')}
+        />
+      ))}
+    </span>
   )
 }
