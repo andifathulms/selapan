@@ -39,7 +39,7 @@ export default function HomePage({ params }: { params: { locale: string } }) {
       */}
       <section className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,25rem)] lg:items-start lg:gap-12">
         <div className="lg:col-start-1 lg:row-start-1">
-          <h1 className="font-prose text-display">{t.site.tagline}</h1>
+          <h1 className="font-display text-display">{t.site.tagline}</h1>
           <p className="lede mt-5 max-w-measure">{t.home.lede}</p>
         </div>
 
@@ -58,7 +58,7 @@ export default function HomePage({ params }: { params: { locale: string } }) {
       </section>
 
       <section>
-        <h2 className="font-prose text-title">{t.home.whatTitle}</h2>
+        <h2 className="font-display text-title">{t.home.whatTitle}</h2>
         <div className="mt-4 max-w-measure space-y-4 text-ink/85">
           {t.home.whatBody.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
@@ -69,7 +69,7 @@ export default function HomePage({ params }: { params: { locale: string } }) {
       <CyclesTable t={t} />
 
       <section>
-        <h2 className="font-prose text-title">{t.home.browseTitle}</h2>
+        <h2 className="font-display text-title">{t.home.browseTitle}</h2>
         <ul className="mt-6 grid gap-px border hairline bg-[color-mix(in_srgb,theme(colors.ink)_18%,transparent)] sm:grid-cols-2 lg:grid-cols-3">
           {navItems(locale, t).map((item) => (
             <li key={item.href} className="bg-paper">
@@ -77,7 +77,7 @@ export default function HomePage({ params }: { params: { locale: string } }) {
                 href={item.href}
                 className="group flex h-full flex-col p-5 transition-colors hover:bg-paper-raised/70"
               >
-                <span className="font-prose text-section group-hover:text-indigo">
+                <span className="font-ui text-section font-semibold group-hover:text-indigo">
                   {item.label}
                 </span>
                 <span className="mt-2 text-sm leading-relaxed text-ink/65">
@@ -91,7 +91,7 @@ export default function HomePage({ params }: { params: { locale: string } }) {
 
       <section className="grid gap-10 lg:grid-cols-2">
         <div>
-          <h2 className="font-prose text-title">{t.home.whatItDoesTitle}</h2>
+          <h2 className="font-display text-title">{t.home.whatItDoesTitle}</h2>
           <ul className="mt-5 space-y-3.5">
             {t.home.whatItDoes.map((item) => (
               <li key={item} className="flex gap-3">
@@ -103,7 +103,7 @@ export default function HomePage({ params }: { params: { locale: string } }) {
         </div>
 
         <div className="panel-inset p-6">
-          <h2 className="font-prose text-section">{t.home.separationTitle}</h2>
+          <h2 className="font-ui text-section font-semibold">{t.home.separationTitle}</h2>
           <p className="mt-3 text-ink/80">{t.home.separation}</p>
           <PaletteLegend t={t} className="mt-6 border-t hairline pt-5 sm:grid-cols-1" />
         </div>
@@ -145,7 +145,7 @@ function CyclesTable({ t }: { t: Dictionary }) {
 
   return (
     <section>
-      <h2 className="font-prose text-title">{t.home.cyclesTitle}</h2>
+      <h2 className="font-display text-title">{t.home.cyclesTitle}</h2>
       <p className="mt-3 max-w-measure text-ink/75">{t.home.cyclesIntro}</p>
       <div className="mt-5 overflow-x-auto">
         <table className="almanac-table min-w-[34rem]">

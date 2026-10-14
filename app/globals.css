@@ -14,8 +14,8 @@
 
 @layer base {
   html {
-    background-color: theme('colors.paper');
-    color: theme('colors.ink');
+    background-color: rgb(var(--c-paper));
+    color: rgb(var(--c-ink));
   }
 
   body {
@@ -27,12 +27,12 @@
     background-image:
       radial-gradient(
         ellipse 80rem 40rem at 50% -10rem,
-        color-mix(in srgb, theme('colors.paper-raised') 70%, transparent),
+        color-mix(in srgb, rgb(var(--c-paper-raised)) 70%, transparent),
         transparent 70%
       ),
       radial-gradient(
         ellipse 60rem 40rem at 100% 100%,
-        color-mix(in srgb, theme('colors.paper-deep') 45%, transparent),
+        color-mix(in srgb, rgb(var(--c-paper-deep)) 45%, transparent),
         transparent 65%
       );
     background-attachment: fixed;
@@ -66,12 +66,13 @@
   }
 
   ::selection {
-    background-color: theme('colors.ochre');
-    color: theme('colors.paper');
+    background-color: rgb(var(--c-ochre));
+    color: rgb(var(--c-paper));
   }
 
+  /* Prada, not indigo: focus is a mark on the page, not a computed value. */
   :focus-visible {
-    outline: 2px solid theme('colors.indigo');
+    outline: 2px solid rgb(var(--c-ochre));
     outline-offset: 2px;
   }
 }
@@ -79,19 +80,19 @@
 @layer components {
   /* A computed, verifiable value. Never used for traditional material. */
   .computed {
-    color: theme('colors.indigo');
+    color: rgb(var(--c-indigo));
     font-family: theme('fontFamily.mono');
     font-variant-numeric: tabular-nums;
   }
 
   /* Out of range, or resting on an anchor not yet cross-checked. */
   .unverified-value {
-    color: theme('colors.unverified');
+    color: rgb(var(--c-unverified));
     font-family: theme('fontFamily.mono');
   }
 
   .hairline {
-    border-color: color-mix(in srgb, theme('colors.ink') 22%, transparent);
+    border-color: color-mix(in srgb, rgb(var(--c-ink)) 22%, transparent);
   }
 
   .almanac-table {
@@ -106,15 +107,15 @@
     font-size: 0.72rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: color-mix(in srgb, theme('colors.ink') 62%, transparent);
+    color: color-mix(in srgb, rgb(var(--c-ink)) 62%, transparent);
     font-weight: 600;
     padding: 0.4rem 0.6rem 0.4rem 0;
-    border-bottom: 1px solid color-mix(in srgb, theme('colors.ink') 40%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, rgb(var(--c-ink)) 40%, transparent);
   }
 
   .almanac-table td {
     padding: 0.42rem 0.6rem 0.42rem 0;
-    border-bottom: 1px solid color-mix(in srgb, theme('colors.ink') 14%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, rgb(var(--c-ink)) 14%, transparent);
     vertical-align: top;
   }
 
@@ -123,26 +124,30 @@
     font-size: 0.7rem;
     letter-spacing: 0.09em;
     text-transform: uppercase;
-    color: color-mix(in srgb, theme('colors.ink') 60%, transparent);
+    color: color-mix(in srgb, rgb(var(--c-ink)) 60%, transparent);
   }
 
   /*
    * A panel is a card of stock laid on the page: one hairline, one shade
    * lighter, no shadow. Depth on an almanac page comes from rules and
-   * impression, not from things floating.
+   * impression, not from things floating. Corners are softened, not rounded
+   * off — a card, not a bubble.
    */
   .panel {
-    background-color: color-mix(in srgb, theme('colors.paper-raised') 62%, transparent);
-    border: 1px solid color-mix(in srgb, theme('colors.ink') 18%, transparent);
+    background-color: rgb(var(--c-paper-raised));
+    border: 1px solid color-mix(in srgb, rgb(var(--c-ink)) 14%, transparent);
+    border-radius: 14px;
   }
 
   .panel-inset {
-    background-color: color-mix(in srgb, theme('colors.paper-deep') 45%, transparent);
-    border: 1px solid color-mix(in srgb, theme('colors.ink') 12%, transparent);
+    background-color: color-mix(in srgb, rgb(var(--c-paper-deep)) 55%, transparent);
+    border: 1px solid color-mix(in srgb, rgb(var(--c-ink)) 12%, transparent);
+    border-radius: 14px;
   }
 
-  /* Controls. Karla, hairline box, indigo on contact — the same indigo the
-     computed values wear, because pressing these is what computes them. */
+  /* Controls. Schibsted Grotesk, a hairline box with softened corners, and
+     a touch target that stays at least 44px on a phone. Hover deepens the
+     rule in ink; indigo is kept for the values the controls produce. */
   .btn {
     display: inline-flex;
     align-items: center;
@@ -152,44 +157,54 @@
     font-size: 0.875rem;
     line-height: 1;
     padding: 0.6rem 0.85rem;
-    border: 1px solid color-mix(in srgb, theme('colors.ink') 22%, transparent);
-    background-color: color-mix(in srgb, theme('colors.paper-raised') 55%, transparent);
+    border: 1px solid color-mix(in srgb, rgb(var(--c-ink)) 22%, transparent);
+    background-color: color-mix(in srgb, rgb(var(--c-paper-raised)) 55%, transparent);
     transition:
       color 140ms ease,
       border-color 140ms ease,
       background-color 140ms ease;
     /* Comfortable on a thumb without looking oversized on a desktop table. */
-    min-height: 2.5rem;
+    min-height: 2.75rem;
+    border-radius: 8px;
   }
 
   .btn:hover {
-    border-color: theme('colors.indigo');
-    color: theme('colors.indigo');
+    border-color: color-mix(in srgb, rgb(var(--c-ink)) 55%, transparent);
   }
 
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  /* The primary action is set in ink, not indigo: indigo is a computed
+     value, and a button is not one (CLAUDE.md invariant 12). */
   .btn-solid {
-    border-color: theme('colors.indigo');
-    background-color: theme('colors.indigo');
-    color: theme('colors.paper');
+    border-color: rgb(var(--c-ink));
+    background-color: rgb(var(--c-ink));
+    color: rgb(var(--c-paper));
+    font-weight: 600;
   }
 
   .btn-solid:hover {
-    background-color: theme('colors.indigo-deep');
-    border-color: theme('colors.indigo-deep');
-    color: theme('colors.paper');
+    border-color: rgb(var(--c-ink));
+    background-color: color-mix(in srgb, rgb(var(--c-ink)) 86%, rgb(var(--c-paper)));
+    color: rgb(var(--c-paper));
   }
 
   .field {
     font-family: theme('fontFamily.mono');
     font-variant-numeric: tabular-nums;
-    padding: 0.55rem 0.7rem;
-    min-height: 2.5rem;
-    background-color: color-mix(in srgb, theme('colors.paper-raised') 55%, transparent);
-    border: 1px solid color-mix(in srgb, theme('colors.ink') 22%, transparent);
+    padding: 0.55rem 0.75rem;
+    min-height: 2.75rem;
+    border-radius: 8px;
+    color: rgb(var(--c-ink));
+    background-color: color-mix(in srgb, rgb(var(--c-paper-raised)) 55%, transparent);
+    border: 1px solid color-mix(in srgb, rgb(var(--c-ink)) 22%, transparent);
   }
 
   .field:hover {
-    border-color: color-mix(in srgb, theme('colors.ink') 38%, transparent);
+    border-color: color-mix(in srgb, rgb(var(--c-ink)) 38%, transparent);
   }
 
   /* A select is a field the reader opens rather than types into, but it is
@@ -205,6 +220,12 @@
     background-repeat: no-repeat;
     background-position: right 0.65rem center;
     background-size: 0.65rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    select.field {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5L6 8l3.5-3.5' fill='none' stroke='%23ECE5D5' stroke-opacity='0.6' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
   }
 
   /* A number field's spin buttons are the same native-chrome problem: a
@@ -226,21 +247,109 @@
   .lede {
     font-size: 1.125rem;
     line-height: 1.55;
-    color: color-mix(in srgb, theme('colors.ink') 82%, transparent);
+    color: color-mix(in srgb, rgb(var(--c-ink)) 82%, transparent);
+  }
+
+  /* Young Serif is cut in one weight. A heading rule asking for 600 would
+     otherwise get a browser-synthesised bold, which smears it. */
+  .font-display {
+    font-weight: 400;
+    font-synthesis: none;
+  }
+
+  /* A fact with its name attached: a small label and a computed value,
+     kept together so the pair still reads when a row of them wraps. */
+  .chip {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background-color: rgb(var(--c-paper-deep));
+    font-family: theme('fontFamily.ui');
+    font-size: 0.85rem;
+    line-height: 1.3;
+  }
+
+  .chip-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, rgb(var(--c-ink)) 62%, transparent);
+  }
+
+  /* A choice between a few options — reckoning, day boundary, a view. One
+     pill-shaped track; the chosen option is set in ink, never indigo. */
+  .seg {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    padding: 3px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, rgb(var(--c-ink)) 22%, transparent);
+    font-family: theme('fontFamily.ui');
+    font-size: 0.875rem;
+  }
+
+  .seg > button,
+  .seg > a {
+    min-height: 2.35rem;
+    padding: 0 0.95rem;
+    border-radius: 999px;
+    color: color-mix(in srgb, rgb(var(--c-ink)) 75%, transparent);
+    transition: background-color 140ms ease, color 140ms ease;
+  }
+
+  .seg > button:hover,
+  .seg > a:hover {
+    background-color: color-mix(in srgb, rgb(var(--c-ink)) 7%, transparent);
+  }
+
+  .seg > [aria-pressed='true'],
+  .seg > [aria-current='page'] {
+    background-color: rgb(var(--c-ink));
+    color: rgb(var(--c-paper));
+  }
+
+  /* The surface the wheels sit on (`.instrument` sets its colours, from
+     theme/palette.ts); this adds the shape. */
+  .instrument-panel {
+    border-radius: 18px;
+    background-image: radial-gradient(
+      circle at 50% 42%,
+      color-mix(in srgb, rgb(var(--c-ochre)) 9%, transparent),
+      transparent 62%
+    );
   }
 
   /* A term glossed where it first appears, so a reader who has never met the
      word is not left behind by the sentence carrying it. */
   .term {
     font-style: italic;
-    border-bottom: 1px dotted color-mix(in srgb, theme('colors.ink') 40%, transparent);
+    border-bottom: 1px dotted color-mix(in srgb, rgb(var(--c-ink)) 40%, transparent);
   }
 }
 
 /*
- * One orchestrated moment: stepping a day turns all three cycle rings by one
- * position. Nothing else on the site moves (PRD §9).
+ * Motion. One orchestrated moment: stepping a day turns every cycle ring by
+ * one position (PRD §9). Beside it, one supporting fade — the answer, when
+ * the date changes, cross-fades rather than snapping, so stepping reads as
+ * continuous. `key` the element on the value to replay it. Nothing else
+ * moves.
  */
+@keyframes answer-in {
+  from {
+    opacity: 0.25;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.answer-fade {
+  animation: answer-in 180ms ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;

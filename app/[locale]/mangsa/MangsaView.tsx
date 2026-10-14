@@ -17,7 +17,7 @@ export function MangsaView({ t, date, trace }: { t: Dictionary; date: GregorianD
       {result.type === 'ok' ? (
         <>
           <p className="mt-2 flex flex-wrap items-baseline gap-3">
-            <span className="computed text-figure">{result.value.entry.name}</span>
+            <span className="computed font-display text-figure">{result.value.entry.name}</span>
             <span className="font-mono text-lg text-ink/50">{result.value.entry.numeral}</span>
             <span className="font-mono text-sm text-ink/60">
               {result.value.dayWithin}/{result.value.entry.lengthDays}
@@ -30,7 +30,7 @@ export function MangsaView({ t, date, trace }: { t: Dictionary; date: GregorianD
         </>
       ) : (
         <>
-          <p className="mt-2 unverified-value text-figure">{t.common.refused}</p>
+          <p className="mt-2 unverified-value font-display text-title">{t.common.refused}</p>
           <p className="mt-3 max-w-prose text-sm text-ink/70">{result.refusal.reason}</p>
         </>
       )}

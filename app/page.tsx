@@ -14,7 +14,7 @@ export default function RootPage() {
     <>
       <meta httpEquiv="refresh" content={`0; url=./${DEFAULT_LOCALE}/`} />
       <main className="mx-auto max-w-lg px-6 py-24">
-        <h1 className="flex items-center gap-3 font-prose text-title">
+        <h1 className="flex items-center gap-3 font-display text-title">
           <SelapanMark size={32} />
           Selapan
         </h1>

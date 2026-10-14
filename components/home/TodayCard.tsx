@@ -39,7 +39,7 @@ export function TodayCard({ t, locale }: { t: Dictionary; locale: Locale }) {
         </span>
       </div>
 
-      <p className="mt-3 min-h-[1.1em] font-mono text-figure text-indigo">
+      <p className="mt-3 min-h-[1.1em] font-display text-figure text-indigo">
         {trace ? trace.weton.name : ' '}
       </p>
 

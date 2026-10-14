@@ -1,96 +1,111 @@
 {
   "generatedBy": "scripts/validate-contrast.ts",
-  "standard": "WCAG 2.x, normal text",
-  "minContrast": 4.5,
+  "source": "theme/palette.ts",
+  "standard": "WCAG 2.x — 1.4.3 for text (4.5:1), 1.4.11 for non-text marks (3:1)",
+  "themes": [
+    "light",
+    "dark",
+    "instrument"
+  ],
   "pairs": [
     {
+      "theme": "light",
       "foreground": "ink",
-      "foregroundHex": "#201C16",
+      "foregroundHex": "#1D1B18",
       "background": "paper",
-      "backgroundHex": "#EFE8D8",
-      "ratio": 13.88,
+      "backgroundHex": "#F4F0E6",
+      "ratio": 15.1,
       "minRequired": 4.5,
-      "passesAA": true,
+      "passes": true,
       "gate": true,
       "usedIn": [
         "app/globals.css — html base text colour"
       ]
     },
     {
+      "theme": "light",
       "foreground": "ink",
-      "foregroundHex": "#201C16",
+      "foregroundHex": "#1D1B18",
       "background": "paper-raised",
-      "backgroundHex": "#F5F1E6",
-      "ratio": 15.02,
+      "backgroundHex": "#FBF8F1",
+      "ratio": 16.2,
       "minRequired": 4.5,
-      "passesAA": true,
+      "passes": true,
       "gate": true,
       "usedIn": [
-        "components/grid/MonthGrid.tsx — day cells on bg-paper-raised/80"
+        ".panel — app/globals.css",
+        "components/grid/MonthGrid.tsx — day cells"
       ]
     },
     {
+      "theme": "light",
       "foreground": "ink",
-      "foregroundHex": "#201C16",
+      "foregroundHex": "#1D1B18",
       "background": "paper-deep",
-      "backgroundHex": "#E4DAC5",
-      "ratio": 12.21,
+      "backgroundHex": "#E9E2D2",
+      "ratio": 13.32,
       "minRequired": 4.5,
-      "passesAA": true,
+      "passes": true,
       "gate": true,
       "usedIn": [
-        "components/grid/MonthGrid.tsx — today's cell on bg-paper-deep/70"
+        ".chip — app/globals.css",
+        ".panel-inset — app/globals.css"
       ]
     },
     {
+      "theme": "light",
       "foreground": "indigo",
-      "foregroundHex": "#2B4470",
+      "foregroundHex": "#2C4A8F",
       "background": "paper",
-      "backgroundHex": "#EFE8D8",
-      "ratio": 7.95,
+      "backgroundHex": "#F4F0E6",
+      "ratio": 7.43,
       "minRequired": 4.5,
-      "passesAA": true,
+      "passes": true,
       "gate": true,
       "usedIn": [
         "components/trace/TraceValue.tsx",
-        "components/home/TodayCard.tsx",
-        "app/[locale]/page.tsx"
+        "app/[locale]/ubah/ConversionView.tsx — the weton figure"
       ]
     },
     {
+      "theme": "light",
       "foreground": "indigo",
-      "foregroundHex": "#2B4470",
+      "foregroundHex": "#2C4A8F",
       "background": "paper-raised",
-      "backgroundHex": "#F5F1E6",
-      "ratio": 8.6,
+      "backgroundHex": "#FBF8F1",
+      "ratio": 7.97,
       "minRequired": 4.5,
-      "passesAA": true,
+      "passes": true,
       "gate": true,
       "usedIn": [
-        ".panel — app/globals.css, carrying computed values throughout"
+        ".panel — app/globals.css, carrying computed values throughout",
+        "components/wheels/CycleWheels.tsx — labels on the instrument surface"
       ]
     },
     {
+      "theme": "light",
       "foreground": "indigo",
-      "foregroundHex": "#2B4470",
+      "foregroundHex": "#2C4A8F",
       "background": "paper-deep",
-      "backgroundHex": "#E4DAC5",
-      "ratio": 6.99,
+      "backgroundHex": "#E9E2D2",
+      "ratio": 6.55,
       "minRequired": 4.5,
-      "passesAA": true,
+      "passes": true,
       "gate": true,
       "usedIn": [
-        ".panel-inset — app/globals.css, carrying computed values throughout"
+        ".chip — app/globals.css, computed value in a fact chip",
+        ".panel-inset — app/globals.css"
       ]
     },
     {
+      "theme": "light",
       "foreground": "unverified",
       "foregroundHex": "#5E5950",
       "background": "paper",
-      "backgroundHex": "#EFE8D8",
-      "ratio": 5.7,
+      "backgroundHex": "#F4F0E6",
+      "ratio": 6.11,
       "minRequired": 4.5,
-      "passesAA": true,
+      "passes": true,
       "gate": true,
       "usedIn": [
         "components/trace/TraceValue.tsx — RefusalNotice",
@@ -99,79 +114,464 @@
       ]
     },
     {
+      "theme": "light",
       "foreground": "unverified",
       "foregroundHex": "#5E5950",
       "background": "paper-raised",
-      "backgroundHex": "#F5F1E6",
-      "ratio": 6.16,
+      "backgroundHex": "#FBF8F1",
+      "ratio": 6.55,
       "minRequired": 4.5,
-      "passesAA": true,
+      "passes": true,
       "gate": true,
       "usedIn": [
-        "components/grid/MonthGrid.tsx — unverified wuku label on bg-paper-raised/80"
+        "components/grid/MonthGrid.tsx — unverified wuku label"
       ]
     },
     {
+      "theme": "light",
       "foreground": "unverified",
       "foregroundHex": "#5E5950",
       "background": "paper-deep",
-      "backgroundHex": "#E4DAC5",
-      "ratio": 5.01,
+      "backgroundHex": "#E9E2D2",
+      "ratio": 5.39,
       "minRequired": 4.5,
-      "passesAA": true,
+      "passes": true,
       "gate": true,
       "usedIn": [
-        "app/[locale]/kurup/DivergenceView.tsx — divergence banner on bg-paper-deep/35"
+        ".chip — app/globals.css, an unverified value in a fact chip"
       ]
     },
     {
+      "theme": "light",
+      "foreground": "paper",
+      "foregroundHex": "#F4F0E6",
+      "background": "ink",
+      "backgroundHex": "#1D1B18",
+      "ratio": 15.1,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        ".btn-solid — app/globals.css",
+        ".seg chosen option — app/globals.css"
+      ]
+    },
+    {
+      "theme": "light",
       "foreground": "ochre",
-      "foregroundHex": "#B08A3E",
+      "foregroundHex": "#9E7226",
       "background": "paper",
-      "backgroundHex": "#EFE8D8",
-      "ratio": 2.63,
-      "minRequired": 4.5,
-      "passesAA": false,
-      "gate": false,
-      "usedIn": [
-        "components/wheels/CycleWheels.tsx — tick marks and coincidence-ray stroke (graphical, not text)"
-      ]
-    },
-    {
-      "foreground": "paper",
-      "foregroundHex": "#EFE8D8",
-      "background": "indigo",
-      "backgroundHex": "#2B4470",
-      "ratio": 7.95,
-      "minRequired": 4.5,
-      "passesAA": true,
+      "backgroundHex": "#F4F0E6",
+      "ratio": 3.77,
+      "minRequired": 3,
+      "passes": true,
       "gate": true,
       "usedIn": [
-        "app/[locale]/layout.tsx — header wordmark on bg-indigo",
-        ".btn-solid — app/globals.css"
+        ":focus-visible — app/globals.css (focus ring)",
+        "components/wheels/CycleWheels.tsx — segment ticks (graphical, not text)"
       ]
     },
     {
-      "foreground": "paper",
-      "foregroundHex": "#EFE8D8",
-      "background": "indigo-deep",
-      "backgroundHex": "#1E3157",
-      "ratio": 10.54,
-      "minRequired": 4.5,
-      "passesAA": true,
+      "theme": "light",
+      "foreground": "ochre",
+      "foregroundHex": "#9E7226",
+      "background": "paper-deep",
+      "backgroundHex": "#E9E2D2",
+      "ratio": 3.33,
+      "minRequired": 3,
+      "passes": true,
       "gate": true,
       "usedIn": [
-        ".btn-solid:hover — app/globals.css"
+        ":focus-visible on a chip or inset panel — app/globals.css"
       ]
     },
     {
+      "theme": "light",
       "foreground": "rubric",
-      "foregroundHex": "#A83C28",
+      "foregroundHex": "#A63A26",
       "background": "paper",
-      "backgroundHex": "#EFE8D8",
-      "ratio": 5.15,
+      "backgroundHex": "#F4F0E6",
+      "ratio": 5.67,
       "minRequired": 4.5,
-      "passesAA": true,
+      "passes": true,
+      "gate": false,
+      "usedIn": []
+    },
+    {
+      "theme": "dark",
+      "foreground": "ink",
+      "foregroundHex": "#ECE5D5",
+      "background": "paper",
+      "backgroundHex": "#13120F",
+      "ratio": 14.93,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        "app/globals.css — html base text colour"
+      ]
+    },
+    {
+      "theme": "dark",
+      "foreground": "ink",
+      "foregroundHex": "#ECE5D5",
+      "background": "paper-raised",
+      "backgroundHex": "#1C1A16",
+      "ratio": 13.85,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        ".panel — app/globals.css",
+        "components/grid/MonthGrid.tsx — day cells"
+      ]
+    },
+    {
+      "theme": "dark",
+      "foreground": "ink",
+      "foregroundHex": "#ECE5D5",
+      "background": "paper-deep",
+      "backgroundHex": "#26231D",
+      "ratio": 12.48,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        ".chip — app/globals.css",
+        ".panel-inset — app/globals.css"
+      ]
+    },
+    {
+      "theme": "dark",
+      "foreground": "indigo",
+      "foregroundHex": "#A9BCF5",
+      "background": "paper",
+      "backgroundHex": "#13120F",
+      "ratio": 9.99,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        "components/trace/TraceValue.tsx",
+        "app/[locale]/ubah/ConversionView.tsx — the weton figure"
+      ]
+    },
+    {
+      "theme": "dark",
+      "foreground": "indigo",
+      "foregroundHex": "#A9BCF5",
+      "background": "paper-raised",
+      "backgroundHex": "#1C1A16",
+      "ratio": 9.27,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        ".panel — app/globals.css, carrying computed values throughout",
+        "components/wheels/CycleWheels.tsx — labels on the instrument surface"
+      ]
+    },
+    {
+      "theme": "dark",
+      "foreground": "indigo",
+      "foregroundHex": "#A9BCF5",
+      "background": "paper-deep",
+      "backgroundHex": "#26231D",
+      "ratio": 8.35,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        ".chip — app/globals.css, computed value in a fact chip",
+        ".panel-inset — app/globals.css"
+      ]
+    },
+    {
+      "theme": "dark",
+      "foreground": "unverified",
+      "foregroundHex": "#A59E90",
+      "background": "paper",
+      "backgroundHex": "#13120F",
+      "ratio": 7.04,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        "components/trace/TraceValue.tsx — RefusalNotice",
+        "components/trace/Derivation.tsx",
+        "app/[locale]/sumber/page.tsx"
+      ]
+    },
+    {
+      "theme": "dark",
+      "foreground": "unverified",
+      "foregroundHex": "#A59E90",
+      "background": "paper-raised",
+      "backgroundHex": "#1C1A16",
+      "ratio": 6.53,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        "components/grid/MonthGrid.tsx — unverified wuku label"
+      ]
+    },
+    {
+      "theme": "dark",
+      "foreground": "unverified",
+      "foregroundHex": "#A59E90",
+      "background": "paper-deep",
+      "backgroundHex": "#26231D",
+      "ratio": 5.89,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        ".chip — app/globals.css, an unverified value in a fact chip"
+      ]
+    },
+    {
+      "theme": "dark",
+      "foreground": "paper",
+      "foregroundHex": "#13120F",
+      "background": "ink",
+      "backgroundHex": "#ECE5D5",
+      "ratio": 14.93,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        ".btn-solid — app/globals.css",
+        ".seg chosen option — app/globals.css"
+      ]
+    },
+    {
+      "theme": "dark",
+      "foreground": "ochre",
+      "foregroundHex": "#D2AC5E",
+      "background": "paper",
+      "backgroundHex": "#13120F",
+      "ratio": 8.74,
+      "minRequired": 3,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        ":focus-visible — app/globals.css (focus ring)",
+        "components/wheels/CycleWheels.tsx — segment ticks (graphical, not text)"
+      ]
+    },
+    {
+      "theme": "dark",
+      "foreground": "ochre",
+      "foregroundHex": "#D2AC5E",
+      "background": "paper-deep",
+      "backgroundHex": "#26231D",
+      "ratio": 7.31,
+      "minRequired": 3,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        ":focus-visible on a chip or inset panel — app/globals.css"
+      ]
+    },
+    {
+      "theme": "dark",
+      "foreground": "rubric",
+      "foregroundHex": "#E5826B",
+      "background": "paper",
+      "backgroundHex": "#13120F",
+      "ratio": 6.9,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": false,
+      "usedIn": []
+    },
+    {
+      "theme": "instrument",
+      "foreground": "ink",
+      "foregroundHex": "#EDE6D6",
+      "background": "paper",
+      "backgroundHex": "#1A1815",
+      "ratio": 14.25,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        "app/globals.css — html base text colour"
+      ]
+    },
+    {
+      "theme": "instrument",
+      "foreground": "ink",
+      "foregroundHex": "#EDE6D6",
+      "background": "paper-raised",
+      "backgroundHex": "#221F1B",
+      "ratio": 13.2,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        ".panel — app/globals.css",
+        "components/grid/MonthGrid.tsx — day cells"
+      ]
+    },
+    {
+      "theme": "instrument",
+      "foreground": "ink",
+      "foregroundHex": "#EDE6D6",
+      "background": "paper-deep",
+      "backgroundHex": "#2A2620",
+      "ratio": 12.09,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        ".chip — app/globals.css",
+        ".panel-inset — app/globals.css"
+      ]
+    },
+    {
+      "theme": "instrument",
+      "foreground": "indigo",
+      "foregroundHex": "#A9BCF5",
+      "background": "paper",
+      "backgroundHex": "#1A1815",
+      "ratio": 9.45,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        "components/trace/TraceValue.tsx",
+        "app/[locale]/ubah/ConversionView.tsx — the weton figure"
+      ]
+    },
+    {
+      "theme": "instrument",
+      "foreground": "indigo",
+      "foregroundHex": "#A9BCF5",
+      "background": "paper-raised",
+      "backgroundHex": "#221F1B",
+      "ratio": 8.75,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        ".panel — app/globals.css, carrying computed values throughout",
+        "components/wheels/CycleWheels.tsx — labels on the instrument surface"
+      ]
+    },
+    {
+      "theme": "instrument",
+      "foreground": "indigo",
+      "foregroundHex": "#A9BCF5",
+      "background": "paper-deep",
+      "backgroundHex": "#2A2620",
+      "ratio": 8.02,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        ".chip — app/globals.css, computed value in a fact chip",
+        ".panel-inset — app/globals.css"
+      ]
+    },
+    {
+      "theme": "instrument",
+      "foreground": "unverified",
+      "foregroundHex": "#A59E90",
+      "background": "paper",
+      "backgroundHex": "#1A1815",
+      "ratio": 6.66,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        "components/trace/TraceValue.tsx — RefusalNotice",
+        "components/trace/Derivation.tsx",
+        "app/[locale]/sumber/page.tsx"
+      ]
+    },
+    {
+      "theme": "instrument",
+      "foreground": "unverified",
+      "foregroundHex": "#A59E90",
+      "background": "paper-raised",
+      "backgroundHex": "#221F1B",
+      "ratio": 6.17,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        "components/grid/MonthGrid.tsx — unverified wuku label"
+      ]
+    },
+    {
+      "theme": "instrument",
+      "foreground": "unverified",
+      "foregroundHex": "#A59E90",
+      "background": "paper-deep",
+      "backgroundHex": "#2A2620",
+      "ratio": 5.65,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        ".chip — app/globals.css, an unverified value in a fact chip"
+      ]
+    },
+    {
+      "theme": "instrument",
+      "foreground": "paper",
+      "foregroundHex": "#1A1815",
+      "background": "ink",
+      "backgroundHex": "#EDE6D6",
+      "ratio": 14.25,
+      "minRequired": 4.5,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        ".btn-solid — app/globals.css",
+        ".seg chosen option — app/globals.css"
+      ]
+    },
+    {
+      "theme": "instrument",
+      "foreground": "ochre",
+      "foregroundHex": "#D2AC5E",
+      "background": "paper",
+      "backgroundHex": "#1A1815",
+      "ratio": 8.27,
+      "minRequired": 3,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        ":focus-visible — app/globals.css (focus ring)",
+        "components/wheels/CycleWheels.tsx — segment ticks (graphical, not text)"
+      ]
+    },
+    {
+      "theme": "instrument",
+      "foreground": "ochre",
+      "foregroundHex": "#D2AC5E",
+      "background": "paper-deep",
+      "backgroundHex": "#2A2620",
+      "ratio": 7.02,
+      "minRequired": 3,
+      "passes": true,
+      "gate": true,
+      "usedIn": [
+        ":focus-visible on a chip or inset panel — app/globals.css"
+      ]
+    },
+    {
+      "theme": "instrument",
+      "foreground": "rubric",
+      "foregroundHex": "#E5826B",
+      "background": "paper",
+      "backgroundHex": "#1A1815",
+      "ratio": 6.53,
+      "minRequired": 4.5,
+      "passes": true,
       "gate": false,
       "usedIn": []
     }

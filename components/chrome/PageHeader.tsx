@@ -14,7 +14,7 @@ export function PageHeader({
 }) {
   return (
     <header className="border-b hairline pb-6">
-      <h1 className="font-prose text-title">{title}</h1>
+      <h1 className="font-display text-title">{title}</h1>
       <p className="lede mt-3 max-w-measure">{intro}</p>
       {aside ? <div className="mt-4">{aside}</div> : null}
     </header>

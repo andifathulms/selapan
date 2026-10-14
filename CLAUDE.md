@@ -34,6 +34,7 @@ pnpm test:cycles            # cycle-period invariants over a century
 pnpm test:anchors           # cited anchor fixtures
 pnpm test:kurup             # kurup boundaries, Aboge/Asapon divergence
 pnpm data:validate          # anchor + primbon citation presence, schema
+pnpm contrast:validate      # every palette (light, dark, instrument) against WCAG
 pnpm typecheck
 pnpm lint
 ```
@@ -126,9 +127,9 @@ tests/
 - Integers throughout. JDN, cycle offsets, neptu, and year numbers are all integers. No floats anywhere in `lib/`.
 - Anchor ids stable and readable: `anchor.pasaran.1633`, `anchor.wuku.pawukon`, `kurup.asapon.1936`. They appear in traces and citations.
 - Comments cite the source for any rule they implement — the anchor, the kurup transition, the month-length pattern.
-- Tailwind utilities inline; semantic tokens in `tailwind.config.ts` — `paper`, `ink`, `indigo`, `rubric`, `ochre`, `unverified`. Never raw hex in components.
-- Headings use the shared steps `text-display`, `text-title`, `text-section`, and `text-figure` (the single value a reader came for). They scale with the viewport; do not reach for a raw `text-2xl`.
-- Surfaces and controls come from the component layer in `globals.css` — `.panel`, `.panel-inset`, `.btn`, `.btn-solid`, `.field`, `.lede`. New controls use `.btn`/`.field` so touch targets stay consistent; `paper-raised` and `paper-deep` are tints of the same stock, not new hues.
+- Tailwind utilities inline; semantic tokens — `paper`, `paper-raised`, `paper-deep`, `ink`, `indigo`, `rubric`, `ochre`, `unverified`, `instrument` — defined once in `theme/palette.ts` for light, dark, and the `.instrument` surface, and resolved through CSS custom properties. Never raw hex in components. Primary buttons, tabs and links are `ink`; `indigo` is for computed values only, `ochre` for wheel marks and focus.
+- Headings use the shared steps `text-display`, `text-title`, `text-section`, and `text-figure` (the single value a reader came for). They scale with the viewport; do not reach for a raw `text-2xl`. `text-display`, `text-title` and `text-figure` pair with `font-display` (Young Serif); `text-section` with `font-ui font-semibold`. Mono is for working-out, not for the answer.
+- Surfaces and controls come from the component layer in `globals.css` — `.panel`, `.panel-inset`, `.btn`, `.btn-solid`, `.field`, `.seg`, `.chip`, `.lede`, and `.instrument` + `.instrument-panel` for anything a wheel sits on. New controls use `.btn`/`.field`/`.seg` so touch targets stay consistent; `paper-raised` and `paper-deep` are tints of the same stock, not new hues.
 - Page titles go through `components/chrome/PageHeader`, and destinations through `lib/nav.ts`, so the header and the home cards cannot drift.
 
 ## Testing rules

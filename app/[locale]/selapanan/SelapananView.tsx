@@ -56,7 +56,7 @@ export function SelapananView({
 
       <div className="mt-8 grid gap-10 lg:grid-cols-2">
         <section>
-          <h2 className="font-prose text-section">{t.selapanan.upcoming}</h2>
+          <h2 className="font-ui text-section font-semibold">{t.selapanan.upcoming}</h2>
           <DateAxis points={upcomingPoints} max={upcomingMax} />
           <table className="almanac-table mt-5">
             <thead>
@@ -83,7 +83,7 @@ export function SelapananView({
         </section>
 
         <section>
-          <h2 className="font-prose text-section">{t.selapanan.slametan}</h2>
+          <h2 className="font-ui text-section font-semibold">{t.selapanan.slametan}</h2>
           <p className="mt-1 text-sm text-ink/70">{t.selapanan.slametanIntro}</p>
           <DateAxis points={slametanPoints} max={slametanMax} />
           <table className="almanac-table mt-5">

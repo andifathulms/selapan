@@ -1,13 +1,24 @@
 import type { Metadata, Viewport } from 'next'
-import { Petrona, Karla, Sometype_Mono } from 'next/font/google'
+import { Petrona, Schibsted_Grotesk, Sometype_Mono, Young_Serif } from 'next/font/google'
+import { DARK, LIGHT } from '@/theme/palette'
 import './globals.css'
 
 /*
- * Petrona for prose — a text serif with the warmth of a printed almanac.
- * Sometype Mono for dates, numbers, and the arithmetic trace, for its
- * typewriter quality: it should read as working-out. Karla for controls.
+ * Young Serif for the figure a reader came for — a weton, a mangsa — and for
+ * page titles: the weight and warmth of an almanac heading, and it holds up
+ * at 90px. Petrona for prose — a text serif with the warmth of a printed
+ * almanac. Sometype Mono for the arithmetic trace, for its typewriter
+ * quality: it should read as working-out, not as the answer. Schibsted
+ * Grotesk for controls and labels, crisp at small sizes.
  * Self-hosted by next/font, so the site stays fully offline after first load.
  */
+const youngSerif = Young_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-display',
+  display: 'swap',
+})
+
 const petrona = Petrona({
   subsets: ['latin'],
   weight: ['400', '600'],
@@ -15,9 +26,9 @@ const petrona = Petrona({
   display: 'swap',
 })
 
-const karla = Karla({
+const schibsted = Schibsted_Grotesk({
   subsets: ['latin'],
-  weight: ['400', '600'],
+  weight: ['400', '500', '600'],
   variable: '--font-ui',
   display: 'swap',
 })
@@ -74,15 +85,19 @@ export const metadata: Metadata = {
   twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION },
 }
 
-// The ink of the brand tile, so a phone's browser chrome matches the icon
-// sitting next to it in the task switcher.
+// A phone's browser chrome takes the page's own paper, light or dark, so the
+// page runs edge to edge rather than under a bar of a different colour.
+// Same values as `paper` in theme/palette.ts.
 export const viewport: Viewport = {
-  themeColor: '#2B2620',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: LIGHT.paper },
+    { media: '(prefers-color-scheme: dark)', color: DARK.paper },
+  ],
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" className={`${petrona.variable} ${karla.variable} ${sometype.variable}`}>
+    <html lang="id" className={`${youngSerif.variable} ${petrona.variable} ${schibsted.variable} ${sometype.variable}`}>
       <body className="bg-paper text-ink antialiased">{children}</body>
     </html>
   )

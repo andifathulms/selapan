@@ -155,13 +155,17 @@ The material world is the **printed primbon**: letterpress on aged paper, dense 
 
 **That two-colour tradition carries the ethical distinction in §4.** Rubric red `#A83C28` is used *only* for the primbon layer — traditional interpretation, quoted from a source. Indigo `#2B4470` is used *only* for computed, verifiable values. The reader learns within seconds which is which, without being lectured, and the palette makes it impossible to blur them.
 
-**Palette.** Aged paper `#EFE8D8`. Ink `#201C16` for structure and prose. Indigo `#2B4470` for computation. Rubric red `#A83C28` for tradition. Ochre `#B08A3E` for cycle markers on the wheels. Muted grey `#8C8578` for out-of-range and unverified values.
+**Palette.** Held as data in `theme/palette.ts`, the single source for the CSS custom properties and the build-time contrast gate. Paper `#F4F0E6`. Ink `#1D1B18` for structure, prose and controls — primary buttons are ink, never indigo. Indigo (nila) `#2C4A8F` for computation only. Rubric red (abang) `#A63A26` for tradition only. Ochre (prada) `#9E7226` for cycle markers on the wheels and for focus rings — graphical only, never body text. Muted grey `#5E5950` for out-of-range and unverified values. The wheels sit on an ink-dark **instrument** surface `#1A1815`, which re-scopes the same roles (nila `#A9BCF5` for computed values there); it is ink rather than indigo so that blue never means "background".
 
-**Type.** Tables are the content, so tabular figures throughout. **Petrona** for prose and headings — a text serif with vernacular warmth, in the register of a printed almanac. **Sometype Mono** for dates, numbers, and the arithmetic trace, with a typewriter quality that reads as working-out. **Karla** for controls.
+**Dark theme ("wengi").** Follows the system setting. Same roles, re-derived against a dark stock: paper `#13120F`, ink `#ECE5D5`, nila `#A9BCF5`, abang `#E5826B`, prada `#D2AC5E`, grey `#A59E90`. Every text pair is gated at 4.5:1 and prada at 3:1 in all three palettes (light, dark, instrument) by `pnpm contrast:validate`.
+
+**Type.** Tables are the content, so tabular figures throughout. **Young Serif** for page titles and for the single figure a reader came for — a weton, a mangsa. **Petrona** for prose — a text serif with vernacular warmth, in the register of a printed almanac. **Sometype Mono** for the arithmetic trace, JDNs and dates in tables, with a typewriter quality that reads as working-out rather than as the answer. **Schibsted Grotesk** for controls and labels.
+
+**Shape.** Two radii only: 8px for controls, 14px for panels. No shadows on the page; depth comes from rules and stock.
 
 **Structure.** Dense tables with hairline rules, in the manner of an almanac page — the density is authentic and appropriate, not something to design away. The calendar grid follows the familiar Indonesian wall-calendar layout, with secondary dates in small print beneath each Gregorian day.
 
-**Motion.** One orchestrated moment: stepping a day rotates all three cycle rings by one position, and the rings visibly return to alignment at 35 days. That single animation teaches the modular arithmetic more effectively than any explanation. Nothing else moves.
+**Motion.** One orchestrated moment: stepping a day rotates every cycle ring by one position, and the rings visibly return to alignment at 35 days. That single animation teaches the modular arithmetic more effectively than any explanation. One supporting fade beside it: the answer cross-fades (180 ms) when the date changes, so stepping reads as continuous. Nothing else moves, and `prefers-reduced-motion` makes both instant.
 
 **Copy.** Indonesian first, Javanese terminology always — *weton*, *pasaran*, *neptu*, *wuku*, *windu*, *kurup*, *selapanan*, *mangsa* — glossed on first use, never replaced with English approximations. Interpretations are always attributed: *"Menurut Primbon [sumber], …"* Never *"Anda akan …"*.
 

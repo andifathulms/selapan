@@ -33,13 +33,13 @@ export default function ErrorBoundary({
 
   return (
     <main className="mx-auto max-w-lg px-6 py-24">
-      <Link href={`/${DEFAULT_LOCALE}/`} className="flex items-center gap-3 font-prose text-title">
+      <Link href={`/${DEFAULT_LOCALE}/`} className="flex items-center gap-3 font-display text-title">
         <SelapanMark size={32} />
         Selapan
       </Link>
 
       <p className="mt-8 font-mono text-sm uppercase tracking-widest text-unverified">Galat</p>
-      <h1 className="mt-1 font-prose text-title">Terjadi kesalahan</h1>
+      <h1 className="mt-1 font-display text-title">Terjadi kesalahan</h1>
       <p className="lede mt-3 max-w-measure">
         Halaman ini gagal ditampilkan. Bukan tafsir yang keliru dan dilewatkan diam-diam — sesuatu
         benar-benar patah, dan dicatat sebagai patah.

@@ -89,7 +89,7 @@ function ReckoningPanel({
   return (
     <section className="panel p-5">
       <header className="flex items-baseline justify-between gap-3 border-b hairline pb-3">
-        <h2 className="font-prose text-section">{title}</h2>
+        <h2 className="font-ui text-section font-semibold">{title}</h2>
         <span className="font-ui text-xs uppercase tracking-widest text-ink/50">{subtitle}</span>
       </header>
 
@@ -106,7 +106,7 @@ function ReckoningPanel({
         <>
           <p
             className={[
-              'mt-4 text-figure',
+              'mt-4 font-display text-title',
               trace.lunar.value.derivation.status === 'unverified'
                 ? 'unverified-value'
                 : 'computed',

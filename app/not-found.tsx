@@ -32,20 +32,20 @@ export default function NotFound() {
 
   return (
     <main className="mx-auto max-w-lg px-6 py-24">
-      <Link href={`/${DEFAULT_LOCALE}/`} className="flex items-center gap-3 font-prose text-title">
+      <Link href={`/${DEFAULT_LOCALE}/`} className="flex items-center gap-3 font-display text-title">
         <SelapanMark size={32} />
         Selapan
       </Link>
 
       <p className="mt-8 font-mono text-sm uppercase tracking-widest text-ink/50">404</p>
-      <h1 className="mt-1 font-prose text-title">Halaman tidak ditemukan</h1>
+      <h1 className="mt-1 font-display text-title">Halaman tidak ditemukan</h1>
       <p className="lede mt-3 max-w-measure">
         Alamat ini tidak ada di Selapan. Tautannya mungkin sudah berubah, atau salah ketik.
       </p>
 
       <div className="panel mt-8 p-5">
         <span className="rule-label">Weton hari ini</span>
-        <p className="computed mt-1 min-h-[1.75rem] text-figure">{trace ? trace.weton.name : ' '}</p>
+        <p className="computed mt-1 min-h-[1.75rem] font-display text-figure">{trace ? trace.weton.name : ' '}</p>
       </div>
 
       <ul className="mt-8 space-y-2">

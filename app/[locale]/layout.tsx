@@ -27,7 +27,7 @@ export default function LocaleLayout({
     <div className="flex min-h-screen flex-col">
       <a
         href="#isi"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-indigo focus:px-4 focus:py-2 focus:font-ui focus:text-sm focus:text-paper"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-control focus:bg-ink focus:px-4 focus:py-2 focus:font-ui focus:text-sm focus:text-paper"
       >
         {t.common.skipToContent}
       </a>

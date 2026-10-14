@@ -21,7 +21,7 @@ export default function KurupPage({ params }: { params: { locale: string } }) {
       </div>
 
       <section className="mt-14 border-t hairline pt-8">
-        <h2 className="font-prose text-section">{t.kurup.table}</h2>
+        <h2 className="font-ui text-section font-semibold">{t.kurup.table}</h2>
         <div className="mt-4 overflow-x-auto">
           <table className="almanac-table min-w-[42rem]">
             <thead>

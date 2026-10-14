@@ -52,7 +52,7 @@ export function CalendarView({ t }: { t: Dictionary }) {
       />
 
       <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
-        <h2 className="font-prose text-section">
+        <h2 className="font-ui text-section font-semibold">
           {MONTHS_ID[month - 1]} <span className="font-mono tabular-nums">{year}</span>
         </h2>
         <div className="flex gap-1.5">

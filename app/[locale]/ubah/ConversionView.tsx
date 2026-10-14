@@ -67,7 +67,7 @@ export function ConversionView({ t }: { t: Dictionary }) {
       <section className="mt-8 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 border-b hairline pb-6">
         <div>
           <span className="rule-label">{t.labels.weton}</span>
-          <p className="computed mt-1 text-figure">{trace.weton.name}</p>
+          <p className="computed answer-fade mt-1 font-display text-figure">{trace.weton.name}</p>
         </div>
         <p className="font-mono text-sm text-ink/55">
           {formatGregorian(trace.gregorian)} · {t.labels.neptu} {trace.weton.neptu.total}
@@ -308,7 +308,7 @@ function ReverseConversion({
 
   return (
     <section className="panel mt-14 p-6 sm:p-7">
-      <h2 className="font-prose text-section">{t.ubah.reverse}</h2>
+      <h2 className="font-ui text-section font-semibold">{t.ubah.reverse}</h2>
       <p className="mt-2 max-w-measure text-ink/75">{t.ubah.reverseIntro}</p>
 
       <div className="mt-5 flex flex-wrap items-end gap-3">
