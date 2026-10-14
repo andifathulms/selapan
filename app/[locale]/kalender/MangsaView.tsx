@@ -4,9 +4,9 @@ import type { CalendarTrace } from '@/lib/trace'
 import type { Dictionary } from '@/lib/i18n'
 
 /**
- * The current mangsa panel — a sweep of /ubah/'s instrument along the solar
- * year, not a page of its own (DESIGN-REWORK §4). The date and its trace
- * come from the caller, which already computed both; this renders them.
+ * The current mangsa panel, at the head of Kalender's year view. The date
+ * and its trace come from the caller, which already computed both; this
+ * renders them.
  */
 export function MangsaView({ t, date, trace }: { t: Dictionary; date: GregorianDate; trace: CalendarTrace }) {
   const result = mangsaFor(date)

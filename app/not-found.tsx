@@ -51,7 +51,7 @@ export default function NotFound() {
       <ul className="mt-8 space-y-2">
         {LOCALES.map((locale) => (
           <li key={locale}>
-            <Link href={`/${locale}/ubah/`} className="text-indigo underline underline-offset-4">
+            <Link href={`/${locale}/weton/`} className="text-indigo underline underline-offset-4">
               {LOCALE_LABEL[locale]}
             </Link>
           </li>

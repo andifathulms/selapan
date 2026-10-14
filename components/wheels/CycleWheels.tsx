@@ -236,7 +236,7 @@ function EqualRing({
       Today always sits under the ray by construction, so it cannot show a
       divergence on its own — where two reckonings' month starts land
       relative to the same fixed ray is what does (DESIGN-REWORK §3.3, the
-      two lunar rings on /kurup/). */
+      two lunar rings on /pelajari/kurup/). */
   markStart?: boolean
   /** A derivation drawer for this ring is open. Boosts the same band
       `emphasiseCurrent` already draws (or draws one for pasaran/dina, which

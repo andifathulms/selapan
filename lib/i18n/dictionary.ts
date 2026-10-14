@@ -8,10 +8,9 @@ import type { Locale } from './locales'
  * ever phrased as a statement about the reader — this release computes
  * dates and does not interpret them (PRD §4).
  */
-/** The four destinations. Named once, so nav labels and blurbs cannot drift.
-    Selapanan and mangsa are not separate destinations — they are sweeps of
-    the one instrument on /ubah/ (DESIGN-REWORK §4). */
-export type NavKey = 'ubah' | 'kalender' | 'kurup' | 'sumber'
+/** The four destinations, named for what a reader came to do. Named once,
+    so nav labels, the phone tab bar and the home tiles cannot drift. */
+export type NavKey = 'weton' | 'kalender' | 'hitungan' | 'pelajari'
 
 export type Dictionary = {
   readonly nav: Record<NavKey, string>
@@ -95,6 +94,21 @@ export type Dictionary = {
     readonly start: string
   }
   readonly navBlurb: Record<NavKey, string>
+  readonly chrome: {
+    readonly menu: string
+    readonly datePill: string
+    readonly changeDate: string
+    readonly close: string
+    readonly openWeton: string
+    readonly share: string
+  }
+  readonly pelajari: {
+    readonly title: string
+    readonly intro: string
+    readonly deeper: string
+    readonly kurupBlurb: string
+    readonly sumberBlurb: string
+  }
   readonly ubah: {
     readonly title: string
     readonly intro: string
@@ -108,14 +122,14 @@ export type Dictionary = {
     readonly month: string
     readonly day: string
     readonly convert: string
-    readonly sweepDate: string
-    readonly sweepSelapanan: string
-    readonly sweepMangsa: string
   }
   readonly kalender: {
     readonly title: string
     readonly intro: string
     readonly legend: string
+    readonly viewMonth: string
+    readonly viewYear: string
+    readonly yearIntro: string
   }
   readonly kurup: {
     readonly title: string
@@ -157,10 +171,10 @@ export type Dictionary = {
 
 const id: Dictionary = {
   nav: {
-    ubah: 'Ubah',
+    weton: 'Weton',
     kalender: 'Kalender',
-    kurup: 'Kurup',
-    sumber: 'Sumber',
+    hitungan: 'Hitungan',
+    pelajari: 'Pelajari',
   },
   site: {
     title: 'Selapan',
@@ -251,13 +265,29 @@ const id: Dictionary = {
     start: 'Hitung sebuah tanggal',
   },
   navBlurb: {
-    ubah: 'Satu tanggal, perhitungan Jawa selengkapnya — weton, wuku, mangsa, tanggal lunar — dengan hitungan setiap tanggal selapanan dan mangsa di sekitarnya.',
-    kalender: 'Sebulan penuh dalam susunan kalender dinding — tanggal Masehi besar, pasaran dan tanggal Jawa di bawahnya.',
-    kurup: 'Mengapa hitungan Aboge dan Asapon bisa berbeda sehari, dan bagaimana selisih itu muncul.',
-    sumber: 'Setiap titik acuan dan tabel yang dipakai, sumbernya, dan daftar terbuka apa yang belum terverifikasi.',
+    weton: 'Satu tanggal, perhitungan Jawa selengkapnya — weton, neptu, wuku, tanggal Jawa — dengan hitungan setiap nilainya.',
+    kalender: 'Sebulan penuh dengan pasaran, tanggal Jawa, wuku, dan mangsa — atau setahun mangsa sekaligus.',
+    hitungan: 'Selapanan bayi dan tanggal slametan, dihitung dari satu tanggal.',
+    pelajari: 'Cara kerja siklus, kurup Aboge dan Asapon, dan semua sumbernya.',
+  },
+  chrome: {
+    menu: 'Menu utama',
+    datePill: 'Tanggal yang dihitung',
+    changeDate: 'Ganti tanggal',
+    close: 'Tutup',
+    openWeton: 'Buka weton tanggal ini',
+    share: 'Bagikan',
+  },
+  pelajari: {
+    title: 'Pelajari',
+    intro:
+      'Bagaimana empat siklus Jawa berjalan bersamaan, mengapa Aboge dan Asapon bisa berbeda, dan dari mana setiap angka di aplikasi ini berasal.',
+    deeper: 'Lebih dalam',
+    kurupBlurb: 'Mengapa hitungan Aboge dan Asapon bisa berbeda sehari, dan bagaimana selisih itu muncul.',
+    sumberBlurb: 'Setiap titik acuan dan tabel yang dipakai, sumbernya, dan daftar terbuka apa yang belum terverifikasi.',
   },
   ubah: {
-    title: 'Ubah tanggal',
+    title: 'Weton',
     intro:
       'Masukkan tanggal Masehi, dapatkan perhitungan Jawa selengkapnya. Setiap nilai bisa dibuka untuk melihat asal-usulnya.',
     groupDay: 'Hari dan siklusnya',
@@ -271,15 +301,16 @@ const id: Dictionary = {
     month: 'Bulan',
     day: 'Tanggal',
     convert: 'Hitung',
-    sweepDate: 'Tanggal',
-    sweepSelapanan: 'Selapanan',
-    sweepMangsa: 'Mangsa',
   },
   kalender: {
     title: 'Kalender bulanan',
     intro:
       'Susunan kalender dinding: tanggal Masehi besar, tanggal Jawa dan pasaran kecil di bawahnya. Bedanya, tiap angka di sini bisa ditelusuri sampai titik acuannya.',
     legend: 'Baris kecil di bawah tanggal: pasaran, tanggal Jawa, dan wuku.',
+    viewMonth: 'Bulan',
+    viewYear: 'Tahun · mangsa',
+    yearIntro:
+      'Pranata mangsa: kalender surya untuk pertanian, dua belas mangsa dengan panjang tak sama, terikat tahun tropis — lepas sama sekali dari pasaran, wuku, dan bulan Jawa.',
   },
   kurup: {
     title: 'Kurup dan perselisihannya',
@@ -330,10 +361,10 @@ const id: Dictionary = {
 
 const en: Dictionary = {
   nav: {
-    ubah: 'Convert',
+    weton: 'Weton',
     kalender: 'Calendar',
-    kurup: 'Kurup',
-    sumber: 'Sources',
+    hitungan: 'Counting',
+    pelajari: 'Learn',
   },
   site: {
     title: 'Selapan',
@@ -424,13 +455,29 @@ const en: Dictionary = {
     start: 'Convert a date',
   },
   navBlurb: {
-    ubah: 'One date, the full Javanese reckoning — weton, wuku, mangsa, lunar date — with the selapanan dates and the mangsa around it swept from the same instrument.',
-    kalender: 'A whole month in the wall-calendar layout — the Gregorian day large, pasaran and Javanese date beneath.',
-    kurup: 'Why the Aboge and Asapon reckonings can differ by a day, and how that difference arises.',
-    sumber: 'Every anchor and table the app uses, its source, and an open list of what is still unverified.',
+    weton: 'One date, the full Javanese reckoning — weton, neptu, wuku, Javanese date — with the working behind every value.',
+    kalender: 'A whole month with pasaran, Javanese date, wuku and mangsa — or a whole year of mangsa at once.',
+    hitungan: 'Selapanan for a newborn and slametan dates, counted from one date.',
+    pelajari: 'How the cycles work, the Aboge and Asapon kurup, and every source.',
+  },
+  chrome: {
+    menu: 'Main menu',
+    datePill: 'Date being reckoned',
+    changeDate: 'Change date',
+    close: 'Close',
+    openWeton: 'Open the weton for this date',
+    share: 'Share',
+  },
+  pelajari: {
+    title: 'Learn',
+    intro:
+      'How the four Javanese cycles run at once, why Aboge and Asapon can differ, and where every figure in this app comes from.',
+    deeper: 'Going further',
+    kurupBlurb: 'Why the Aboge and Asapon reckonings can differ by a day, and how that difference arises.',
+    sumberBlurb: 'Every anchor and table the app uses, its source, and an open list of what is still unverified.',
   },
   ubah: {
-    title: 'Convert a date',
+    title: 'Weton',
     intro:
       'Give a Gregorian date, get the full Javanese reckoning. Every value opens to show where it came from.',
     groupDay: 'The day and its cycles',
@@ -444,15 +491,16 @@ const en: Dictionary = {
     month: 'Month',
     day: 'Day',
     convert: 'Convert',
-    sweepDate: 'Date',
-    sweepSelapanan: 'Selapanan',
-    sweepMangsa: 'Mangsa',
   },
   kalender: {
     title: 'Month grid',
     intro:
       'The wall-calendar layout: the Gregorian day large, the Javanese date and pasaran small beneath it. The difference is that every figure here traces back to its anchor.',
     legend: 'The small line under each day: pasaran, Javanese date, and wuku.',
+    viewMonth: 'Month',
+    viewYear: 'Year · mangsa',
+    yearIntro:
+      'Pranata mangsa: the agricultural solar calendar, twelve mangsa of unequal length tied to the tropical year — wholly independent of pasaran, wuku and the Javanese month.',
   },
   kurup: {
     title: 'The kurup, and where it divides',

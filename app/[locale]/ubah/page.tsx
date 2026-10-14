@@ -1,22 +1,18 @@
 import { notFound } from 'next/navigation'
-import { getDictionary, isLocale, LOCALES, type Locale } from '@/lib/i18n'
-import { PageHeader } from '@/components/chrome/PageHeader'
-import { ConversionView } from './ConversionView'
+import { isLocale, LOCALES } from '@/lib/i18n'
+import { RetiredRoute, retiredMetadata } from '@/components/chrome/RetiredRoute'
 
 export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }))
 }
 
-export default function UbahPage({ params }: { params: { locale: string } }) {
-  if (!isLocale(params.locale)) notFound()
-  const t = getDictionary(params.locale as Locale)
+export function generateMetadata({ params }: { params: { locale: string } }) {
+  if (!isLocale(params.locale)) return {}
+  return retiredMetadata(`/${params.locale}/weton/`)
+}
 
-  return (
-    <article>
-      <PageHeader title={t.ubah.title} intro={t.ubah.intro} />
-      <div className="mt-8">
-        <ConversionView t={t} />
-      </div>
-    </article>
-  )
+/** The conversion page, renamed /weton/ — the word a reader actually searches for. Kept as a redirect so old links still land (RetiredRoute). */
+export default function UbahRedirect({ params }: { params: { locale: string } }) {
+  if (!isLocale(params.locale)) notFound()
+  return <RetiredRoute target={`/${params.locale}/weton/`} />
 }

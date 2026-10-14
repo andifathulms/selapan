@@ -58,7 +58,7 @@ export function TodayCard({ t, locale }: { t: Dictionary; locale: Locale }) {
       </dl>
 
       <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
-        <Link href={`/${locale}/ubah/`} className="btn btn-solid">
+        <Link href={`/${locale}/weton/`} className="btn btn-solid">
           {t.home.openTrace} →
         </Link>
         <p className="font-ui text-xs text-ink/50">{t.home.todayHint}</p>

@@ -46,12 +46,17 @@ pnpm lint
 ```
 app/
   [locale]/                 # id (default), en
-    ubah/                   # conversion + cycle wheels
-    kalender/               # month grid
-    kurup/                  # divergence view + sources
-    mangsa/                 # pranata mangsa
+    weton/                  # one date: answer, trace, wheel, reverse conversion
+    kalender/               # month grid + mangsa year view
+    hitungan/               # selapanan + slametan dates
+    pelajari/               # how the cycles work
+      kurup/                # divergence view + kurup table
+      sumber/               # every source and every gap
     primbon/                # cited interpretation tables — M6, gated
+    ubah/ mangsa/ selapanan/ kurup/ sumber/   # redirect stubs to the above
 components/
+  chrome/                   # header, date pill, menus, page header
+  controls/                 # shared date state (URL hash), stepper, options
   wheels/                   # concentric cycle rings
   trace/                    # expandable derivation
   grid/                     # wall-calendar layout
@@ -130,7 +135,8 @@ tests/
 - Tailwind utilities inline; semantic tokens — `paper`, `paper-raised`, `paper-deep`, `ink`, `indigo`, `rubric`, `ochre`, `unverified`, `instrument` — defined once in `theme/palette.ts` for light, dark, and the `.instrument` surface, and resolved through CSS custom properties. Never raw hex in components. Primary buttons, tabs and links are `ink`; `indigo` is for computed values only, `ochre` for wheel marks and focus.
 - Headings use the shared steps `text-display`, `text-title`, `text-section`, and `text-figure` (the single value a reader came for). They scale with the viewport; do not reach for a raw `text-2xl`. `text-display`, `text-title` and `text-figure` pair with `font-display` (Young Serif); `text-section` with `font-ui font-semibold`. Mono is for working-out, not for the answer.
 - Surfaces and controls come from the component layer in `globals.css` — `.panel`, `.panel-inset`, `.btn`, `.btn-solid`, `.field`, `.seg`, `.chip`, `.lede`, and `.instrument` + `.instrument-panel` for anything a wheel sits on. New controls use `.btn`/`.field`/`.seg` so touch targets stay consistent; `paper-raised` and `paper-deep` are tints of the same stock, not new hues.
-- Page titles go through `components/chrome/PageHeader`, and destinations through `lib/nav.ts`, so the header and the home cards cannot drift.
+- Page titles go through `components/chrome/PageHeader`, and destinations through `lib/nav.ts`, so the header, the phone tab bar and the home tiles cannot drift.
+- The date is shared state in the URL hash (`components/controls/useDateState`). The header's date pill sets it for every page; instances stay in sync through `DATE_HASH_EVENT`. Links that carry the hash use `prefetch={false}` — Pages serves route payloads as `text/plain`, so a click falls back to a full load of the URL the prefetch was made with, which would carry a stale date.
 
 ## Testing rules
 

@@ -1,65 +1,45 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { formatGregorian, jdnToGregorian } from '@/lib/jdn'
 import { SASI } from '@/lib/cycles'
 import { ERA_YEAR_AJ, MAX_YEAR_AJ, jdnFromLunar } from '@/lib/lunar'
-import { mangsaSource, mangsaTable, windowLabel } from '@/lib/mangsa'
 import { traceFor } from '@/lib/trace'
 import type { Dictionary } from '@/lib/i18n'
 import { CycleWheels, type HighlightRing } from '@/components/wheels/CycleWheels'
-import { DateControls } from '@/components/controls/DateControls'
 import { useDateState } from '@/components/controls/useDateState'
+import { ReckoningOptions } from '@/components/controls/ReckoningOptions'
+import { ShareButton } from '@/components/controls/ShareButton'
 import { RefusalNotice, TraceValue } from '@/components/trace/TraceValue'
-import { MangsaView } from '@/app/[locale]/mangsa/MangsaView'
-import { SelapananView } from '@/app/[locale]/selapanan/SelapananView'
-
-type Sweep = 'date' | 'selapanan' | 'mangsa'
-
-function isSweep(value: string | null): value is Sweep {
-  return value === 'date' || value === 'selapanan' || value === 'mangsa'
-}
 
 /**
  * Gregorian in, the full Javanese reckoning out, every value expandable
  * (PRD §6.2). Nothing is computed in this component — it renders a trace the
  * engine produced (CLAUDE.md invariant 16).
  *
- * One instrument, swept along three axes (DESIGN-REWORK §4): fix the date
- * (every cycle now), sweep the 35-day cycle forward (selapanan), sweep the
- * solar year (mangsa). The wheel stays in view throughout — only the detail
- * beside it changes — because it is the one thing all three sweeps share.
+ * The date itself is set in the header's date pill, shared with every page;
+ * this page carries the two choices that change how a date is reckoned, and
+ * the way to share the result. Selapanan now lives on /hitungan/ and the
+ * mangsa year on /kalender/, each on its own page.
  */
 export function ConversionView({ t }: { t: Dictionary }) {
-  const { state, hydrated, jdn, setDate, stepDays, goToday, setReckoning, setDayBoundary, setHour } =
-    useDateState()
-  const [sweep, setSweep] = useState<Sweep>('date')
+  const { state, hydrated, jdn, setDate, setReckoning, setDayBoundary, setHour } = useDateState()
   const [highlightRing, setHighlightRing] = useState<HighlightRing | null>(null)
-
-  // /mangsa/ and /selapanan/ retired into sweeps of this page; their redirect
-  // stubs land here with ?sweep= so a bookmarked or shared link still opens
-  // on the right one.
-  useEffect(() => {
-    const fromQuery = new URLSearchParams(window.location.search).get('sweep')
-    if (isSweep(fromQuery)) setSweep(fromQuery)
-  }, [])
 
   const trace = traceFor(jdn, state.options)
 
   return (
     <div>
-      <DateControls
-        date={state.date}
-        options={state.options}
-        t={t}
-        announce={`${trace.weton.name} · ${formatGregorian(trace.gregorian)}`}
-        onDate={setDate}
-        onStep={stepDays}
-        onToday={goToday}
-        onReckoning={setReckoning}
-        onDayBoundary={setDayBoundary}
-        onHour={setHour}
-      />
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <ReckoningOptions
+          options={state.options}
+          t={t}
+          onReckoning={setReckoning}
+          onDayBoundary={setDayBoundary}
+          onHour={setHour}
+        />
+        <ShareButton t={t} title={`${trace.weton.name} · ${formatGregorian(trace.gregorian)}`} />
+      </div>
 
       {/* The answer, before the apparatus that produced it. The weton is the
           pair, so it has no derivation of its own — the dina and pasaran rows
@@ -67,84 +47,35 @@ export function ConversionView({ t }: { t: Dictionary }) {
       <section className="mt-8 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 border-b hairline pb-6">
         <div>
           <span className="rule-label">{t.labels.weton}</span>
-          <p className="computed answer-fade mt-1 font-display text-figure">{trace.weton.name}</p>
+          <p key={trace.weton.name} className="computed answer-fade mt-1 font-display text-figure">
+            {trace.weton.name}
+          </p>
         </div>
-        <p className="font-mono text-sm text-ink/55">
+        <p className="font-mono text-sm text-ink/60">
           {formatGregorian(trace.gregorian)} · {t.labels.neptu} {trace.weton.neptu.total}
         </p>
       </section>
 
-      <SweepTabs
-        sweep={sweep}
-        onChange={(next) => {
-          setSweep(next)
-          if (next !== 'date') setHighlightRing(null)
-        }}
-        t={t}
-      />
-
-      <div className="mt-8 grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,400px)] md:gap-12">
+      <div className="mt-8 grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,420px)] md:gap-12">
         <div className="order-2 space-y-8 md:order-1">
-          {sweep === 'date' ? (
-            <DateSweep trace={trace} t={t} onHighlightChange={setHighlightRing} />
-          ) : sweep === 'selapanan' ? (
-            <SelapananView t={t} jdn={jdn} reckoning={state.options.reckoning} trace={trace} />
-          ) : (
-            <MangsaSweep date={state.date} trace={trace} t={t} />
-          )}
+          <DateSweep trace={trace} t={t} onHighlightChange={setHighlightRing} />
         </div>
 
         {/* The wheels lead on a phone: they carry the idea, and the rows are
-            the detail underneath it. On a wide screen both are in view. They
-            stay put across every sweep — it is the one instrument, read
-            three ways, not three instruments. */}
-        <section className="order-1 md:order-2 md:sticky md:top-6">
+            the detail underneath it. On a wide screen both are in view. */}
+        <section className="order-1 md:order-2 md:sticky md:top-24">
           {hydrated ? (
             <CycleWheels trace={trace} highlightRing={highlightRing} />
           ) : (
             <div className="aspect-square" />
           )}
-          <p className="mt-4 max-w-measure text-sm leading-relaxed text-ink/60">
+          <p className="mt-4 max-w-measure text-sm leading-relaxed text-ink/65">
             {t.ubah.wheelsCaption}
           </p>
         </section>
       </div>
 
-      {sweep === 'date' ? (
-        <ReverseConversion t={t} reckoning={state.options.reckoning} onResult={setDate} />
-      ) : null}
-    </div>
-  )
-}
-
-function SweepTabs({
-  sweep,
-  onChange,
-  t,
-}: {
-  sweep: Sweep
-  onChange: (sweep: Sweep) => void
-  t: Dictionary
-}) {
-  const options: ReadonlyArray<{ value: Sweep; label: string }> = [
-    { value: 'date', label: t.ubah.sweepDate },
-    { value: 'selapanan', label: t.ubah.sweepSelapanan },
-    { value: 'mangsa', label: t.ubah.sweepMangsa },
-  ]
-
-  return (
-    <div className="mt-8 flex">
-      {options.map((option) => (
-        <button
-          key={option.value}
-          type="button"
-          onClick={() => onChange(option.value)}
-          aria-pressed={sweep === option.value}
-          className={['btn -ml-px first:ml-0', sweep === option.value ? 'btn-solid' : ''].join(' ')}
-        >
-          {option.label}
-        </button>
-      ))}
+      <ReverseConversion t={t} reckoning={state.options.reckoning} onResult={setDate} />
     </div>
   )
 }
@@ -235,58 +166,6 @@ function DateSweep({
         <TraceValue label={t.labels.jdn} value={String(trace.jdn)} t={t} />
       </section>
     </>
-  )
-}
-
-/** The mangsa panel, plus the full year table that /mangsa/ carried on its
-    own page — folded in here rather than dropped, since a sweep through the
-    solar year is exactly where "the twelve mangsa around this one" belongs. */
-function MangsaSweep({
-  date,
-  trace,
-  t,
-}: {
-  date: ReturnType<typeof traceFor>['gregorian']
-  trace: ReturnType<typeof traceFor>
-  t: Dictionary
-}) {
-  const source = mangsaSource()
-
-  return (
-    <div>
-      <MangsaView t={t} date={date} trace={trace} />
-
-      <div className="mt-8 overflow-x-auto">
-        <table className="almanac-table min-w-[34rem]">
-          <thead>
-            <tr>
-              <th>Mangsa</th>
-              <th>№</th>
-              <th>Tanggal</th>
-              <th>Lama</th>
-              <th>Pertanda</th>
-            </tr>
-          </thead>
-          <tbody>
-            {mangsaTable().map((entry) => (
-              <tr key={entry.name}>
-                <td className="font-prose">{entry.name}</td>
-                <td className="font-mono text-ink/50">{entry.numeral}</td>
-                <td className="font-mono text-indigo">{windowLabel(entry)}</td>
-                <td className="font-mono">{entry.lengthDays}</td>
-                <td className="text-ink/75">{entry.marker}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <p className="mt-4 max-w-prose text-sm text-ink/60">
-        <span className="rule-label">{t.common.source}</span> <cite className="not-italic">{source.title}</cite>
-        {source.author ? ` — ${source.author}` : ''}
-        {source.year ? ` (${source.year})` : ''}. {source.locator}.
-      </p>
-    </div>
   )
 }
 

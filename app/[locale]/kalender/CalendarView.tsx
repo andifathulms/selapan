@@ -1,12 +1,15 @@
 'use client'
 
-import { formatGregorian, gregorianToJdn } from '@/lib/jdn'
+import { useEffect, useState } from 'react'
+import { gregorianToJdn } from '@/lib/jdn'
 import { traceFor } from '@/lib/trace'
 import type { Dictionary } from '@/lib/i18n'
 import { MonthGrid } from '@/components/grid/MonthGrid'
 import { CycleWheels } from '@/components/wheels/CycleWheels'
-import { DateControls } from '@/components/controls/DateControls'
 import { useDateState } from '@/components/controls/useDateState'
+import { MangsaYear } from './MangsaYear'
+
+type View = 'month' | 'mangsa'
 
 const MONTHS_ID = [
   'Januari',
@@ -23,9 +26,22 @@ const MONTHS_ID = [
   'Desember',
 ] as const
 
+/**
+ * Two readings of the calendar around the shared date: the month, in the
+ * wall-calendar layout, and the solar year, as the twelve mangsa. Mangsa
+ * lives here rather than on the weton page because it is a question about
+ * the year — which season is this — not about one day.
+ *
+ * The date comes from the header's date pill; selecting a day here moves it.
+ */
 export function CalendarView({ t }: { t: Dictionary }) {
-  const { state, hydrated, jdn, setDate, stepDays, goToday, setReckoning, setDayBoundary } =
-    useDateState()
+  const { state, hydrated, jdn, setDate } = useDateState()
+  const [view, setView] = useState<View>('month')
+
+  // The retired /mangsa/ route lands here with ?view=mangsa.
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('view') === 'mangsa') setView('mangsa')
+  }, [])
 
   const { year, month } = state.date
   const trace = traceFor(jdn, state.options)
@@ -39,18 +55,19 @@ export function CalendarView({ t }: { t: Dictionary }) {
 
   return (
     <div>
-      <DateControls
-        date={state.date}
-        options={state.options}
-        t={t}
-        announce={`${trace.weton.name} · ${formatGregorian(trace.gregorian)}`}
-        onDate={setDate}
-        onStep={stepDays}
-        onToday={goToday}
-        onReckoning={setReckoning}
-        onDayBoundary={setDayBoundary}
-      />
+      <div className="seg" role="group" aria-label={t.kalender.title}>
+        <button type="button" aria-pressed={view === 'month'} onClick={() => setView('month')}>
+          {t.kalender.viewMonth}
+        </button>
+        <button type="button" aria-pressed={view === 'mangsa'} onClick={() => setView('mangsa')}>
+          {t.kalender.viewYear}
+        </button>
+      </div>
 
+      {view === 'mangsa' ? (
+        <MangsaYear t={t} date={state.date} trace={trace} />
+      ) : (
+        <>
       <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
         <h2 className="font-ui text-section font-semibold">
           {MONTHS_ID[month - 1]} <span className="font-mono tabular-nums">{year}</span>
@@ -89,7 +106,7 @@ export function CalendarView({ t }: { t: Dictionary }) {
           today={hydrated ? jdn : undefined}
           onSelect={(day) => setDate({ year, month, day })}
         />
-        <div className="mx-auto w-full max-w-[220px] lg:sticky lg:top-6">
+        <div className="mx-auto w-full max-w-[220px] lg:sticky lg:top-24">
           {hydrated ? <CycleWheels trace={trace} /> : <div className="aspect-square" />}
         </div>
       </div>
@@ -112,6 +129,8 @@ export function CalendarView({ t }: { t: Dictionary }) {
         <dt className="rule-label pt-[0.2em]">{t.labels.jdn}</dt>
         <dd className="computed">{gregorianToJdn(state.date)}</dd>
       </dl>
+        </>
+      )}
     </div>
   )
 }

@@ -4,7 +4,6 @@ import { formatGregorian } from '@/lib/jdn'
 import { traceFor, type CalendarTrace, type TraceOptions } from '@/lib/trace'
 import { KURUPS } from '@/lib/data'
 import type { Dictionary } from '@/lib/i18n'
-import { DateControls } from '@/components/controls/DateControls'
 import { useDateState } from '@/components/controls/useDateState'
 import { DerivationDetail } from '@/components/trace/Derivation'
 import { CycleWheels } from '@/components/wheels/CycleWheels'
@@ -18,7 +17,8 @@ import { CycleWheels } from '@/components/wheels/CycleWheels'
  * (CLAUDE.md invariant 6).
  */
 export function DivergenceView({ t }: { t: Dictionary }) {
-  const { state, hydrated, jdn, setDate, stepDays, goToday } = useDateState()
+  // The date is set in the header's date pill, shared with every page.
+  const { state, hydrated, jdn } = useDateState()
 
   const asapon = traceFor(jdn, { ...state.options, reckoning: 'chronological' })
   const aboge = traceFor(jdn, { ...state.options, reckoning: 'aboge' })
@@ -34,24 +34,13 @@ export function DivergenceView({ t }: { t: Dictionary }) {
 
   return (
     <div>
-      <DateControls
-        date={state.date}
-        options={state.options}
-        t={t}
-        announce={`${asapon.weton.name} · ${formatGregorian(asapon.gregorian)}`}
-        onDate={setDate}
-        onStep={stepDays}
-        onToday={goToday}
-        showOptions={false}
-      />
-
       {/* Whether the two reckonings part on this date is the one thing this
           page exists to say — but it is shown, not coloured: the two wheels
           below share every ring except the lunar one, and where the two
           diverge that ring's month-start mark visibly parts between them
           (DESIGN-REWORK §3.3). This line states it in words for a reader
           using a screen reader, or skimming past the wheels. */}
-      <p className="mt-6 text-ink/70">
+      <p className="text-ink/70">
         {diverges ? t.kurup.divergenceHere : t.kurup.agreeHere}
         <span className="ml-3 font-mono text-sm text-ink/55">
           {formatGregorian(asapon.gregorian)} · {asapon.weton.name}

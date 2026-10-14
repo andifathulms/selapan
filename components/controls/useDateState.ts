@@ -27,6 +27,21 @@ export type DateState = {
 
 const KEYS = { date: 't', reckoning: 'r', boundary: 'b', hour: 'h' } as const
 
+/**
+ * More than one component reads the hash at once — the date pill in the
+ * header and the page beneath it. `history.replaceState` fires no
+ * `hashchange`, so every write is announced with this event and every
+ * instance listens for it, which keeps them on one date without a context
+ * provider reaching across the server-rendered layout.
+ */
+export const DATE_HASH_EVENT = 'selapan:date-hash'
+
+/** The current hash, if it carries a date — for links that should take the
+    reader's date with them. Empty otherwise. */
+export function dateHashFrom(hash: string): string {
+  return new URLSearchParams(hash.replace(/^#/, '')).has(KEYS.date) ? hash : ''
+}
+
 function parseHash(hash: string): Partial<DateState> {
   const params = new URLSearchParams(hash.replace(/^#/, ''))
   const date = params.get(KEYS.date)
@@ -58,7 +73,17 @@ function toHash(state: DateState): string {
   return `#${params.toString()}`
 }
 
-export function useDateState(initial?: GregorianDate) {
+export function useDateState(
+  initial?: GregorianDate,
+  {
+    passive = false,
+  }: {
+    /** Read the hash and follow it, but do not write one until the reader
+        changes something. The header pill is passive, so a page with no
+        date of its own (home, Pelajari) keeps a clean URL. */
+    passive?: boolean
+  } = {},
+) {
   // Server-rendered markup must not depend on the clock, so the first render
   // uses a fixed date and the reader's own "today" arrives after mount.
   const [state, setState] = useState<DateState>({
@@ -66,6 +91,7 @@ export function useDateState(initial?: GregorianDate) {
     options: DEFAULT_OPTIONS,
   })
   const [hydrated, setHydrated] = useState(false)
+  const [touched, setTouched] = useState(false)
 
   useEffect(() => {
     const fromHash = parseHash(window.location.hash)
@@ -79,37 +105,62 @@ export function useDateState(initial?: GregorianDate) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // Follow writes from any other instance on the page, and the reader's own
+  // back/forward through hashes.
   useEffect(() => {
-    if (!hydrated) return
+    const follow = () => {
+      const fromHash = parseHash(window.location.hash)
+      if (!fromHash.date) return
+      const next: DateState = { date: fromHash.date, options: fromHash.options ?? DEFAULT_OPTIONS }
+      setState((current) => (toHash(current) === toHash(next) ? current : next))
+    }
+    window.addEventListener(DATE_HASH_EVENT, follow)
+    window.addEventListener('hashchange', follow)
+    return () => {
+      window.removeEventListener(DATE_HASH_EVENT, follow)
+      window.removeEventListener('hashchange', follow)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!hydrated || (passive && !touched)) return
     const hash = toHash(state)
     if (window.location.hash !== hash) {
       window.history.replaceState(null, '', hash)
+      window.dispatchEvent(new Event(DATE_HASH_EVENT))
     }
-  }, [state, hydrated])
+  }, [state, hydrated, passive, touched])
 
-  const setDate = useCallback((date: GregorianDate) => {
-    setState((s) => ({ ...s, date }))
+  const update = useCallback((change: (s: DateState) => DateState) => {
+    setTouched(true)
+    setState(change)
   }, [])
 
-  const stepDays = useCallback((delta: number) => {
-    setState((s) => ({ ...s, date: jdnToGregorian(gregorianToJdn(s.date) + delta) }))
-  }, [])
+  const setDate = useCallback((date: GregorianDate) => update((s) => ({ ...s, date })), [update])
 
-  const goToday = useCallback(() => {
-    setState((s) => ({ ...s, date: todayLocal() }))
-  }, [])
+  const stepDays = useCallback(
+    (delta: number) =>
+      update((s) => ({ ...s, date: jdnToGregorian(gregorianToJdn(s.date) + delta) })),
+    [update],
+  )
 
-  const setReckoning = useCallback((reckoning: KurupReckoning) => {
-    setState((s) => ({ ...s, options: { ...s.options, reckoning } }))
-  }, [])
+  const goToday = useCallback(() => update((s) => ({ ...s, date: todayLocal() })), [update])
 
-  const setDayBoundary = useCallback((dayBoundary: DayBoundary) => {
-    setState((s) => ({ ...s, options: { ...s.options, dayBoundary } }))
-  }, [])
+  const setReckoning = useCallback(
+    (reckoning: KurupReckoning) => update((s) => ({ ...s, options: { ...s.options, reckoning } })),
+    [update],
+  )
 
-  const setHour = useCallback((hour: number) => {
-    setState((s) => ({ ...s, options: { ...s.options, hour } }))
-  }, [])
+  const setDayBoundary = useCallback(
+    (dayBoundary: DayBoundary) =>
+      update((s) => ({ ...s, options: { ...s.options, dayBoundary } })),
+    [update],
+  )
+
+  const setHour = useCallback(
+    (hour: number) => update((s) => ({ ...s, options: { ...s.options, hour } })),
+    [update],
+  )
 
   return {
     state,

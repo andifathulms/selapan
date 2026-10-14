@@ -5,9 +5,8 @@ import type { Dictionary } from '@/lib/i18n'
 import { DateAxis } from '@/components/trace/DateAxis'
 
 /**
- * Selapanan from a weton, and slametan reckoning from a day of death — a
- * sweep of /ubah/'s instrument along the 35-day cycle, not a page of its own
- * (DESIGN-REWORK §4). The date and its trace come from the caller.
+ * Selapanan from a weton, and slametan reckoning from a day of death. The
+ * date and its trace come from the caller.
  *
  * Presented plainly. The slametan table serves people during bereavement, so
  * it shows the date, the rule that produced it, and nothing else — no
