@@ -12,6 +12,8 @@ import type { Locale } from './locales'
     so nav labels, the phone tab bar and the home tiles cannot drift. */
 export type NavKey = 'weton' | 'kalender' | 'hitungan' | 'pelajari'
 
+export type GlossTerm = 'lunar' | 'windu' | 'kurup' | 'wuku' | 'mangsa' | 'neptu' | 'pasaran'
+
 export type Dictionary = {
   readonly nav: Record<NavKey, string>
   readonly site: {
@@ -52,10 +54,15 @@ export type Dictionary = {
     readonly hour: string
     readonly days: string
     readonly notAvailable: string
-    readonly copyLink: string
     readonly copied: string
     readonly skipToContent: string
-    readonly options: string
+    /** Gregorian month names, January first. */
+    readonly months: ReadonlyArray<string>
+    /** Gregorian weekday names, in DINA order — Monday (Senen) first. */
+    readonly weekdays: ReadonlyArray<string>
+    /** "{n}" and "{m}" are filled in: a position within a length. */
+    readonly dayOf: string
+    readonly nextSelapanan: string
   }
   readonly labels: {
     readonly dina: string
@@ -76,7 +83,6 @@ export type Dictionary = {
     readonly lede: string
     readonly todayLabel: string
     readonly todayHint: string
-    readonly openTrace: string
     readonly whatTitle: string
     readonly whatBody: ReadonlyArray<string>
     readonly cyclesTitle: string
@@ -86,14 +92,24 @@ export type Dictionary = {
       readonly length: string
       readonly elements: string
     }
-    readonly browseTitle: string
     readonly whatItDoesTitle: string
     readonly whatItDoes: ReadonlyArray<string>
     readonly separationTitle: string
     readonly separation: string
-    readonly start: string
+    readonly birthTitle: string
+    readonly birthNote: string
+    readonly birthDay: string
+    readonly birthMonth: string
+    readonly birthYear: string
+    readonly birthSubmit: string
+    readonly birthInvalid: string
+    readonly moreTitle: string
   }
   readonly navBlurb: Record<NavKey, string>
+  /** One-line explanations of the Javanese terms, shown on tap beside the
+      term itself — they explain it, never replace it (CLAUDE.md invariant
+      15). Descriptions of the calendar, not interpretations. */
+  readonly gloss: Readonly<Record<GlossTerm, string>>
   readonly chrome: {
     readonly menu: string
     readonly datePill: string
@@ -129,6 +145,8 @@ export type Dictionary = {
     readonly legend: string
     readonly viewMonth: string
     readonly viewYear: string
+    readonly selected: string
+    readonly todayBadge: string
     readonly yearIntro: string
   }
   readonly kurup: {
@@ -141,6 +159,8 @@ export type Dictionary = {
     readonly bothValid: string
     readonly timelineToday: string
     readonly timelineSplit: string
+    readonly stripTitle: string
+    readonly stripLegend: string
   }
   readonly mangsa: {
     readonly title: string
@@ -157,6 +177,7 @@ export type Dictionary = {
     readonly slametanIntro: string
     readonly countingRule: string
     readonly plainly: string
+    readonly axisLog: string
   }
   readonly sumber: {
     readonly title: string
@@ -216,10 +237,12 @@ const id: Dictionary = {
     hour: 'Jam',
     days: 'hari',
     notAvailable: 'tidak tersedia',
-    copyLink: 'Salin tautan',
     copied: 'Tersalin',
     skipToContent: 'Langsung ke isi',
-    options: 'Pilihan',
+    months: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+    weekdays: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+    dayOf: 'hari {n} dari {m}',
+    nextSelapanan: 'Selapanan berikutnya',
   },
   labels: {
     dina: 'Dina',
@@ -240,7 +263,6 @@ const id: Dictionary = {
     lede: 'Masukkan sebuah tanggal — hari lahir, hari ini, tanggal mana pun — dan lihat weton, tanggal Jawa, wuku, serta mangsa-nya, lengkap dengan cara menghitungnya.',
     todayLabel: 'Hari ini',
     todayHint: 'Dihitung di peramban Anda, dari tanggal di perangkat ini.',
-    openTrace: 'Buka hitungan hari ini',
     whatTitle: 'Apa itu weton?',
     whatBody: [
       'Weton adalah pasangan dua hari: nama hari dalam pekan tujuh hari (Ahad sampai Setu) dan nama hari pasaran dalam pekan lima hari (Legi, Pahing, Pon, Wage, Kliwon). Digabungkan, hasilnya seperti “Jemuwah Kliwon”.',
@@ -251,7 +273,6 @@ const id: Dictionary = {
     cyclesIntro:
       'Setiap tanggal berada di posisi tertentu pada keempatnya sekaligus. Itulah sebabnya perhitungan Jawa tidak bisa disederhanakan menjadi satu tabel.',
     cycleHead: { cycle: 'Siklus', length: 'Panjang', elements: 'Isinya' },
-    browseTitle: 'Yang bisa dibuka di sini',
     whatItDoesTitle: 'Bedanya dengan situs weton lain',
     whatItDoes: [
       'Menghitung pasaran, dina, weton, neptu, dan wuku untuk tanggal mana pun, tanpa batas ke belakang maupun ke depan.',
@@ -262,13 +283,29 @@ const id: Dictionary = {
     separationTitle: 'Yang dihitung dan yang diwariskan',
     separation:
       'Yang dihitung dan yang ditafsirkan dipisah tegas, di kode maupun di warna. Nila untuk nilai terhitung; merah rubrik disediakan untuk bahan primbon dan tidak dipakai untuk hal lain. Lapisan tafsir belum dirilis: ia menunggu peninjau yang paham praktik pananggalan Jawa.',
-    start: 'Hitung sebuah tanggal',
+    birthTitle: 'Cek weton dari tanggal lahir',
+    birthNote: 'Tanggal, bulan, dan tahun — tanpa menggulir kalender puluhan tahun ke belakang.',
+    birthDay: 'Tanggal',
+    birthMonth: 'Bulan',
+    birthYear: 'Tahun',
+    birthSubmit: 'Lihat weton',
+    birthInvalid: 'Tanggal ini tidak ada pada bulan itu.',
+    moreTitle: 'Yang lain di sini',
   },
   navBlurb: {
     weton: 'Satu tanggal, perhitungan Jawa selengkapnya — weton, neptu, wuku, tanggal Jawa — dengan hitungan setiap nilainya.',
     kalender: 'Sebulan penuh dengan pasaran, tanggal Jawa, wuku, dan mangsa — atau setahun mangsa sekaligus.',
     hitungan: 'Selapanan bayi dan tanggal slametan, dihitung dari satu tanggal.',
     pelajari: 'Cara kerja siklus, kurup Aboge dan Asapon, dan semua sumbernya.',
+  },
+  gloss: {
+    lunar: 'Tanggal dalam kalender lunar Jawa yang dimulai Sultan Agung pada 1633 M. Sebelum tahun itu, sistem ini tidak berlaku dan tidak dihitung.',
+    windu: 'Siklus delapan tahun Jawa: Alip, Ehe, Jimawal, Je, Dal, Be, Wawu, Jimakir.',
+    kurup: 'Periode 120 tahun. Di tiap pergantian kurup satu hari dibuang, agar tahun Jawa tetap sejalan dengan bulan.',
+    wuku: 'Pekan tujuh hari dalam siklus pawukon 210 hari. Ada 30 wuku, dari Sinta sampai Watugunung.',
+    mangsa: 'Salah satu dari dua belas mangsa dalam pranata mangsa, kalender surya untuk pertanian.',
+    neptu: 'Nilai bilangan untuk tiap dina dan tiap pasaran; neptu sebuah weton adalah jumlah keduanya.',
+    pasaran: 'Pekan lima hari: Legi, Pahing, Pon, Wage, Kliwon.',
   },
   chrome: {
     menu: 'Menu utama',
@@ -309,6 +346,8 @@ const id: Dictionary = {
     legend: 'Baris kecil di bawah tanggal: pasaran, tanggal Jawa, dan wuku.',
     viewMonth: 'Bulan',
     viewYear: 'Tahun · mangsa',
+    selected: 'Dipilih',
+    todayBadge: 'hari ini',
     yearIntro:
       'Pranata mangsa: kalender surya untuk pertanian, dua belas mangsa dengan panjang tak sama, terikat tahun tropis — lepas sama sekali dari pasaran, wuku, dan bulan Jawa.',
   },
@@ -325,6 +364,8 @@ const id: Dictionary = {
       'Tidak ada yang disebut benar dan yang lain ketinggalan zaman. Keduanya ditampilkan dengan mekanismenya, dan pembaca memakai yang dipakai komunitasnya.',
     timelineToday: 'Tanggal yang dilihat',
     timelineSplit: 'Sejak sini: Asapon menerapkan koreksi 1867 AJ, Aboge tidak — keduanya berselisih setelah titik ini.',
+    stripTitle: 'Sebelas hari di sekitar tanggal ini',
+    stripLegend: 'Garis emas menandai hari pertama bulan Jawa pada tiap perhitungan. Kolom yang dibingkai adalah tanggal yang dilihat.',
   },
   mangsa: {
     title: 'Pranata mangsa',
@@ -345,6 +386,7 @@ const id: Dictionary = {
       'Aturan hitung: hari wafat dihitung sebagai hari pertama. Nelung dina berarti hari ketiga, bukan tiga hari sesudahnya. Cara menghitung berbeda antar-daerah; yang dipakai di sini dinyatakan terbuka agar bisa diperiksa.',
     plainly:
       'Halaman ini hanya menyajikan tanggal. Tidak ada tafsir yang dilekatkan padanya.',
+    axisLog: 'hari ke- (skala logaritmik)',
   },
   sumber: {
     title: 'Sumber',
@@ -406,10 +448,12 @@ const en: Dictionary = {
     hour: 'Hour',
     days: 'days',
     notAvailable: 'not available',
-    copyLink: 'Copy link',
     copied: 'Copied',
     skipToContent: 'Skip to content',
-    options: 'Options',
+    months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    weekdays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    dayOf: 'day {n} of {m}',
+    nextSelapanan: 'Next selapanan',
   },
   labels: {
     dina: 'Dina',
@@ -430,7 +474,6 @@ const en: Dictionary = {
     lede: 'Give it a date — a birthday, today, any date at all — and see its weton, Javanese date, wuku, and mangsa, along with the arithmetic that produced them.',
     todayLabel: 'Today',
     todayHint: 'Computed in your browser, from the date on this device.',
-    openTrace: 'Open the working for today',
     whatTitle: 'What is a weton?',
     whatBody: [
       'A weton is a pair of day names: the day of the seven-day week (Ahad through Setu) and the day of the five-day pasaran week (Legi, Pahing, Pon, Wage, Kliwon). Together they give something like “Jemuwah Kliwon”.',
@@ -441,7 +484,6 @@ const en: Dictionary = {
     cyclesIntro:
       'Every date sits at a position on all four simultaneously. That is why the Javanese reckoning cannot be collapsed into a single table.',
     cycleHead: { cycle: 'Cycle', length: 'Length', elements: 'Elements' },
-    browseTitle: 'What you can open here',
     whatItDoesTitle: 'How this differs from other weton sites',
     whatItDoes: [
       'Computes pasaran, dina, weton, neptu, and wuku for any date, unbounded in both directions.',
@@ -452,13 +494,29 @@ const en: Dictionary = {
     separationTitle: 'What is computed, and what is inherited',
     separation:
       'Computation and interpretation are kept apart, in the code and in the palette. Indigo is for computed values; rubric red is reserved for primbon material and used for nothing else. The interpretive layer is not released: it is waiting on a reviewer familiar with Javanese calendrical practice.',
-    start: 'Convert a date',
+    birthTitle: 'Find the weton of a birth date',
+    birthNote: 'Day, month and year — no scrolling a date picker back through the decades.',
+    birthDay: 'Day',
+    birthMonth: 'Month',
+    birthYear: 'Year',
+    birthSubmit: 'See the weton',
+    birthInvalid: 'That month has no such day.',
+    moreTitle: 'Also here',
   },
   navBlurb: {
     weton: 'One date, the full Javanese reckoning — weton, neptu, wuku, Javanese date — with the working behind every value.',
     kalender: 'A whole month with pasaran, Javanese date, wuku and mangsa — or a whole year of mangsa at once.',
     hitungan: 'Selapanan for a newborn and slametan dates, counted from one date.',
     pelajari: 'How the cycles work, the Aboge and Asapon kurup, and every source.',
+  },
+  gloss: {
+    lunar: 'A date in the Javanese lunar calendar Sultan Agung began in 1633 CE. Before that year the system does not apply, and is not computed.',
+    windu: 'The eight-year Javanese cycle: Alip, Ehe, Jimawal, Je, Dal, Be, Wawu, Jimakir.',
+    kurup: 'A 120-year period. At each change of kurup one day is dropped, to keep the Javanese year in step with the moon.',
+    wuku: 'A seven-day week in the 210-day pawukon cycle. There are 30 wuku, from Sinta to Watugunung.',
+    mangsa: 'One of the twelve mangsa of pranata mangsa, the agricultural solar calendar.',
+    neptu: 'A number for each dina and each pasaran; the neptu of a weton is the sum of the two.',
+    pasaran: 'The five-day week: Legi, Pahing, Pon, Wage, Kliwon.',
   },
   chrome: {
     menu: 'Main menu',
@@ -499,6 +557,8 @@ const en: Dictionary = {
     legend: 'The small line under each day: pasaran, Javanese date, and wuku.',
     viewMonth: 'Month',
     viewYear: 'Year · mangsa',
+    selected: 'Selected',
+    todayBadge: 'today',
     yearIntro:
       'Pranata mangsa: the agricultural solar calendar, twelve mangsa of unequal length tied to the tropical year — wholly independent of pasaran, wuku and the Javanese month.',
   },
@@ -515,6 +575,8 @@ const en: Dictionary = {
       'Neither is the correct one with the other left behind. Both are shown with their mechanism, and a reader uses the one their community uses.',
     timelineToday: 'The date being viewed',
     timelineSplit: 'From here: Asapon applies the 1867 AJ correction, Aboge does not — the two differ from this point on.',
+    stripTitle: 'Eleven days around this date',
+    stripLegend: 'The gold outline marks the first day of the Javanese month in each reckoning. The framed column is the date being viewed.',
   },
   mangsa: {
     title: 'Pranata mangsa',
@@ -535,6 +597,7 @@ const en: Dictionary = {
       'The counting rule: the day of death counts as the first day. Nelung dina means the third day, not three days later. Counting practice varies by region; the rule used here is stated openly so it can be checked.',
     plainly:
       'This page presents dates only. No interpretation is attached to them.',
+    axisLog: 'day number (logarithmic scale)',
   },
   sumber: {
     title: 'Sources',

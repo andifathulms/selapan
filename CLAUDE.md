@@ -168,6 +168,7 @@ M0–M5 built. M6 not started and gated on a reviewer.
 - **M3** Cycle wheels, conversion with expandable trace, month grid. Bilingual (`id`, `en`).
 - **M4** Aboge/Asapon side by side with derivations, kurup table, sources page.
 - **M5** Pranata mangsa, selapanan dates, slametan reckoning.
+- **Design rework (Oct 2026)** Palette as data in `theme/palette.ts` with a dark theme and the ink `.instrument` surface, all gated by `contrast:validate`; Young Serif and Schibsted Grotesk; routes regrouped by task (Weton, Kalender, Hitungan, Pelajari) with redirect stubs; one shared date in the header pill; phone tab bar; answer-first pages; glossary notes for Javanese terms. Presentation only — `lib/` and `data/` untouched.
 
 ~143 tests. `pnpm data:validate`, `pnpm typecheck`, `pnpm lint`, `pnpm test:run`, and `pnpm build` all pass.
 

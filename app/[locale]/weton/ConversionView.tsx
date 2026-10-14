@@ -6,7 +6,7 @@ import { SASI } from '@/lib/cycles'
 import { ERA_YEAR_AJ, MAX_YEAR_AJ, jdnFromLunar } from '@/lib/lunar'
 import { traceFor, type CalendarTrace } from '@/lib/trace'
 import { mangsaFor } from '@/lib/mangsa'
-import type { Dictionary } from '@/lib/i18n'
+import type { Dictionary, GlossTerm } from '@/lib/i18n'
 import { CycleWheels, type HighlightRing } from '@/components/wheels/CycleWheels'
 import { useDateState } from '@/components/controls/useDateState'
 import { useArrowStepping } from '@/components/controls/useArrowStepping'
@@ -15,6 +15,7 @@ import { ReckoningOptions } from '@/components/controls/ReckoningOptions'
 import { ShareButton } from '@/components/controls/ShareButton'
 import { RefusalNotice, TraceValue } from '@/components/trace/TraceValue'
 import { NeptuPips } from '@/components/answer/NeptuPips'
+import { Term } from '@/components/answer/Term'
 import { longDate, positionOf } from '@/components/format'
 
 /**
@@ -124,18 +125,22 @@ function Facts({
         <>
           <Fact
             label={t.labels.lunar}
+            term="lunar"
+            t={t}
             value={`${lunar.value.day} ${lunar.value.monthName}`}
             note={`${t.labels.tahun} ${lunar.value.yearAj}`}
             unverified={lunar.value.derivation.status === 'unverified'}
           />
-          <Fact label={t.labels.windu} value={lunar.value.windu} note={`${t.labels.tahun} ${lunar.value.yearAj}`} />
-          <Fact label={t.labels.kurup} value={lunar.value.kurupName} />
+          <Fact label={t.labels.windu} term="windu" t={t} value={lunar.value.windu} />
+          <Fact label={t.labels.kurup} term="kurup" t={t} value={lunar.value.kurupName} />
         </>
       ) : (
-        <Fact label={t.labels.lunar} value={t.common.refused} note={lunar.refusal.validFrom} unverified wide />
+        <Fact label={t.labels.lunar} term="lunar" t={t} value={t.common.refused} note={lunar.refusal.validFrom} unverified />
       )}
       <Fact
         label={t.labels.wuku}
+        term="wuku"
+        t={t}
         value={trace.wuku.name}
         note={positionOf(t.common.dayOf, trace.dayInWuku, 7)}
         unverified={trace.wuku.derivation.status === 'unverified'}
@@ -143,11 +148,14 @@ function Facts({
       {mangsa.type === 'ok' ? (
         <Fact
           label={t.labels.mangsa}
+          term="mangsa"
+          t={t}
           value={mangsa.value.entry.name}
           note={positionOf(t.common.dayOf, mangsa.value.dayWithin, mangsa.value.entry.lengthDays)}
+          wide={lunar.type !== 'ok'}
         />
       ) : (
-        <Fact label={t.labels.mangsa} value={t.common.refused} unverified />
+        <Fact label={t.labels.mangsa} term="mangsa" t={t} value={t.common.refused} unverified wide={lunar.type !== 'ok'} />
       )}
       {lunar.type === 'ok' && otherLunar.type === 'ok' ? (
         <Fact
@@ -165,18 +173,25 @@ function Fact({
   label,
   value,
   note,
+  term,
+  t,
   unverified = false,
   wide = false,
 }: {
   label: string
   value: string
   note?: string
+  /** A Javanese term to gloss on tap. */
+  term?: GlossTerm
+  t?: Dictionary
   unverified?: boolean
   wide?: boolean
 }) {
   return (
-    <div className={['bg-paper-raised px-4 py-3', wide ? 'col-span-2 sm:col-span-2' : ''].join(' ')}>
-      <dt className="rule-label">{label}</dt>
+    // `wide` closes the two-column phone grid when a refusal leaves an odd
+    // number of facts, so no empty cell shows through.
+    <div className={['bg-paper-raised px-4 py-3', wide ? 'col-span-2 sm:col-span-1' : ''].join(' ')}>
+      <dt className="rule-label">{term && t ? <Term term={term} label={label} t={t} /> : label}</dt>
       <dd className={['mt-0.5 font-mono text-[1.05rem]', unverified ? 'text-unverified' : 'text-indigo'].join(' ')}>
         {value}
       </dd>
