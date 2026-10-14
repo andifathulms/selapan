@@ -77,7 +77,7 @@ export function TraceValue({
         className="group flex w-full flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-3.5 text-left"
       >
         {body}
-        <span className="flex w-full items-center gap-1.5 font-ui text-xs text-ink/45 transition-colors group-hover:text-indigo">
+        <span className="flex w-full items-center gap-1.5 font-ui text-xs text-ink/60 transition-colors group-hover:text-ink">
           <span
             aria-hidden
             className={[

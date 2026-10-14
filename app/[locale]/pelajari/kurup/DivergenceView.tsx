@@ -7,6 +7,7 @@ import type { Dictionary } from '@/lib/i18n'
 import { useDateState } from '@/components/controls/useDateState'
 import { DerivationDetail } from '@/components/trace/Derivation'
 import { CycleWheels } from '@/components/wheels/CycleWheels'
+import { ReckoningStrip } from './ReckoningStrip'
 
 /**
  * Aboge and Asapon side by side (PRD §6.3).
@@ -40,12 +41,18 @@ export function DivergenceView({ t }: { t: Dictionary }) {
           diverge that ring's month-start mark visibly parts between them
           (DESIGN-REWORK §3.3). This line states it in words for a reader
           using a screen reader, or skimming past the wheels. */}
-      <p className="text-ink/70">
-        {diverges ? t.kurup.divergenceHere : t.kurup.agreeHere}
-        <span className="ml-3 font-mono text-sm text-ink/55">
+      <p className="flex flex-wrap items-baseline gap-x-4 gap-y-1 rounded-panel border border-ink/25 px-4 py-3 font-ui">
+        <span className="font-semibold">{diverges ? t.kurup.divergenceHere : t.kurup.agreeHere}</span>
+        {asaponLabel ? <span>Asapon <span className="font-mono text-indigo">{asaponLabel}</span></span> : null}
+        {abogeLabel ? <span>Aboge <span className="font-mono text-indigo">{abogeLabel}</span></span> : null}
+        <span className="font-mono text-sm text-ink/60">
           {formatGregorian(asapon.gregorian)} · {asapon.weton.name}
         </span>
       </p>
+
+      <div className="mt-6">
+        <ReckoningStrip jdn={jdn} options={state.options} t={t} />
+      </div>
 
       <KurupTimeline currentYearAj={asapon.lunar.type === 'ok' ? asapon.lunar.value.yearAj : null} t={t} />
 

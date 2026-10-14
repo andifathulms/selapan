@@ -4,7 +4,8 @@ import { useState } from 'react'
 import { formatGregorian, jdnToGregorian } from '@/lib/jdn'
 import { SASI } from '@/lib/cycles'
 import { ERA_YEAR_AJ, MAX_YEAR_AJ, jdnFromLunar } from '@/lib/lunar'
-import { traceFor } from '@/lib/trace'
+import { traceFor, type CalendarTrace } from '@/lib/trace'
+import { mangsaFor } from '@/lib/mangsa'
 import type { Dictionary } from '@/lib/i18n'
 import { CycleWheels, type HighlightRing } from '@/components/wheels/CycleWheels'
 import { useDateState } from '@/components/controls/useDateState'
@@ -13,6 +14,8 @@ import { InstrumentStepper } from '@/components/wheels/InstrumentStepper'
 import { ReckoningOptions } from '@/components/controls/ReckoningOptions'
 import { ShareButton } from '@/components/controls/ShareButton'
 import { RefusalNotice, TraceValue } from '@/components/trace/TraceValue'
+import { NeptuPips } from '@/components/answer/NeptuPips'
+import { longDate, positionOf } from '@/components/format'
 
 /**
  * Gregorian in, the full Javanese reckoning out, every value expandable
@@ -31,43 +34,47 @@ export function ConversionView({ t }: { t: Dictionary }) {
   const [highlightRing, setHighlightRing] = useState<HighlightRing | null>(null)
 
   const trace = traceFor(jdn, state.options)
+  // The other reckoning, beside this one — both are first-class, and a
+  // reader from an Aboge community sees their own date without switching
+  // (CLAUDE.md invariant 6).
+  const other = traceFor(jdn, {
+    ...state.options,
+    reckoning: state.options.reckoning === 'aboge' ? 'chronological' : 'aboge',
+  })
+  const mangsa = mangsaFor(state.date)
 
   return (
     <div>
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <ReckoningOptions
-          options={state.options}
-          t={t}
-          onReckoning={setReckoning}
-          onDayBoundary={setDayBoundary}
-          onHour={setHour}
-        />
-        <ShareButton t={t} title={`${trace.weton.name} · ${formatGregorian(trace.gregorian)}`} />
-      </div>
-
-      {/* The answer, before the apparatus that produced it. The weton is the
-          pair, so it has no derivation of its own — the dina and pasaran rows
-          below carry the two that make it. */}
-      <section className="mt-8 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 border-b hairline pb-6">
-        <div>
-          <span className="rule-label">{t.labels.weton}</span>
-          <p key={trace.weton.name} className="computed answer-fade mt-1 font-display text-figure">
+      {/* Three blocks: the answer, the instrument, the working. On a phone
+          they stack in that order — the answer first, as the home page
+          promises. On a wide screen the instrument holds the right column
+          beside both. */}
+      <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,440px)] md:gap-x-12">
+        {/* The answer, before the apparatus that produced it. The weton is
+            the pair, so it has no derivation of its own — the dina and
+            pasaran rows below carry the two that make it. */}
+        <section className="space-y-5 md:col-start-1 md:row-start-1">
+          <p className="rule-label">
+            {longDate(trace, t)} · JDN <span className="font-mono normal-case tracking-normal">{trace.jdn}</span>
+          </p>
+          <p key={trace.weton.name} className="computed answer-fade font-display text-figure">
             {trace.weton.name}
           </p>
-        </div>
-        <p className="font-mono text-sm text-ink/60">
-          {formatGregorian(trace.gregorian)} · {t.labels.neptu} {trace.weton.neptu.total}
-        </p>
-      </section>
+          <NeptuPips trace={trace} />
+          <Facts trace={trace} other={other} t={t} mangsa={mangsa} />
+          <div className="flex flex-wrap items-end justify-between gap-4 pt-2">
+            <ReckoningOptions
+              options={state.options}
+              t={t}
+              onReckoning={setReckoning}
+              onDayBoundary={setDayBoundary}
+              onHour={setHour}
+            />
+            <ShareButton t={t} title={`${trace.weton.name} · ${formatGregorian(trace.gregorian)}`} />
+          </div>
+        </section>
 
-      <div className="mt-8 grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,420px)] md:gap-12">
-        <div className="order-2 space-y-8 md:order-1">
-          <DateSweep trace={trace} t={t} onHighlightChange={setHighlightRing} />
-        </div>
-
-        {/* The wheels lead on a phone: they carry the idea, and the rows are
-            the detail underneath it. On a wide screen both are in view. */}
-        <section className="order-1 md:order-2 md:sticky md:top-24">
+        <section className="md:sticky md:top-24 md:col-start-2 md:row-span-2 md:row-start-1 md:self-start">
           {hydrated ? (
             <CycleWheels
               trace={trace}
@@ -82,9 +89,98 @@ export function ConversionView({ t }: { t: Dictionary }) {
             {t.ubah.wheelsCaption}
           </p>
         </section>
+
+        <div className="space-y-8 md:col-start-1 md:row-start-2">
+          <DateSweep trace={trace} t={t} onHighlightChange={setHighlightRing} />
+        </div>
       </div>
 
       <ReverseConversion t={t} reckoning={state.options.reckoning} onResult={setDate} />
+    </div>
+  )
+}
+
+/** The facts a reader most often needs, each with its name attached. All
+    computed, so all indigo — grey where a value rests on an unverified
+    anchor or the subsystem declined to answer. */
+function Facts({
+  trace,
+  other,
+  mangsa,
+  t,
+}: {
+  trace: CalendarTrace
+  other: CalendarTrace
+  mangsa: ReturnType<typeof mangsaFor>
+  t: Dictionary
+}) {
+  const lunar = trace.lunar
+  const otherLunar = other.lunar
+  const otherName = other.options.reckoning === 'aboge' ? 'Aboge' : 'Asapon'
+
+  return (
+    <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-panel border hairline bg-ink/10 sm:grid-cols-3">
+      {lunar.type === 'ok' ? (
+        <>
+          <Fact
+            label={t.labels.lunar}
+            value={`${lunar.value.day} ${lunar.value.monthName}`}
+            note={`${t.labels.tahun} ${lunar.value.yearAj}`}
+            unverified={lunar.value.derivation.status === 'unverified'}
+          />
+          <Fact label={t.labels.windu} value={lunar.value.windu} note={`${t.labels.tahun} ${lunar.value.yearAj}`} />
+          <Fact label={t.labels.kurup} value={lunar.value.kurupName} />
+        </>
+      ) : (
+        <Fact label={t.labels.lunar} value={t.common.refused} note={lunar.refusal.validFrom} unverified wide />
+      )}
+      <Fact
+        label={t.labels.wuku}
+        value={trace.wuku.name}
+        note={positionOf(t.common.dayOf, trace.dayInWuku, 7)}
+        unverified={trace.wuku.derivation.status === 'unverified'}
+      />
+      {mangsa.type === 'ok' ? (
+        <Fact
+          label={t.labels.mangsa}
+          value={mangsa.value.entry.name}
+          note={positionOf(t.common.dayOf, mangsa.value.dayWithin, mangsa.value.entry.lengthDays)}
+        />
+      ) : (
+        <Fact label={t.labels.mangsa} value={t.common.refused} unverified />
+      )}
+      {lunar.type === 'ok' && otherLunar.type === 'ok' ? (
+        <Fact
+          label={otherName}
+          value={`${otherLunar.value.day} ${otherLunar.value.monthName}`}
+          note={`${t.labels.tahun} ${otherLunar.value.yearAj}`}
+          unverified={otherLunar.value.derivation.status === 'unverified'}
+        />
+      ) : null}
+    </dl>
+  )
+}
+
+function Fact({
+  label,
+  value,
+  note,
+  unverified = false,
+  wide = false,
+}: {
+  label: string
+  value: string
+  note?: string
+  unverified?: boolean
+  wide?: boolean
+}) {
+  return (
+    <div className={['bg-paper-raised px-4 py-3', wide ? 'col-span-2 sm:col-span-2' : ''].join(' ')}>
+      <dt className="rule-label">{label}</dt>
+      <dd className={['mt-0.5 font-mono text-[1.05rem]', unverified ? 'text-unverified' : 'text-indigo'].join(' ')}>
+        {value}
+      </dd>
+      {note ? <dd className="font-ui text-xs text-ink/60">{note}</dd> : null}
     </div>
   )
 }

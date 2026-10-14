@@ -21,12 +21,12 @@ export function DerivationDetail({
   const unverified = derivation.status === 'unverified'
 
   return (
-    // Reads as a drawer pulled open on the row above it: one shade of paper
-    // deeper, with the ochre rule down the side that marks working-out.
-    <div className="panel-inset mt-1 border-l-2 border-l-ochre/60 p-4 text-sm">
+    // Reads as a sheet of working pulled out from the row above it: ruled
+    // paper, the formula first and largest, then what it was built from.
+    <div className="worksheet mt-1 p-4 text-sm sm:p-5">
       {derivation.kind === 'modulo' ? (
         <>
-          <p className="font-mono text-[0.95em] text-indigo">
+          <p className="font-mono text-base text-indigo">
             ({derivation.jdn.toLocaleString('en-US').replace(/,/g, ' ')} −{' '}
             {derivation.anchorJdn.toLocaleString('en-US').replace(/,/g, ' ')}) mod{' '}
             {derivation.modulus} = {derivation.index}
@@ -50,7 +50,7 @@ export function DerivationDetail({
         </>
       ) : (
         <>
-          <p className="font-mono text-[0.95em] text-indigo">
+          <p className="font-mono text-base text-indigo">
             {derivation.anchorGregorian} + {derivation.elapsedDays.toLocaleString('en-US')}{' '}
             {t.common.days}
           </p>
@@ -67,7 +67,7 @@ export function DerivationDetail({
         </>
       )}
 
-      <div className="mt-3 border-t hairline pt-2 text-ink/65">
+      <div className="mt-3 border-t border-dashed hairline pt-2 text-ink/70">
         <p>
           <span className="rule-label">{t.common.source}</span>{' '}
           <cite className="not-italic">{derivation.source.title}</cite>

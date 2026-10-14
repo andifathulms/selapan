@@ -96,7 +96,7 @@ export function TabBar({ items, label }: { items: ReadonlyArray<NavItem>; label:
 
 /** One small line drawing per destination, in the same stroke as the
     wheels: a dial, a grid, points on a line, an open book. */
-function NavIcon({ name }: { name: NavKey }) {
+export function NavIcon({ name }: { name: NavKey }) {
   const common = {
     fill: 'none',
     stroke: 'currentColor',

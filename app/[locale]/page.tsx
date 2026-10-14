@@ -2,71 +2,68 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getDictionary, isLocale, type Locale } from '@/lib/i18n'
 import { navItems } from '@/lib/nav'
-import { TodayCard } from '@/components/home/TodayCard'
+import { TodayHero } from '@/components/home/TodayHero'
+import { BirthdayForm } from '@/components/home/BirthdayForm'
+import { NavIcon } from '@/components/chrome/SiteNav'
 
 /**
- * The front page has to do one job before it does anything else: tell a
- * reader who has heard of weton, but never counted one, what this is.
- *
- * So the order is answer, then explanation, then apparatus. Today's
- * reckoning is on screen before any prose asks to be read; the four cycles
- * are named in a table because they are four facts, not an argument; and the
- * engineering claims that make this different from every other weton site
- * come last, where the reader who cares about them will look.
+ * The front page has one job before any other: answer. Today's weton and
+ * the instrument are on screen before any prose asks to be read, with the
+ * question most visitors arrive with — what was the weton of this birth
+ * date? — answered right beneath it. The explanation lives on Pelajari, for
+ * the reader who came to understand; the other destinations are one row of
+ * tiles at the foot.
  */
 export default function HomePage({ params }: { params: { locale: string } }) {
   if (!isLocale(params.locale)) notFound()
   const locale = params.locale as Locale
   const t = getDictionary(locale)
+  const others = navItems(locale, t).filter((item) => item.key !== 'weton')
 
   return (
     <div className="space-y-16 sm:space-y-20">
-      {/*
-        On a narrow screen the card comes second — straight after the lede
-        that promised it — rather than after two more paragraphs of prose.
-        On a wide one it sits alongside, where it is visible from the start.
-      */}
-      <section className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,25rem)] lg:items-start lg:gap-12">
-        <div className="lg:col-start-1 lg:row-start-1">
-          <h1 className="font-display text-display">{t.site.tagline}</h1>
-          <p className="lede mt-5 max-w-measure">{t.home.lede}</p>
-        </div>
+      <TodayHero
+        t={t}
+        intro={
+          <div>
+            <h1 className="font-display text-title">{t.site.tagline}</h1>
+            <p className="lede mt-3 max-w-measure">{t.home.lede}</p>
+          </div>
+        }
+        form={<BirthdayForm t={t} locale={locale} />}
+      />
 
-        <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
-          <TodayCard t={t} locale={locale} />
-        </div>
-
-        <div className="lg:col-start-1 lg:row-start-2">
-          <p className="max-w-measure text-ink/70">{t.site.description}</p>
-          <p className="mt-6">
-            <Link href={`/${locale}/weton/`} className="btn btn-solid px-6 text-base">
-              {t.home.start} →
-            </Link>
-          </p>
-        </div>
-      </section>
-
-      <section>
-        <h2 className="font-display text-title">{t.home.browseTitle}</h2>
-        <ul className="mt-6 grid gap-px overflow-hidden rounded-panel border hairline bg-ink/15 sm:grid-cols-2 lg:grid-cols-4">
-          {navItems(locale, t).map((item) => (
-            <li key={item.href} className="bg-paper">
+      <section aria-labelledby="home-more">
+        <h2 id="home-more" className="rule-label">
+          {t.home.moreTitle}
+        </h2>
+        <ul className="mt-4 grid gap-px overflow-hidden rounded-panel border hairline bg-ink/15 md:grid-cols-3">
+          {others.map((item) => (
+            <li key={item.href} className="bg-paper-raised">
               <Link
                 href={item.href}
-                className="group flex h-full flex-col p-5 transition-colors hover:bg-paper-raised/70"
+                prefetch={false}
+                className="group flex h-full gap-4 p-5 transition-colors hover:bg-paper sm:p-6"
               >
-                <span className="font-ui text-section font-semibold group-hover:underline group-hover:underline-offset-4">
-                  {item.label}
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-paper-deep text-ink">
+                  <NavIcon name={item.key} />
                 </span>
-                <span className="mt-2 text-sm leading-relaxed text-ink/65">
-                  {t.navBlurb[item.key]}
+                <span className="min-w-0">
+                  <span className="block font-ui text-section font-semibold">
+                    {item.label}{' '}
+                    <span aria-hidden="true" className="inline-block text-ink/45 transition-transform group-hover:translate-x-0.5">
+                      →
+                    </span>
+                  </span>
+                  <span className="mt-1 block text-[0.95rem] leading-snug text-ink/70">
+                    {t.navBlurb[item.key]}
+                  </span>
                 </span>
               </Link>
             </li>
           ))}
         </ul>
       </section>
-
     </div>
   )
 }
