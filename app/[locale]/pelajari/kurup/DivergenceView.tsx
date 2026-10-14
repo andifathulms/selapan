@@ -88,7 +88,11 @@ function ReckoningPanel({
           two wheels' dots against the same fixed ray is the divergence,
           not a caption about it. */}
       <div className="mt-4">
-        {hydrated ? <CycleWheels trace={trace} /> : <div className="mx-auto aspect-square w-full max-w-[420px]" />}
+        {hydrated ? (
+          <CycleWheels trace={trace} />
+        ) : (
+          <div className="instrument instrument-panel mx-auto aspect-square w-full" />
+        )}
       </div>
 
       {trace.lunar.type === 'ok' ? (

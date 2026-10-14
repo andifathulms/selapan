@@ -8,6 +8,8 @@ import { traceFor } from '@/lib/trace'
 import type { Dictionary } from '@/lib/i18n'
 import { CycleWheels, type HighlightRing } from '@/components/wheels/CycleWheels'
 import { useDateState } from '@/components/controls/useDateState'
+import { useArrowStepping } from '@/components/controls/useArrowStepping'
+import { InstrumentStepper } from '@/components/wheels/InstrumentStepper'
 import { ReckoningOptions } from '@/components/controls/ReckoningOptions'
 import { ShareButton } from '@/components/controls/ShareButton'
 import { RefusalNotice, TraceValue } from '@/components/trace/TraceValue'
@@ -23,7 +25,9 @@ import { RefusalNotice, TraceValue } from '@/components/trace/TraceValue'
  * mangsa year on /kalender/, each on its own page.
  */
 export function ConversionView({ t }: { t: Dictionary }) {
-  const { state, hydrated, jdn, setDate, setReckoning, setDayBoundary, setHour } = useDateState()
+  const { state, hydrated, jdn, setDate, stepDays, setReckoning, setDayBoundary, setHour } =
+    useDateState()
+  useArrowStepping(stepDays)
   const [highlightRing, setHighlightRing] = useState<HighlightRing | null>(null)
 
   const trace = traceFor(jdn, state.options)
@@ -65,9 +69,14 @@ export function ConversionView({ t }: { t: Dictionary }) {
             the detail underneath it. On a wide screen both are in view. */}
         <section className="order-1 md:order-2 md:sticky md:top-24">
           {hydrated ? (
-            <CycleWheels trace={trace} highlightRing={highlightRing} />
+            <CycleWheels
+              trace={trace}
+              highlightRing={highlightRing}
+              onStep={stepDays}
+              footer={<InstrumentStepper trace={trace} t={t} onStep={stepDays} />}
+            />
           ) : (
-            <div className="aspect-square" />
+            <div className="instrument instrument-panel aspect-square" />
           )}
           <p className="mt-4 max-w-measure text-sm leading-relaxed text-ink/65">
             {t.ubah.wheelsCaption}

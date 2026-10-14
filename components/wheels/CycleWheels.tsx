@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, type ReactNode } from 'react'
 import { DINA, PASARAN, WUKU } from '@/lib/cycles'
 import type { CalendarTrace } from '@/lib/trace'
 import { mangsaOfJdn, mangsaTable, type MangsaResult } from '@/lib/mangsa'
@@ -36,8 +36,24 @@ export type HighlightRing = 'pasaran' | 'dina' | 'wuku' | 'lunar'
 export function CycleWheels({
   trace,
   highlightRing = null,
+  surface = true,
+  compact = false,
+  onStep,
+  footer,
 }: {
   trace: CalendarTrace
+  /** Draw on the ink-dark instrument surface (default). Every wheel on the
+      site sits on it; the class re-scopes the palette so the same token
+      classes read correctly there (theme/palette.ts). */
+  surface?: boolean
+  /** A small wheel: the mangsa names are left off, since at 220px they
+      would be illegible. The ring itself stays. */
+  compact?: boolean
+  /** Swipe the wheel to step a day. Omitted where the wheel is read-only. */
+  onStep?: (delta: number) => void
+  /** Shown on the instrument surface beneath the rings — a stepper, a
+      readout. */
+  footer?: ReactNode
   /** Which ring a currently-open derivation drawer belongs to, if any — a
       modulo is a wheel, so the drawer should be able to point at its own
       ring rather than leaving the reader to find it among five
@@ -98,29 +114,72 @@ export function CycleWheels({
     lunar.type === 'ok' ? `bulan ${lunar.value.monthName}` : null,
   ].filter((p): p is string => p !== null)
 
+  // Where the ray crosses each ring drawn. For the labelled rings the mark
+  // sits just outside the label band, so it never lands on the name.
+  const crossings = [
+    PASARAN_R + BAND,
+    DINA_R + BAND,
+    WUKU_R,
+    mangsa.type === 'ok' ? MANGSA_R : null,
+    lunar.type === 'ok' ? LUNAR_R : null,
+  ].filter((r): r is number => r !== null)
+
+  const swipeFrom = useRef<number | null>(null)
+
   return (
-    <figure className="mx-auto w-full max-w-[420px]">
-      <svg viewBox="-240 -240 480 480" role="img" className="w-full">
+    <figure
+      className={[
+        'mx-auto w-full',
+        surface ? 'instrument instrument-panel p-3 sm:p-5' : '',
+        onStep ? 'touch-pan-y select-none' : '',
+      ].join(' ')}
+      onPointerDown={onStep ? (e) => (swipeFrom.current = e.clientX) : undefined}
+      onPointerUp={
+        onStep
+          ? (e) => {
+              const from = swipeFrom.current
+              swipeFrom.current = null
+              if (from === null) return
+              const dx = e.clientX - from
+              // A swipe left reads as "next", the way a page turns.
+              if (Math.abs(dx) > 40) onStep(dx < 0 ? 1 : -1)
+            }
+          : undefined
+      }
+    >
+      <svg viewBox="-250 -250 500 500" role="img" className="mx-auto block w-full max-w-[460px]">
         <title>{`${titleParts.join(', ')} — ${trace.weton.name}, neptu ${trace.weton.neptu.total}`}</title>
 
+        {/* The marker is fixed; the rings move beneath it (PRD §9). One ray,
+            crossing every ring drawn — that is today, one position in every
+            cycle at once (DESIGN-REWORK §3.2). Computed, so indigo — never
+            rubric (CLAUDE.md invariant 12). Drawn first, so the names it
+            passes through sit above it. */}
+        <g className="text-indigo">
+          <line x1={0} y1={-244} x2={0} y2={-CENTRE_R} stroke="currentColor" strokeWidth={1.4} />
+          <polygon points={`0,${-CENTRE_R + 6} -6,${-CENTRE_R - 5} 6,${-CENTRE_R - 5}`} fill="currentColor" />
+        </g>
+
         <EqualRing
-          radius={54}
+          radius={PASARAN_R}
           names={PASARAN as unknown as ReadonlyArray<string>}
           rotationDeg={pasaranRotation}
           currentIndex={trace.pasaran.index}
           labelled
+          fontSize={13}
           highlighted={highlightRing === 'pasaran'}
         />
         <EqualRing
-          radius={92}
+          radius={DINA_R}
           names={DINA as unknown as ReadonlyArray<string>}
           rotationDeg={dinaRotation}
           currentIndex={trace.dina.index}
           labelled
+          fontSize={12.5}
           highlighted={highlightRing === 'dina'}
         />
         <EqualRing
-          radius={130}
+          radius={WUKU_R}
           names={WUKU as unknown as ReadonlyArray<string>}
           rotationDeg={wukuRotation}
           currentIndex={trace.wuku.index}
@@ -131,18 +190,19 @@ export function CycleWheels({
 
         {mangsa.type === 'ok' ? (
           <UnequalRing
-            radius={168}
+            radius={MANGSA_R}
             entries={table}
             cumulative={mangsaCumulative}
             total={totalMangsaDays}
             rotationDeg={mangsaRotation}
             currentEntry={mangsa.value.entry}
+            labelled={!compact}
           />
         ) : null}
 
         {lunar.type === 'ok' ? (
           <EqualRing
-            radius={206}
+            radius={LUNAR_R}
             names={Array.from({ length: lunar.value.monthLength }, () => '')}
             rotationDeg={lunarRotation}
             currentIndex={lunar.value.day - 1}
@@ -154,42 +214,49 @@ export function CycleWheels({
           />
         ) : null}
 
-        {/* The marker is fixed; the rings move beneath it (PRD §9). One ray,
-            crossing every ring drawn, with a mark at each crossing — that is
-            today, one position in every cycle at once (DESIGN-REWORK §3.2).
-            Computed, so indigo — never rubric (CLAUDE.md invariant 12). */}
         <g className="text-indigo">
-          <line x1={0} y1={-228} x2={0} y2={-38} stroke="currentColor" strokeWidth={1} />
-          <polygon points="0,-32 -5,-42 5,-42" fill="currentColor" />
-          {[54, 92, 130, mangsa.type === 'ok' ? 168 : null, lunar.type === 'ok' ? 206 : null]
-            .filter((r): r is number => r !== null)
-            .map((r) => (
-              <circle key={r} cx={0} cy={-r} r={2.4} fill="currentColor" />
-            ))}
+          {crossings.map((r) => (
+            <circle
+              key={r}
+              cx={0}
+              cy={-r}
+              r={3.2}
+              fill="currentColor"
+              strokeWidth={1.5}
+              className="stroke-paper"
+            />
+          ))}
         </g>
 
-        <text y={-2} textAnchor="middle" fontSize={15} className="fill-indigo font-mono">
-          {trace.weton.name}
+        <circle r={CENTRE_R} className="fill-paper stroke-ochre/40" strokeWidth={1} />
+        <text y={-4} textAnchor="middle" fontSize={15} className="fill-indigo font-display">
+          {trace.dina.name}
         </text>
-        <text y={18} textAnchor="middle" fontSize={11} className="fill-ink/55 font-mono">
+        <text y={14} textAnchor="middle" fontSize={15} className="fill-indigo font-display">
+          {trace.pasaran.name}
+        </text>
+        <text y={30} textAnchor="middle" fontSize={9} className="fill-ink/60 font-mono">
           {`neptu ${trace.weton.neptu.total}`}
         </text>
       </svg>
+      {footer ? <figcaption className="mt-3">{footer}</figcaption> : null}
     </figure>
   )
 }
+
+/** Ring radii, centre outwards, and the half-height of a labelled band. */
+const CENTRE_R = 42
+const PASARAN_R = 66
+const DINA_R = 112
+const WUKU_R = 154
+const MANGSA_R = 190
+const LUNAR_R = 228
+const BAND = 15
 
 /** Degrees from twelve o'clock, clockwise, for a point at `deg` on `radius`. */
 function pointOn(radius: number, deg: number): readonly [number, number] {
   const rad = ((deg - 90) * Math.PI) / 180
   return [radius * Math.cos(rad), radius * Math.sin(rad)]
-}
-
-function arcPath(radius: number, startDeg: number, endDeg: number): string {
-  const [x1, y1] = pointOn(radius, startDeg)
-  const [x2, y2] = pointOn(radius, endDeg)
-  const largeArc = endDeg - startDeg > 180 ? 1 : 0
-  return `M ${x1} ${y1} A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2}`
 }
 
 /** A filled band between two radii, from `startDeg` to `endDeg` — the
@@ -211,14 +278,30 @@ function segmentBand(radiusInner: number, radiusOuter: number, startDeg: number,
   ].join(' ')
 }
 
+const TURN = 'transform 420ms cubic-bezier(0.33, 0, 0.2, 1)'
+
+/** Written out in full so Tailwind can find every class at build time. */
+const BAND_CLASS = {
+  computed: { soft: 'fill-indigo/20', medium: 'fill-indigo/25', strong: 'fill-indigo/35' },
+  unverified: { soft: 'fill-unverified/20', medium: 'fill-unverified/30', strong: 'fill-unverified/40' },
+} as const
+
+function bandClass(muted: boolean, weight: 'soft' | 'medium' | 'strong'): string {
+  return BAND_CLASS[muted ? 'unverified' : 'computed'][weight]
+}
+
 /** A ring of equal segments — pasaran, dina, wuku (as weeks), and one lunar
-    month (as days). `names` may be all-empty strings for a tick-only ring. */
+    month (as days). `names` may be all-empty strings for a tick-only ring.
+
+    Segment boundaries are prada (ochre): cycle marks, per PRD §9. The
+    current segment's band is indigo, because where today sits is computed. */
 function EqualRing({
   radius,
   names,
   rotationDeg,
   currentIndex,
   labelled,
+  fontSize = 12,
   emphasiseCurrent = false,
   muted = false,
   markStart = false,
@@ -229,6 +312,7 @@ function EqualRing({
   rotationDeg: number
   currentIndex: number
   labelled: boolean
+  fontSize?: number
   emphasiseCurrent?: boolean
   muted?: boolean
   /** Mark segment 0 (month start) with a small dot outside the ring, fixed
@@ -238,15 +322,17 @@ function EqualRing({
       relative to the same fixed ray is what does (DESIGN-REWORK §3.3, the
       two lunar rings on /pelajari/kurup/). */
   markStart?: boolean
-  /** A derivation drawer for this ring is open. Boosts the same band
-      `emphasiseCurrent` already draws (or draws one for pasaran/dina, which
-      otherwise have none) and brightens the guide circle, so the reader can
-      find the ring the numbers above belong to without reading five of
-      them. */
+  /** A derivation drawer for this ring is open. Strengthens the current
+      band and the guide circle, so the reader can find the ring the numbers
+      above belong to without reading five of them. */
   highlighted?: boolean
 }) {
   const step = 360 / names.length
-  const colour = muted ? 'text-unverified' : 'text-indigo'
+
+  // A labelled ring centres each name on its own angle; a tick ring runs
+  // each segment from its tick to the next.
+  const bandStart = labelled ? (currentIndex - 0.5) * step : currentIndex * step
+  const half = labelled ? BAND : 7
 
   return (
     <g>
@@ -254,40 +340,26 @@ function EqualRing({
         r={radius}
         fill="none"
         stroke="currentColor"
-        strokeWidth={highlighted ? 1 : 0.5}
-        className={highlighted ? 'text-indigo/60' : 'text-ink/20'}
+        strokeWidth={highlighted ? 1.2 : 0.8}
+        className={highlighted ? 'text-indigo/60' : 'text-ink/15'}
       />
-      <g
-        style={{
-          transform: `rotate(${rotationDeg}deg)`,
-          transition: 'transform 420ms cubic-bezier(0.33, 0, 0.2, 1)',
-        }}
-      >
-        {emphasiseCurrent || highlighted ? (
+      <g style={{ transform: `rotate(${rotationDeg}deg)`, transition: TURN }}>
+        {labelled || emphasiseCurrent || highlighted ? (
           <path
-            d={segmentBand(radius - 6, radius + 6, currentIndex * step, (currentIndex + 1) * step)}
-            className={
-              highlighted
-                ? muted
-                  ? 'fill-unverified/35'
-                  : 'fill-indigo/30'
-                : muted
-                  ? 'fill-unverified/30'
-                  : 'fill-indigo/15'
-            }
+            d={segmentBand(radius - half, radius + half, bandStart, bandStart + step)}
+            className={bandClass(muted, highlighted ? 'strong' : labelled ? 'soft' : 'medium')}
           />
         ) : null}
 
         {markStart ? (
-          <circle cx={0} cy={-(radius + 6)} r={2.2} className={muted ? 'fill-unverified' : 'fill-indigo'} />
+          <circle cx={0} cy={-(radius + 11)} r={3.4} className={muted ? 'fill-unverified' : 'fill-ochre'} />
         ) : null}
 
         {names.map((name, i) => {
-          const long = !labelled && i % Math.max(1, Math.round(names.length / 30)) === 0
           if (!labelled) {
-            const inner = radius - (long ? 7 : 3)
-            const [x1, y1] = pointOn(inner, i * step)
-            const [x2, y2] = pointOn(radius, i * step)
+            const major = i % 5 === 0
+            const [x1, y1] = pointOn(radius - (major ? 7 : 5), i * step)
+            const [x2, y2] = pointOn(radius + (major ? 7 : 5), i * step)
             return (
               <line
                 key={i}
@@ -296,24 +368,38 @@ function EqualRing({
                 x2={x2}
                 y2={y2}
                 stroke="currentColor"
-                strokeWidth={long ? 1 : 0.5}
-                className={i === currentIndex ? colour : muted ? 'text-unverified/80' : 'text-indigo/40'}
+                strokeWidth={major ? 1.3 : 0.8}
+                className={muted ? 'text-unverified/70' : major ? 'text-ochre' : 'text-ochre/50'}
               />
             )
           }
           const [x, y] = pointOn(radius, i * step)
+          const [t1x, t1y] = pointOn(radius - BAND, (i - 0.5) * step)
+          const [t2x, t2y] = pointOn(radius + BAND, (i - 0.5) * step)
           const isCurrent = i === currentIndex
           return (
-            <g key={name} transform={`translate(${x} ${y})`}>
-              <text
-                transform={`rotate(${-rotationDeg})`}
-                textAnchor="middle"
-                dominantBaseline="central"
-                fontSize={11}
-                className={isCurrent ? `fill-indigo font-ui font-semibold` : 'fill-ink/70 font-ui'}
-              >
-                {name}
-              </text>
+            <g key={name}>
+              <line x1={t1x} y1={t1y} x2={t2x} y2={t2y} strokeWidth={1} className="stroke-ochre/60" />
+              <g transform={`translate(${x} ${y})`}>
+                {/* Counter-rotated on the same transition as the ring, so a
+                    name stays upright the whole way round, not just at rest. */}
+                <text
+                  style={{ transform: `rotate(${-rotationDeg}deg)`, transition: TURN }}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  fontSize={fontSize}
+                  strokeWidth={isCurrent ? 5 : 0}
+                  strokeLinejoin="round"
+                  paintOrder="stroke"
+                  className={
+                    isCurrent
+                      ? 'fill-indigo stroke-paper font-ui font-semibold'
+                      : 'fill-ink/65 font-ui'
+                  }
+                >
+                  {name}
+                </text>
+              </g>
             </g>
           )
         })}
@@ -333,6 +419,7 @@ function UnequalRing({
   total,
   rotationDeg,
   currentEntry,
+  labelled,
 }: {
   radius: number
   entries: ReadonlyArray<Mangsa>
@@ -340,62 +427,45 @@ function UnequalRing({
   total: number
   rotationDeg: number
   currentEntry: Mangsa
+  labelled: boolean
 }) {
   const degFor = (days: number) => (days / total) * 360
 
   return (
     <g>
-      <circle r={radius} fill="none" stroke="currentColor" strokeWidth={0.5} className="text-ink/20" />
-      <g
-        style={{
-          transform: `rotate(${rotationDeg}deg)`,
-          transition: 'transform 420ms cubic-bezier(0.33, 0, 0.2, 1)',
-        }}
-      >
+      <g style={{ transform: `rotate(${rotationDeg}deg)`, transition: TURN }}>
         {entries.map((entry, i) => {
           const startDeg = degFor(cumulative[i] ?? 0)
           const endDeg = degFor((cumulative[i] ?? 0) + entry.lengthDays)
           const midDeg = (startDeg + endDeg) / 2
           const isCurrent = entry.index === currentEntry.index
-          const [x, y] = pointOn(radius, midDeg)
+          const [x, y] = pointOn(radius + 17, midDeg)
 
           return (
             <g key={entry.index}>
-              {isCurrent ? (
-                <path
-                  d={segmentBand(radius - 7, radius + 7, startDeg, endDeg)}
-                  className="fill-indigo/15"
-                />
-              ) : null}
-              <line
-                {...lineAt(radius, startDeg)}
-                stroke="currentColor"
-                strokeWidth={0.5}
-                className="text-indigo/40"
+              <path
+                d={segmentBand(radius - (isCurrent ? 5 : 3.5), radius + (isCurrent ? 5 : 3.5), startDeg + 0.7, endDeg - 0.7)}
+                className={isCurrent ? 'fill-indigo' : 'fill-ink/20'}
               />
-              <g transform={`translate(${x} ${y})`}>
-                <text
-                  transform={`rotate(${-rotationDeg})`}
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  fontSize={8.5}
-                  className={isCurrent ? 'fill-indigo font-ui font-semibold' : 'fill-ink/60 font-ui'}
-                >
-                  {entry.name}
-                </text>
-              </g>
+              {labelled ? (
+                <g transform={`translate(${x} ${y})`}>
+                  <text
+                    style={{ transform: `rotate(${-rotationDeg}deg)`, transition: TURN }}
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    fontSize={10}
+                    className={isCurrent ? 'fill-indigo font-ui font-semibold' : 'fill-ink/55 font-ui'}
+                  >
+                    {entry.name}
+                  </text>
+                </g>
+              ) : null}
             </g>
           )
         })}
       </g>
     </g>
   )
-}
-
-function lineAt(radius: number, deg: number) {
-  const [x1, y1] = pointOn(radius - 5, deg)
-  const [x2, y2] = pointOn(radius, deg)
-  return { x1, y1, x2, y2 }
 }
 
 function cumulativeBefore(entries: ReadonlyArray<Mangsa>): ReadonlyArray<number> {

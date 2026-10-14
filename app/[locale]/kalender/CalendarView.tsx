@@ -107,7 +107,11 @@ export function CalendarView({ t }: { t: Dictionary }) {
           onSelect={(day) => setDate({ year, month, day })}
         />
         <div className="mx-auto w-full max-w-[220px] lg:sticky lg:top-24">
-          {hydrated ? <CycleWheels trace={trace} /> : <div className="aspect-square" />}
+          {hydrated ? (
+              <CycleWheels trace={trace} compact />
+            ) : (
+              <div className="instrument instrument-panel aspect-square" />
+            )}
         </div>
       </div>
 
